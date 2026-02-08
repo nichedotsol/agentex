@@ -1,0 +1,158 @@
+{
+  "name": "agentex_builder",
+  "description": "Build and deploy AI agents programmatically using the AgentEX standard. Validate requirements, generate code, deploy to hosting platforms, and discover tools.",
+  "input_schema": {
+    "type": "object",
+    "properties": {
+      "action": {
+        "type": "string",
+        "enum": ["validate", "generate", "status", "deploy", "search_tools", "get_tool"],
+        "description": "The action to perform"
+      },
+      "validate": {
+        "type": "object",
+        "description": "Parameters for validating agent requirements",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Agent name"
+          },
+          "description": {
+            "type": "string",
+            "description": "Agent description"
+          },
+          "brain": {
+            "type": "string",
+            "description": "Brain provider (e.g., 'openai', 'anthropic', 'openclaw')"
+          },
+          "tools": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "List of tool IDs to use"
+          },
+          "runtime": {
+            "type": "string",
+            "description": "Preferred runtime (optional)"
+          }
+        }
+      },
+      "generate": {
+        "type": "object",
+        "description": "Parameters for generating agent code",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Agent name"
+          },
+          "description": {
+            "type": "string",
+            "description": "Agent description"
+          },
+          "brain": {
+            "type": "string",
+            "description": "Brain provider"
+          },
+          "tools": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "List of tool IDs"
+          },
+          "runtime": {
+            "type": "string",
+            "description": "Target runtime"
+          },
+          "config": {
+            "type": "object",
+            "properties": {
+              "temperature": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 2
+              },
+              "maxTokens": {
+                "type": "number"
+              },
+              "cronSchedule": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "status": {
+        "type": "object",
+        "description": "Parameters for checking build status",
+        "properties": {
+          "buildId": {
+            "type": "string",
+            "description": "Build ID from generate action"
+          }
+        }
+      },
+      "deploy": {
+        "type": "object",
+        "description": "Parameters for deploying agent",
+        "properties": {
+          "buildId": {
+            "type": "string",
+            "description": "Build ID from generate action"
+          },
+          "platform": {
+            "type": "string",
+            "enum": ["vercel", "github", "railway"],
+            "description": "Target deployment platform"
+          },
+          "credentials": {
+            "type": "object",
+            "properties": {
+              "apiKey": {
+                "type": "string",
+                "description": "Platform API key"
+              },
+              "projectName": {
+                "type": "string",
+                "description": "Project/repository name"
+              }
+            }
+          }
+        }
+      },
+      "search_tools": {
+        "type": "object",
+        "description": "Parameters for searching tools",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Search query"
+          },
+          "category": {
+            "type": "string",
+            "description": "Tool category"
+          },
+          "capabilities": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Required capabilities"
+          }
+        }
+      },
+      "get_tool": {
+        "type": "object",
+        "description": "Parameters for getting tool details",
+        "properties": {
+          "toolId": {
+            "type": "string",
+            "description": "Tool ID"
+          }
+        }
+      }
+    },
+    "required": ["action"]
+  }
+}

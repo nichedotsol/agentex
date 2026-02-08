@@ -1,0 +1,32 @@
+{
+  "name": "@agentex/sdk",
+  "version": "1.0.0",
+  "description": "TypeScript SDK for the AgentEX Skill API",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "agentex",
+    "ai",
+    "agents",
+    "sdk"
+  ],
+  "author": "AgentEX",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/agentex/agentex.git"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ]
+}
