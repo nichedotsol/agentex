@@ -1,0 +1,358 @@
+'use client';
+
+import { useState } from 'react';
+import Link from 'next/link';
+
+export default function SkillInstallPage() {
+  const [selectedPlatform, setSelectedPlatform] = useState<'claude' | 'gpt' | 'openclaw' | 'python' | 'typescript'>('claude');
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-ax-bg via-ax-bg-secondary to-ax-bg p-8">
+      <div className="max-w-6xl mx-auto">
+        {/* Header */}
+        <div className="text-center mb-12">
+          <h1 className="text-5xl font-bold text-ax-text mb-4 bg-gradient-to-r from-ax-primary to-ax-secondary bg-clip-text text-transparent">
+            Install AgentEX Skill
+          </h1>
+          <p className="text-xl text-ax-text-secondary max-w-2xl mx-auto">
+            Add AgentEX to your AI agent or application. Build and deploy agents programmatically.
+          </p>
+        </div>
+
+        {/* Platform Selector */}
+        <div className="flex flex-wrap gap-3 justify-center mb-12">
+          {(['claude', 'gpt', 'openclaw', 'python', 'typescript'] as const).map((platform) => (
+            <button
+              key={platform}
+              onClick={() => setSelectedPlatform(platform)}
+              type="button"
+              className={`px-6 py-3 rounded-lg font-sans text-sm font-medium transition-all ${
+                selectedPlatform === platform
+                  ? 'bg-ax-primary text-white shadow-lg shadow-ax-primary/30'
+                  : 'bg-ax-bg border border-ax-border text-ax-text-secondary hover:bg-ax-bg-hover'
+              }`}
+            >
+              {platform === 'claude' && '🤖 Claude'}
+              {platform === 'gpt' && '💬 GPT'}
+              {platform === 'openclaw' && '🦅 OpenClaw'}
+              {platform === 'python' && '🐍 Python'}
+              {platform === 'typescript' && '⚡ TypeScript'}
+            </button>
+          ))}
+        </div>
+
+        {/* Installation Instructions */}
+        <div className="bg-ax-bg/50 backdrop-blur-xl border border-ax-border rounded-2xl p-8 mb-8">
+          {selectedPlatform === 'claude' && <ClaudeInstructions />}
+          {selectedPlatform === 'gpt' && <GPTInstructions />}
+          {selectedPlatform === 'openclaw' && <OpenClawInstructions />}
+          {selectedPlatform === 'python' && <PythonInstructions />}
+          {selectedPlatform === 'typescript' && <TypeScriptInstructions />}
+        </div>
+
+        {/* API Reference */}
+        <div className="bg-ax-bg/50 backdrop-blur-xl border border-ax-border rounded-2xl p-8 mb-8">
+          <h2 className="text-2xl font-bold text-ax-text mb-4">API Reference</h2>
+          <p className="text-ax-text-secondary mb-4">
+            All skill actions use the AgentEX API at:
+          </p>
+          <code className="block bg-ax-bg-secondary p-4 rounded-lg text-ax-text font-mono text-sm mb-4">
+            https://agentexs.vercel.app/api/agentex/v2
+          </code>
+          <div className="space-y-4">
+            <div>
+              <h3 className="text-lg font-semibold text-ax-text mb-2">Available Actions</h3>
+              <ul className="space-y-2 text-ax-text-secondary">
+                <li><code className="text-ax-primary">validate</code> - Validate agent requirements</li>
+                <li><code className="text-ax-primary">generate</code> - Generate agent code</li>
+                <li><code className="text-ax-primary">status</code> - Check build status</li>
+                <li><code className="text-ax-primary">deploy</code> - Deploy to hosting platform</li>
+                <li><code className="text-ax-primary">search_tools</code> - Search available tools</li>
+                <li><code className="text-ax-primary">get_tool</code> - Get tool details</li>
+              </ul>
+            </div>
+            <div>
+              <Link 
+                href="/api-docs" 
+                className="text-ax-primary hover:text-ax-primary-hover underline"
+              >
+                View Full API Documentation →
+              </Link>
+            </div>
+          </div>
+        </div>
+
+        {/* Quick Start Examples */}
+        <div className="bg-ax-bg/50 backdrop-blur-xl border border-ax-border rounded-2xl p-8">
+          <h2 className="text-2xl font-bold text-ax-text mb-4">Quick Start Examples</h2>
+          <div className="space-y-6">
+            <ExampleCard
+              title="Validate Agent Requirements"
+              description="Check if your agent configuration is valid before building"
+              code={`{
+  "action": "validate",
+  "name": "Research Assistant",
+  "description": "An AI agent that helps with research tasks",
+  "brain": "claude-3-5-sonnet",
+  "tools": ["tool-openai-api", "tool-web-search"]
+}`}
+            />
+            <ExampleCard
+              title="Generate Agent Code"
+              description="Create production-ready agent code"
+              code={`{
+  "action": "generate",
+  "name": "Research Assistant",
+  "description": "An AI agent that helps with research tasks",
+  "brain": "claude-3-5-sonnet",
+  "tools": ["tool-openai-api", "tool-web-search"],
+  "runtime": "vercel"
+}`}
+            />
+            <ExampleCard
+              title="Search Tools"
+              description="Discover available tools by category or capability"
+              code={`{
+  "action": "search_tools",
+  "query": "email",
+  "category": "communication"
+}`}
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ClaudeInstructions() {
+  return (
+    <div>
+      <h2 className="text-2xl font-bold text-ax-text mb-4">Install in Claude</h2>
+      <div className="space-y-6">
+        <div>
+          <h3 className="text-lg font-semibold text-ax-text mb-2">Method 1: Direct Import</h3>
+          <ol className="list-decimal list-inside space-y-2 text-ax-text-secondary">
+            <li>Download the skill file: <code className="text-ax-primary">packages/claude-skill.json</code></li>
+            <li>Open Claude Desktop or Claude.ai</li>
+            <li>Go to Settings → Skills</li>
+            <li>Click "Add Skill" or "Import Skill"</li>
+            <li>Select the downloaded JSON file</li>
+            <li>The skill will be available as <code className="text-ax-primary">agentex_builder</code></li>
+          </ol>
+        </div>
+        <div>
+          <h3 className="text-lg font-semibold text-ax-text mb-2">Usage Example</h3>
+          <div className="bg-ax-bg-secondary p-4 rounded-lg">
+            <p className="text-ax-text-secondary mb-2">In Claude, you can now say:</p>
+            <code className="text-ax-text font-mono text-sm block">
+              "I want to build a research agent. Use the agentex_builder skill to validate and generate it with OpenAI API and web search tools."
+            </code>
+          </div>
+        </div>
+        <div>
+          <h3 className="text-lg font-semibold text-ax-text mb-2">Skill File</h3>
+          <p className="text-ax-text-secondary mb-2">
+            Download: <Link href="/packages/claude-skill.json" className="text-ax-primary hover:underline">claude-skill.json</Link>
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function GPTInstructions() {
+  return (
+    <div>
+      <h2 className="text-2xl font-bold text-ax-text mb-4">Install in GPT Assistant</h2>
+      <div className="space-y-6">
+        <div>
+          <h3 className="text-lg font-semibold text-ax-text mb-2">Method 1: Function Definition</h3>
+          <ol className="list-decimal list-inside space-y-2 text-ax-text-secondary">
+            <li>Download the function file: <code className="text-ax-primary">packages/gpt-function.json</code></li>
+            <li>Open OpenAI Platform → Assistants</li>
+            <li>Create or edit an assistant</li>
+            <li>Go to Functions section</li>
+            <li>Click "Add Function"</li>
+            <li>Paste the contents of <code className="text-ax-primary">gpt-function.json</code></li>
+            <li>Save the assistant</li>
+          </ol>
+        </div>
+        <div>
+          <h3 className="text-lg font-semibold text-ax-text mb-2">Usage Example</h3>
+          <div className="bg-ax-bg-secondary p-4 rounded-lg">
+            <p className="text-ax-text-secondary mb-2">In your GPT assistant, you can now call:</p>
+            <code className="text-ax-text font-mono text-sm block">
+              agentex_builder(action="validate", name="Research Assistant", description="Helps with research", brain="gpt-4", tools=["tool-openai-api"])
+            </code>
+          </div>
+        </div>
+        <div>
+          <h3 className="text-lg font-semibold text-ax-text mb-2">Function File</h3>
+          <p className="text-ax-text-secondary mb-2">
+            Download: <Link href="/packages/gpt-function.json" className="text-ax-primary hover:underline">gpt-function.json</Link>
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function OpenClawInstructions() {
+  return (
+    <div>
+      <h2 className="text-2xl font-bold text-ax-text mb-4">Install in OpenClaw</h2>
+      <div className="space-y-6">
+        <div>
+          <h3 className="text-lg font-semibold text-ax-text mb-2">Method 1: JSON File Import</h3>
+          <ol className="list-decimal list-inside space-y-2 text-ax-text-secondary">
+            <li>Copy the skill file to your OpenClaw skills directory:</li>
+            <code className="block bg-ax-bg-secondary p-3 rounded-lg text-ax-text font-mono text-sm my-2">
+              cp packages/openclaw-skill.json ~/.openclaw/skills/agentex_builder.json
+            </code>
+            <li>Or import via OpenClaw UI: Settings → Skills → Import</li>
+            <li>Select <code className="text-ax-primary">packages/openclaw-skill.json</code></li>
+            <li>The skill will be available as <code className="text-ax-primary">agentex_builder</code></li>
+          </ol>
+        </div>
+        <div>
+          <h3 className="text-lg font-semibold text-ax-text mb-2">Usage Example</h3>
+          <div className="bg-ax-bg-secondary p-4 rounded-lg">
+            <code className="text-ax-text font-mono text-sm block">
+{`# Validate agent requirements
+validation = agentex_builder.validate(
+    name="Research Assistant",
+    description="Helps with research",
+    brain="openclaw",
+    tools=["tool-openai-api"]
+)
+
+# Generate agent code
+result = agentex_builder.generate(
+    name="Research Assistant",
+    description="Helps with research",
+    brain="openclaw",
+    tools=["tool-openai-api"],
+    runtime="vercel"
+)`}
+            </code>
+          </div>
+        </div>
+        <div>
+          <h3 className="text-lg font-semibold text-ax-text mb-2">Skill File</h3>
+          <p className="text-ax-text-secondary mb-2">
+            Download: <Link href="/packages/openclaw-skill.json" className="text-ax-primary hover:underline">openclaw-skill.json</Link>
+          </p>
+          <p className="text-ax-text-secondary">
+            Full guide: <Link href="/packages/openclaw-install.md" className="text-ax-primary hover:underline">openclaw-install.md</Link>
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function PythonInstructions() {
+  return (
+    <div>
+      <h2 className="text-2xl font-bold text-ax-text mb-4">Python SDK</h2>
+      <div className="space-y-6">
+        <div>
+          <h3 className="text-lg font-semibold text-ax-text mb-2">Installation</h3>
+          <code className="block bg-ax-bg-secondary p-4 rounded-lg text-ax-text font-mono text-sm mb-4">
+            cd packages/python<br />
+            pip install .
+          </code>
+        </div>
+        <div>
+          <h3 className="text-lg font-semibold text-ax-text mb-2">Usage Example</h3>
+          <div className="bg-ax-bg-secondary p-4 rounded-lg">
+            <code className="text-ax-text font-mono text-sm block whitespace-pre">
+{`from agentex import AgentEXClient, ValidateRequest
+
+# Initialize client
+client = AgentEXClient()
+
+# Validate agent requirements
+request = ValidateRequest(
+    name="Research Assistant",
+    description="Helps with research",
+    brain="openai",
+    tools=["tool-openai-api", "tool-web-search"]
+)
+
+response = client.validate(request)
+print(f"Valid: {response.valid}")
+print(f"Recommended runtime: {response.recommendations.runtime.primary}")`}
+            </code>
+          </div>
+        </div>
+        <div>
+          <h3 className="text-lg font-semibold text-ax-text mb-2">Documentation</h3>
+          <p className="text-ax-text-secondary mb-2">
+            Full documentation: <Link href="/packages/python/README.md" className="text-ax-primary hover:underline">Python SDK README</Link>
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function TypeScriptInstructions() {
+  return (
+    <div>
+      <h2 className="text-2xl font-bold text-ax-text mb-4">TypeScript/JavaScript SDK</h2>
+      <div className="space-y-6">
+        <div>
+          <h3 className="text-lg font-semibold text-ax-text mb-2">Installation</h3>
+          <code className="block bg-ax-bg-secondary p-4 rounded-lg text-ax-text font-mono text-sm mb-4">
+            cd packages/typescript<br />
+            npm install<br />
+            npm run build
+          </code>
+        </div>
+        <div>
+          <h3 className="text-lg font-semibold text-ax-text mb-2">Usage Example</h3>
+          <div className="bg-ax-bg-secondary p-4 rounded-lg">
+            <code className="text-ax-text font-mono text-sm block whitespace-pre">
+{`import { AgentEXClient, ValidateRequest } from '@agentex/sdk';
+
+// Initialize client
+const client = new AgentEXClient();
+
+// Validate agent requirements
+const request: ValidateRequest = {
+  name: "Research Assistant",
+  description: "Helps with research",
+  brain: "openai",
+  tools: ["tool-openai-api", "tool-web-search"]
+};
+
+const response = await client.validate(request);
+console.log(\`Valid: \${response.valid}\`);
+console.log(\`Recommended runtime: \${response.recommendations.runtime?.primary}\`);`}
+            </code>
+          </div>
+        </div>
+        <div>
+          <h3 className="text-lg font-semibold text-ax-text mb-2">Documentation</h3>
+          <p className="text-ax-text-secondary mb-2">
+            Full documentation: <Link href="/packages/typescript/README.md" className="text-ax-primary hover:underline">TypeScript SDK README</Link>
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ExampleCard({ title, description, code }: { title: string; description: string; code: string }) {
+  return (
+    <div className="bg-ax-bg-secondary border border-ax-border rounded-lg p-6">
+      <h3 className="text-lg font-semibold text-ax-text mb-2">{title}</h3>
+      <p className="text-ax-text-secondary mb-4">{description}</p>
+      <code className="block bg-ax-bg p-4 rounded-lg text-ax-text font-mono text-sm overflow-x-auto">
+        {code}
+      </code>
+    </div>
+  );
+}
