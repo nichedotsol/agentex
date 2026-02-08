@@ -6,6 +6,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { loadTool, validateTools, findSimilarTool, loadAllTools } from '@/lib/utils/tool-loader';
 import { ToolSpec } from '@/lib/types/tool-spec';
+import { analyzeRequirements, recommendRuntime, checkRuntimeCompatibility, getRuntimeCost } from '@/lib/utils/runtime-selector';
 
 export interface ValidateRequest {
   description: string;
@@ -108,65 +109,45 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // 3. Analyze runtime requirements (simplified for now)
-    const hasCron = description.toLowerCase().includes('schedule') || 
-                    description.toLowerCase().includes('cron') ||
-                    description.toLowerCase().includes('hourly') ||
-                    description.toLowerCase().includes('daily');
-    const hasWebsockets = validTools.some(t => 
-      t.interface.capabilities.includes('websocket') || 
-      t.name.toLowerCase().includes('websocket')
+    // 3. Analyze runtime requirements
+    const requirements = analyzeRequirements(
+      { description, config: { expectedTraffic: 'low' } },
+      validTools
     );
-    const persistent = hasCron || hasWebsockets;
 
     // 4. Runtime recommendation
     let runtimeRec: RuntimeRecommendation | undefined;
     if (!runtime || runtime === 'auto') {
-      if (persistent || hasWebsockets) {
-        runtimeRec = {
-          primary: 'railway',
-          reasoning: 'Your agent needs to run continuously or use websockets. Railway provides always-on hosting.',
-          alternatives: ['render', 'fly.io'],
-          costEstimate: '$5-20/month',
-          limitations: ['Requires credit card', 'Manual setup needed']
-        };
-      } else if (hasCron) {
-        runtimeRec = {
-          primary: 'vercel-cron',
-          reasoning: 'Scheduled tasks work perfectly with Vercel Cron (serverless).',
-          alternatives: ['github-actions', 'railway'],
-          costEstimate: 'Free (Hobby plan)',
-          limitations: ['Max 1/minute frequency on free tier']
-        };
-      } else {
-        runtimeRec = {
-          primary: 'vercel',
-          reasoning: 'Simple request/response patterns work perfectly on Vercel serverless functions.',
-          alternatives: ['netlify', 'cloudflare-pages'],
-          costEstimate: 'Free (Hobby plan)',
-          limitations: ['10 second timeout', 'No persistent state']
-        };
+      runtimeRec = recommendRuntime(requirements);
+    } else {
+      // User specified runtime - check compatibility
+      const compatible = checkRuntimeCompatibility(runtime as any, requirements);
+      if (!compatible.compatible) {
+        issues.push({
+          type: 'runtime_incompatible',
+          severity: 'warning',
+          message: compatible.reason,
+          suggestion: `Consider switching to a compatible runtime`,
+          autoFixable: false
+        });
+      }
+      // Still provide recommendation
+      runtimeRec = recommendRuntime(requirements);
+      if (runtimeRec.primary !== runtime) {
+        issues.push({
+          type: 'runtime_incompatible',
+          severity: 'warning',
+          message: `Recommended runtime is "${runtimeRec.primary}" but you specified "${runtime}"`,
+          suggestion: `Consider using "${runtimeRec.primary}" for better compatibility`,
+          autoFixable: false
+        });
       }
     }
 
-    // 5. Check runtime compatibility if specified
-    if (runtime && runtime !== 'auto' && runtimeRec) {
-      if (runtime !== runtimeRec.primary) {
-        const compatible = checkRuntimeCompatibility(runtime, { persistent, cron: hasCron, websockets: hasWebsockets });
-        if (!compatible.compatible) {
-          issues.push({
-            type: 'runtime_incompatible',
-            severity: 'warning',
-            message: compatible.reason,
-            suggestion: `Switch to "${runtimeRec.primary}"`,
-            autoFixable: false
-          });
-        }
-      }
-    }
-
-    // 6. Calculate costs
-    const costEstimate = calculateCosts(validTools, runtime || runtimeRec?.primary || 'vercel');
+    // 5. Calculate costs
+    const selectedRuntime = (runtime || runtimeRec?.primary || 'vercel') as any;
+    const runtimeCost = getRuntimeCost(selectedRuntime, requirements);
+    const costEstimate = calculateCosts(validTools, selectedRuntime, runtimeCost);
 
     // 7. Collect required env vars
     const requiredEnv = validTools.flatMap(t => t.requiredEnv);
@@ -199,23 +180,8 @@ export async function POST(request: NextRequest) {
   }
 }
 
-function checkRuntimeCompatibility(runtime: string, requirements: { persistent: boolean; cron: boolean; websockets: boolean }): { compatible: boolean; reason: string } {
-  if (requirements.persistent && runtime === 'vercel') {
-    return {
-      compatible: false,
-      reason: 'Vercel serverless functions cannot run persistently. Use Railway or Render for always-on hosting.'
-    };
-  }
-  if (requirements.websockets && runtime === 'vercel') {
-    return {
-      compatible: false,
-      reason: 'Vercel does not support websockets. Use Railway, Render, or Fly.io.'
-    };
-  }
-  return { compatible: true, reason: '' };
-}
 
-function calculateCosts(tools: ToolSpec[], runtime: string): CostEstimate {
+function calculateCosts(tools: ToolSpec[], runtime: string, runtimeCost: ReturnType<typeof getRuntimeCost>): CostEstimate {
   const breakdown: Array<{ service: string; cost: string }> = [];
   
   // Tool costs
@@ -229,17 +195,10 @@ function calculateCosts(tools: ToolSpec[], runtime: string): CostEstimate {
   }
   
   // Runtime costs
-  if (runtime === 'railway' || runtime === 'render') {
-    breakdown.push({
-      service: 'Hosting',
-      cost: '$5-20/month'
-    });
-  } else if (runtime === 'vercel') {
-    breakdown.push({
-      service: 'Hosting',
-      cost: 'Free (Hobby plan)'
-    });
-  }
+  breakdown.push({
+    service: 'Hosting',
+    cost: runtimeCost.estimate
+  });
   
   const hasPaidServices = breakdown.some(b => b.cost.includes('$'));
   const total = hasPaidServices 
