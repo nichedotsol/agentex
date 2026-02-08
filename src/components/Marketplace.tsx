@@ -175,8 +175,15 @@ export default function Marketplace({ onClose, onLoadAgent }: MarketplaceProps) 
                 <span className="font-sans text-xs text-ax-text-secondary">Category:</span>
                 <select
                   value={selectedCategory}
-                  onChange={(e) => setSelectedCategory(e.target.value)}
-                  className="px-3 py-1.5 bg-ax-bg border border-ax-border rounded-lg text-ax-text font-sans text-xs outline-none focus:border-ax-primary"
+                  onChange={(e) => {
+                    e.preventDefault()
+                    e.stopPropagation()
+                    setSelectedCategory(e.target.value)
+                  }}
+                  onClick={(e) => {
+                    e.stopPropagation()
+                  }}
+                  className="px-3 py-1.5 bg-ax-bg border border-ax-border rounded-lg text-ax-text font-sans text-xs outline-none focus:border-ax-primary focus:ring-2 focus:ring-ax-primary/20 transition-all cursor-pointer relative z-10 pointer-events-auto"
                 >
                   <option value="all">All</option>
                   {categories.map(cat => (
@@ -188,8 +195,15 @@ export default function Marketplace({ onClose, onLoadAgent }: MarketplaceProps) 
                 <span className="font-sans text-xs text-ax-text-secondary">Sort:</span>
                 <select
                   value={filters.sortBy || 'popular'}
-                  onChange={(e) => setFilters({ ...filters, sortBy: e.target.value as any })}
-                  className="px-3 py-1.5 bg-ax-bg border border-ax-border rounded-lg text-ax-text font-sans text-xs outline-none focus:border-ax-primary"
+                  onChange={(e) => {
+                    e.preventDefault()
+                    e.stopPropagation()
+                    setFilters({ ...filters, sortBy: e.target.value as any })
+                  }}
+                  onClick={(e) => {
+                    e.stopPropagation()
+                  }}
+                  className="px-3 py-1.5 bg-ax-bg border border-ax-border rounded-lg text-ax-text font-sans text-xs outline-none focus:border-ax-primary focus:ring-2 focus:ring-ax-primary/20 transition-all cursor-pointer relative z-10 pointer-events-auto"
                 >
                   <option value="popular">Popular</option>
                   <option value="recent">Recent</option>
@@ -341,8 +355,15 @@ export default function Marketplace({ onClose, onLoadAgent }: MarketplaceProps) 
                   <label className="form-label">Category</label>
                   <select
                     value={shareCategory}
-                    onChange={(e) => setShareCategory(e.target.value)}
-                    className="form-input"
+                    onChange={(e) => {
+                      e.preventDefault()
+                      e.stopPropagation()
+                      setShareCategory(e.target.value)
+                    }}
+                    onClick={(e) => {
+                      e.stopPropagation()
+                    }}
+                    className="form-input cursor-pointer relative z-10 pointer-events-auto"
                   >
                     <option value="productivity">Productivity</option>
                     <option value="business">Business</option>
