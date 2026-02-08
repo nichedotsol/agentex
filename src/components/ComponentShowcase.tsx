@@ -90,7 +90,7 @@ export default function ComponentShowcase() {
 
       {/* Category Tabs */}
       {!searchQuery && registry && (
-        <div className="px-4 py-2 border-b border-ax-border flex gap-2 flex-wrap">
+        <div className="px-4 py-2 border-b border-ax-border flex gap-2 flex-wrap relative z-10">
           {(['brains', 'tools', 'runtimes', 'memories'] as const).map((category) => {
             const categoryData = registry.categories[category]
             if (!categoryData) return null
@@ -98,8 +98,13 @@ export default function ComponentShowcase() {
             return (
               <button
                 key={category}
-                onClick={() => setActiveCategory(category)}
-                className={`px-4 py-2 font-sans text-sm rounded-lg transition-all ${
+                onClick={(e) => {
+                  e.preventDefault()
+                  e.stopPropagation()
+                  setActiveCategory(category)
+                }}
+                type="button"
+                className={`px-4 py-2 font-sans text-sm rounded-lg transition-all relative z-10 pointer-events-auto cursor-pointer ${
                   activeCategory === category
                     ? 'bg-ax-primary text-white'
                     : 'bg-ax-bg text-ax-text-secondary hover:bg-ax-bg-hover hover:text-ax-text'
