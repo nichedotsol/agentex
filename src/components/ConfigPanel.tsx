@@ -97,8 +97,8 @@ export default function ConfigPanel() {
           )
         ) : (
           <BuildSettings
-            settings={buildSettings}
-            onUpdate={onBuildSettingsUpdate}
+            settings={settings}
+            onUpdate={updateBuildSettings}
           />
         )}
       </div>
