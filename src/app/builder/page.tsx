@@ -13,9 +13,11 @@ import NaturalLanguageInput from '@/components/NaturalLanguageInput'
 import TemplateSelector from '@/components/TemplateSelector'
 import AgentTester from '@/components/AgentTester'
 import VersionControl from '@/components/VersionControl'
+import Marketplace from '@/components/Marketplace'
 import AutoSaveIndicator from '@/components/AutoSaveIndicator'
 import { useBuildStore } from '@/lib/stores/buildStore'
 import type { BuildVersion } from '@/lib/utils/versionControl'
+import type { MarketplaceAgent } from '@/lib/utils/marketplace'
 import { useUIStore } from '@/lib/stores/uiStore'
 import { useRegistryStore } from '@/lib/stores/registryStore'
 
@@ -56,11 +58,16 @@ export default function BuilderPage() {
   const [templateModalOpen, setTemplateModalOpen] = useState(false)
   const [testerModalOpen, setTesterModalOpen] = useState(false)
   const [versionControlOpen, setVersionControlOpen] = useState(false)
+  const [marketplaceOpen, setMarketplaceOpen] = useState(false)
   
   const { setBuildState } = useBuildStore()
 
   const handleLoadVersion = (version: BuildVersion) => {
     setBuildState(version.buildState)
+  }
+
+  const handleLoadMarketplaceAgent = (agent: MarketplaceAgent) => {
+    setBuildState(agent.buildState)
   }
 
   return (
@@ -72,6 +79,7 @@ export default function BuilderPage() {
             onTemplateClick={() => setTemplateModalOpen(true)}
             onTestClick={() => setTesterModalOpen(true)}
             onVersionClick={() => setVersionControlOpen(true)}
+            onMarketplaceClick={() => setMarketplaceOpen(true)}
           />
       
       <div className="flex-1 flex flex-col overflow-hidden relative z-10">
@@ -111,6 +119,14 @@ export default function BuilderPage() {
         <VersionControl 
           onClose={() => setVersionControlOpen(false)}
           onLoadVersion={handleLoadVersion}
+        />
+      )}
+
+      {/* Marketplace */}
+      {marketplaceOpen && (
+        <Marketplace 
+          onClose={() => setMarketplaceOpen(false)}
+          onLoadAgent={handleLoadMarketplaceAgent}
         />
       )}
 
