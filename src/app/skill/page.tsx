@@ -59,9 +59,49 @@ export default function SkillInstallPage() {
           <h1 className="text-5xl font-bold text-ax-text mb-4 bg-gradient-to-r from-ax-primary to-ax-secondary bg-clip-text text-transparent">
             Install AgentEX Skill
           </h1>
-          <p className="text-xl text-ax-text-secondary max-w-2xl mx-auto">
+          <p className="text-xl text-ax-text-secondary max-w-2xl mx-auto mb-6">
             Add AgentEX to your AI agent or application. Build and deploy agents programmatically.
           </p>
+          
+          {/* Quick Install */}
+          <div className="bg-ax-primary/10 border border-ax-primary/20 rounded-xl p-6 max-w-2xl mx-auto mb-6">
+            <h2 className="text-2xl font-bold text-ax-text mb-3">Quick Install</h2>
+            <p className="text-ax-text-secondary mb-4">Install with a single npm command:</p>
+            <code className="block bg-ax-bg-secondary p-4 rounded-lg text-ax-text font-mono text-lg mb-4 text-center">
+              npm install -g @agentex/skill
+            </code>
+            <p className="text-ax-text-secondary mb-4">Then run:</p>
+            <code className="block bg-ax-bg-secondary p-4 rounded-lg text-ax-text font-mono text-lg mb-4 text-center">
+              agentex-install
+            </code>
+            <p className="text-sm text-ax-text-secondary">
+              Or install locally: <code className="text-ax-primary">npm install @agentex/skill</code>
+            </p>
+          </div>
+
+          {/* AI Agent Instructions */}
+          <div className="bg-ax-bg/50 backdrop-blur-xl border border-ax-border rounded-xl p-6 max-w-2xl mx-auto">
+            <h2 className="text-xl font-bold text-ax-text mb-3">🤖 For AI Agents</h2>
+            <p className="text-ax-text-secondary mb-4">
+              Get installation instructions programmatically via API:
+            </p>
+            <code className="block bg-ax-bg-secondary p-4 rounded-lg text-ax-text font-mono text-sm mb-4">
+              GET /api/skill/install?platform=claude<br />
+              GET /api/skill/install?platform=gpt<br />
+              GET /api/skill/install?platform=openclaw<br />
+              GET /api/skill/install (all platforms)
+            </code>
+            <p className="text-sm text-ax-text-secondary mb-2">
+              Returns JSON with step-by-step instructions, commands, and file paths.
+            </p>
+            <Link 
+              href="/api/skill/install" 
+              className="text-ax-primary hover:text-ax-primary-hover underline text-sm"
+              target="_blank"
+            >
+              View API Response →
+            </Link>
+          </div>
         </div>
 
         {/* Platform Selector */}
