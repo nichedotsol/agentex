@@ -138,24 +138,46 @@ export default function SkillInstallPage() {
         {/* API Reference */}
         <div className="bg-ax-bg/50 backdrop-blur-xl border border-ax-border rounded-2xl p-8 mb-8">
           <h2 className="text-2xl font-bold text-ax-text mb-4">API Reference</h2>
-          <p className="text-ax-text-secondary mb-4">
-            All skill actions use the AgentEX API at:
-          </p>
-          <code className="block bg-ax-bg-secondary p-4 rounded-lg text-ax-text font-mono text-sm mb-4">
-            https://agentexs.vercel.app/api/agentex/v2
-          </code>
-          <div className="space-y-4">
+          
+          <div className="space-y-6">
             <div>
-              <h3 className="text-lg font-semibold text-ax-text mb-2">Available Actions</h3>
-              <ul className="space-y-2 text-ax-text-secondary">
-                <li><code className="text-ax-primary">validate</code> - Validate agent requirements</li>
-                <li><code className="text-ax-primary">generate</code> - Generate agent code</li>
-                <li><code className="text-ax-primary">status</code> - Check build status</li>
-                <li><code className="text-ax-primary">deploy</code> - Deploy to hosting platform</li>
-                <li><code className="text-ax-primary">search_tools</code> - Search available tools</li>
-                <li><code className="text-ax-primary">get_tool</code> - Get tool details</li>
-              </ul>
+              <h3 className="text-lg font-semibold text-ax-text mb-2">Installation API</h3>
+              <p className="text-ax-text-secondary mb-2">
+                Get machine-readable installation instructions:
+              </p>
+              <code className="block bg-ax-bg-secondary p-4 rounded-lg text-ax-text font-mono text-sm mb-2">
+                GET /api/skill/install?platform=claude
+              </code>
+              <Link 
+                href="/api/skill/install" 
+                className="text-ax-primary hover:text-ax-primary-hover underline text-sm"
+                target="_blank"
+              >
+                Try it →
+              </Link>
             </div>
+
+            <div>
+              <h3 className="text-lg font-semibold text-ax-text mb-2">AgentEX Skill API</h3>
+              <p className="text-ax-text-secondary mb-2">
+                All skill actions use the AgentEX API at:
+              </p>
+              <code className="block bg-ax-bg-secondary p-4 rounded-lg text-ax-text font-mono text-sm mb-4">
+                https://agentexs.vercel.app/api/agentex/v2
+              </code>
+              <div>
+                <h4 className="text-md font-semibold text-ax-text mb-2">Available Actions</h4>
+                <ul className="space-y-2 text-ax-text-secondary">
+                  <li><code className="text-ax-primary">validate</code> - Validate agent requirements</li>
+                  <li><code className="text-ax-primary">generate</code> - Generate agent code</li>
+                  <li><code className="text-ax-primary">status</code> - Check build status</li>
+                  <li><code className="text-ax-primary">deploy</code> - Deploy to hosting platform</li>
+                  <li><code className="text-ax-primary">search_tools</code> - Search available tools</li>
+                  <li><code className="text-ax-primary">get_tool</code> - Get tool details</li>
+                </ul>
+              </div>
+            </div>
+
             <div>
               <Link 
                 href="/api-docs" 
