@@ -8,13 +8,14 @@
       "brain-llama-3-70b.json",
       "brain-openclaw.json"
     ],
-    "tools": [
-      "tool-web-search.json",
-      "tool-code-execution.json",
-      "tool-blockchain-query.json",
-      "tool-token-price.json",
-      "tool-twitter-post.json"
-    ],
+        "tools": [
+          "tool-web-search.json",
+          "tool-code-execution.json",
+          "tool-blockchain-query.json",
+          "tool-token-price.json",
+          "tool-twitter-post.json",
+          "tool-agent-builder.json"
+        ],
     "runtimes": [
       "runtime-vercel.json",
       "runtime-local-docker.json"

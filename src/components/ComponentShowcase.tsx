@@ -84,13 +84,13 @@ export default function ComponentShowcase() {
               <button
                 key={category}
                 onClick={() => setActiveCategory(category)}
-                className={`px-3 py-1.5 font-mono text-[10px] border transition-all ${
+                className={`px-4 py-2 font-sans text-sm rounded-lg transition-all ${
                   activeCategory === category
-                    ? 'border-ax-cyan text-ax-cyan shadow-[0_0_10px_rgba(0,255,159,0.2)]'
-                    : 'border-ax-border text-ax-text-dim hover:border-ax-cyan/50'
+                    ? 'bg-ax-primary text-white'
+                    : 'bg-ax-bg text-ax-text-secondary hover:bg-ax-bg-hover hover:text-ax-text'
                 }`}
               >
-                {categoryData.icon} {categoryData.name} ({categoryComponents.length})
+                {categoryData.name} ({categoryComponents.length})
               </button>
             )
           })}
@@ -236,11 +236,6 @@ function ComponentCard({
           background: `linear-gradient(to bottom right, transparent, ${component.metadata.color || '#00ff9f'}10)`
         }}
       />
-      
-      {/* Preview icon */}
-      <div className="text-4xl mb-3 relative z-10">
-        {component.metadata.icon}
-      </div>
       
       {/* Component info */}
       <div className="relative z-10">

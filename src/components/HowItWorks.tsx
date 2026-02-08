@@ -5,21 +5,18 @@ import { motion } from 'framer-motion'
 const steps = [
   {
     number: '01',
-    title: 'CHOOSE COMPONENTS',
+    title: 'Choose Components',
     description: 'Select brain, tools, and runtime from the component library',
-    icon: '🧩'
   },
   {
     number: '02',
-    title: 'CONFIGURE SETTINGS',
+    title: 'Configure Settings',
     description: 'Customize model parameters, tool endpoints, and deployment options',
-    icon: '⚙️'
   },
   {
     number: '03',
-    title: 'EXPORT & DEPLOY',
+    title: 'Export & Deploy',
     description: 'Generate code and deploy to GitHub, Vercel, or download locally',
-    icon: '🚀'
   },
 ]
 
@@ -65,11 +62,10 @@ export default function HowItWorks() {
               )}
 
               <div className="card-hover">
-                <div className="text-5xl mb-5">{step.icon}</div>
-                <div className="font-sans text-3xl font-bold text-ax-primary mb-3">
+                <div className="font-sans text-4xl font-bold text-ax-primary mb-4 kinetic-float">
                   {step.number}
                 </div>
-                <h3 className="font-sans text-lg font-semibold text-ax-text mb-3">
+                <h3 className="font-sans text-xl font-bold text-ax-text mb-3">
                   {step.title}
                 </h3>
                 <p className="font-sans text-sm text-ax-text-secondary leading-relaxed">

@@ -6,22 +6,18 @@ const features = [
   {
     title: 'Lightweight',
     description: 'Zero infrastructure burden. Build and deploy without managing servers.',
-    icon: '⚡',
   },
   {
     title: 'Intuitive',
     description: 'Drag-and-drop interface that feels natural. No coding required.',
-    icon: '🎯',
   },
   {
     title: 'Universal',
     description: 'Works with any LLM provider. Claude, GPT, Llama, and more.',
-    icon: '🌐',
   },
   {
     title: 'Portable',
     description: 'Export to real, deployable code. No vendor lock-in.',
-    icon: '📦',
   },
 ]
 
@@ -59,10 +55,7 @@ export default function Features() {
               transition={{ duration: 0.6, delay: i * 0.1 }}
               className="card-hover group"
             >
-              <div className="text-3xl mb-4">
-                {feature.icon}
-              </div>
-              <h3 className="font-sans text-xl font-semibold text-ax-text mb-2">
+              <h3 className="font-sans text-2xl font-bold text-ax-text mb-3 kinetic-float">
                 {feature.title}
               </h3>
               <p className="font-sans text-sm text-ax-text-secondary leading-relaxed">

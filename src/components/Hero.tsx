@@ -28,8 +28,8 @@ export default function Hero() {
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.1 }}
-          className="font-sans text-7xl md:text-8xl lg:text-9xl font-bold text-ax-text mb-6 tracking-tight"
+          transition={{ duration: 0.8, delay: 0.1, ease: [0.4, 0, 0.2, 1] }}
+          className="font-sans text-7xl md:text-8xl lg:text-9xl font-bold text-ax-text mb-6 tracking-tight kinetic-text"
         >
           AgentEX
         </motion.h1>
@@ -37,7 +37,7 @@ export default function Hero() {
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
+          transition={{ duration: 0.8, delay: 0.3, ease: [0.4, 0, 0.2, 1] }}
           className="font-sans text-2xl md:text-3xl text-ax-text-secondary mb-6 font-light"
         >
           Build AI agents in 90 seconds

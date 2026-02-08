@@ -9,6 +9,7 @@ import StatusBar from '@/components/StatusBar'
 import BackgroundLayers from '@/components/BackgroundLayers'
 import ConfigPanel from '@/components/ConfigPanel'
 import ExportModal from '@/components/ExportModal'
+import NaturalLanguageInput from '@/components/NaturalLanguageInput'
 import { useBuildStore } from '@/lib/stores/buildStore'
 import { useUIStore } from '@/lib/stores/uiStore'
 import { useRegistryStore } from '@/lib/stores/registryStore'
@@ -54,10 +55,15 @@ export default function BuilderPage() {
       
       <TopBar onExportClick={() => setExportModalOpen(true)} />
       
-      <div className="flex-1 grid grid-cols-[360px_1fr_320px] overflow-hidden relative z-10">
-        <ComponentShowcase />
-        <Canvas />
-        <PropertiesPanel />
+      <div className="flex-1 flex flex-col overflow-hidden relative z-10">
+        <div className="p-6 border-b border-ax-border">
+          <NaturalLanguageInput />
+        </div>
+        <div className="flex-1 grid grid-cols-[360px_1fr_320px] overflow-hidden">
+          <ComponentShowcase />
+          <Canvas />
+          <PropertiesPanel />
+        </div>
       </div>
       
       <StatusBar />

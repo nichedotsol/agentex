@@ -131,7 +131,6 @@ function FloatingWindow({
   }
 
   const comp = component.component
-  const componentIcon = comp.metadata?.icon || '⚙️'
   const componentName = comp.name?.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()) || component.id
 
   return (
@@ -154,15 +153,12 @@ function FloatingWindow({
       >
         {/* Window header */}
         <div className="window-handle px-4 py-3 border-b border-ax-border flex items-center justify-between cursor-move">
-          <div className="flex items-center gap-3">
-            <div className="text-xl">{componentIcon}</div>
-            <div>
-              <div className="font-sans text-xs text-ax-text-tertiary uppercase tracking-wide">
-                {comp.type || 'Component'}
-              </div>
-              <div className="font-sans text-sm font-semibold text-ax-text">
-                {componentName}
-              </div>
+          <div>
+            <div className="font-sans text-xs text-ax-text-tertiary uppercase tracking-wide mb-1">
+              {comp.type || 'Component'}
+            </div>
+            <div className="font-sans text-base font-semibold text-ax-text">
+              {componentName}
             </div>
           </div>
           <button

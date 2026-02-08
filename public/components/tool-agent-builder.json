@@ -1,0 +1,28 @@
+{
+  "id": "tool-agent-builder",
+  "type": "tool",
+  "name": "Agent Builder",
+  "version": "1.0.0",
+  "provider": "agentex",
+  "config": {
+    "endpoint": "https://api.agentex.ai/v1/build",
+    "auth_type": "bearer",
+    "method": "POST"
+  },
+  "interface": {
+    "inputs": ["description", "requirements", "components"],
+    "outputs": ["agent_config", "build_id", "deployment_url"],
+    "capabilities": ["agent_generation", "code_generation", "deployment"]
+  },
+  "resources": {
+    "rate_limit": "10 requests/minute",
+    "timeout": "30s",
+    "cost": "Free for AgentEX users"
+  },
+  "metadata": {
+    "author": "AgentEX",
+    "description": "Build other AI agents using natural language. This tool allows agents to create, configure, and deploy new agents using the AgentEX standard.",
+    "tags": ["meta", "agent-creation", "recursive", "builder"],
+    "color": "#6366f1"
+  }
+}

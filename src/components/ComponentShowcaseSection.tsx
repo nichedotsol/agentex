@@ -94,13 +94,10 @@ export default function ComponentShowcaseSection() {
               transition={{ duration: 0.3, delay: i * 0.05 }}
               className="card-hover group cursor-pointer"
             >
-              <div className="text-4xl mb-4">
-                {comp.icon}
-              </div>
               <div className="font-sans text-xs text-ax-text-tertiary mb-2 uppercase tracking-wide">
                 {activeTab}
               </div>
-              <div className="font-sans text-base font-semibold text-ax-text mb-2">
+              <div className="font-sans text-lg font-bold text-ax-text mb-2">
                 {comp.name.replace(/_/g, ' ')}
               </div>
               <div className="font-sans text-xs text-ax-text-secondary">
