@@ -25,17 +25,6 @@ export default function Hero() {
       </div>
 
       <div className="relative z-10 text-center px-6 max-w-5xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="mb-6"
-        >
-          <span className="inline-block px-3 py-1 rounded-full bg-ax-primary/10 border border-ax-primary/20 text-ax-primary text-sm font-medium mb-8">
-            The Figma of AI Agents
-          </span>
-        </motion.div>
-
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
