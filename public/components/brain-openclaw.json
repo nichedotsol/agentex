@@ -1,0 +1,34 @@
+{
+  "id": "brain-openclaw",
+  "type": "brain",
+  "name": "OpenClaw",
+  "version": "1.0.0",
+  "provider": "openclaw",
+  "config": {
+    "model": "openclaw-v1",
+    "temperature": 0.7,
+    "max_tokens": 4096,
+    "system_prompt": "",
+    "streaming": true,
+    "api_key": "",
+    "base_url": "https://api.openclaw.ai/v1"
+  },
+  "interface": {
+    "inputs": ["messages", "context"],
+    "outputs": ["text", "tool_calls"],
+    "capabilities": ["text_generation", "tool_use"]
+  },
+  "resources": {
+    "token_cost": "$2.50 per million input tokens, $10.00 per million output tokens",
+    "context_window": 128000,
+    "cache_enabled": true,
+    "latency": "~2-4s average"
+  },
+  "metadata": {
+    "author": "OpenClaw",
+    "description": "Open-source LLM provider with competitive pricing and tool use capabilities",
+    "tags": ["open-source", "cost-effective", "tool-use"],
+    "icon": "🦅",
+    "color": "#8B5CF6"
+  }
+}
