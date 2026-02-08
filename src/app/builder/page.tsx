@@ -1,5 +1,6 @@
 'use client'
 
+// Builder page - AgentEX visual agent builder
 import { useEffect, useState } from 'react'
 import TopBar from '@/components/TopBar'
 import ComponentShowcase from '@/components/ComponentShowcase'
