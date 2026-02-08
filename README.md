@@ -1,83 +1,124 @@
 # AgentEX
 
-**The universal standard for building and deploying AI agents.**
+> The universal standard for building and deploying AI agents. Build agents in 90 seconds with drag-and-drop components, natural language interface, and zero API key exposure.
 
-## What is AgentEX?
+## Features
 
-AgentEX is a visual builder and open standard that lets you:
-- Build AI agents with drag-and-drop
-- Deploy anywhere (Vercel, local, GitHub, Cursor)
-- Use any LLM (Claude, GPT, Llama)
-- Export real, portable code
-
-## Philosophy
-
-- **Lightweight**: Pure tool, zero infrastructure burden
-- **Simple**: Build agents in 90 seconds
-- **Universal**: Works with any model, any platform
-- **Portable**: Export to code anytime, no lock-in
-
-## Project Structure
-```
-agentex/
-├── src/              # Visual builder UI
-├── public/
-│   └── components/   # Component registry (JSON)
-├── templates/        # Code generation templates
-│   ├── typescript/   # Next.js/Vercel exports
-│   └── python/       # FastAPI/Docker exports
-└── docs/
-    ├── spec/         # AgentEX standard specification
-    └── guides/       # Usage guides
-```
+- 🎨 **Modern UI**: Glass morphism design with kinetic typography
+- 🗣️ **Natural Language**: Describe what you want to build in plain English
+- 🔒 **Secure**: API keys managed server-side via proxy (never exposed)
+- 🔄 **Recursive**: Agents can build other agents (meta-agent creation)
+- 📦 **Portable**: Export to real, deployable code (TypeScript/Next.js or Python/FastAPI)
+- 🚀 **Deploy Anywhere**: Vercel, Docker, or download locally
 
 ## Quick Start
 
-1. Clone this repo
-2. Install dependencies: `npm install`
-3. Run dev server: `npm run dev`
-4. Open http://localhost:3000
+1. **Build an Agent**: Visit the [builder](https://agentexs.vercel.app/builder)
+2. **Use Natural Language**: Type "Add Claude brain with web search and deploy to Vercel"
+3. **Export & Deploy**: Download code or deploy directly
 
-## Component Registry
+## For AI Agents (OpenClaw, Clawd, Claude, GPT-4)
 
-First 10 components:
+AgentEX can be installed as a skill/tool that allows agents to build other agents.
 
-**Brains (3):**
-- Claude Sonnet 4
-- GPT-4.0
-- Llama 3.3 70B
+### Installation
 
-**Tools (5):**
-- Web Search
-- Code Execution
-- Blockchain Query
-- Token Price Feed
-- Twitter Post
+Add AgentEX to your agent's tool list:
 
-**Runtimes (2):**
-- Vercel Serverless
-- Local Docker
+```json
+{
+  "tools": [
+    {
+      "type": "function",
+      "function": {
+        "name": "agentex_build_agent",
+        "description": "Build a new AI agent using AgentEX",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "description": {
+              "type": "string",
+              "description": "What the agent should do"
+            },
+            "name": {
+              "type": "string",
+              "description": "Agent name"
+            },
+            "brain": {
+              "type": "string",
+              "enum": ["claude", "gpt-4", "llama", "openclaw"]
+            },
+            "tools": {
+              "type": "array",
+              "items": { "type": "string" }
+            },
+            "runtime": {
+              "type": "string",
+              "enum": ["vercel", "docker"]
+            }
+          },
+          "required": ["description", "name"]
+        }
+      }
+    }
+  ]
+}
+```
 
-## Export Targets
+### API Endpoint
 
-- **GitHub**: One-click repo creation
-- **Cursor**: Deep link to open project
-- **Vercel**: Auto-deploy to your account
-- **Local**: Download as ZIP
+**POST** `https://agentexs.vercel.app/api/agentex/build`
 
-## Tech Stack
+```json
+{
+  "description": "A customer support agent with web search",
+  "name": "SupportAgent",
+  "brain": "claude",
+  "tools": ["web-search"],
+  "runtime": "vercel"
+}
+```
 
-- Next.js 14 (App Router)
-- Three.js / Spline (3D workspace)
-- Tailwind CSS (styling)
-- Supabase (auth + data)
-- Vercel (hosting)
+### Full Documentation
+
+See [AGENT_SKILL_INSTALLATION.md](./docs/AGENT_SKILL_INSTALLATION.md) for complete installation and usage instructions.
+
+## Architecture
+
+- **Frontend**: Next.js 14, React, TypeScript, Tailwind CSS
+- **State Management**: Zustand
+- **Code Generation**: TypeScript/Next.js and Python/FastAPI templates
+- **API Proxy**: Secure backend proxy for API keys
+- **Component Registry**: JSON-based component definitions
+
+## Project Structure
+
+```
+agentex/
+├── src/
+│   ├── app/              # Next.js app router
+│   ├── components/       # React components
+│   ├── lib/
+│   │   ├── stores/      # Zustand state management
+│   │   └── utils/        # Code generation, parsing
+│   └── hooks/            # Custom React hooks
+├── public/
+│   └── components/       # Component JSON definitions
+├── docs/                 # Documentation
+└── templates/            # Code generation templates
+```
+
+## Development
+
+```bash
+npm install
+npm run dev
+```
 
 ## License
 
 MIT
 
-## Contact
+---
 
-Built by @albs
-Domain: agentex.com
+**AgentEX** - Build AI agents in 90 seconds. No API keys required.
