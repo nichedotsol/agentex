@@ -58,13 +58,13 @@ export function calculateComponentPosition(
     
     case 'tool': {
       // Tools surround the brain in a circle
-      const brainPos = brainComponents[0]?.position || { x: 400, y: 300 }
+      const toolBrainPos = brainComponents[0]?.position || { x: 400, y: 300 }
       const toolIndex = toolComponents.length
       const angle = (toolIndex * (360 / 8)) * (Math.PI / 180) // 8 positions around circle
       const radius = 200
       return {
-        x: brainPos.x + Math.cos(angle) * radius,
-        y: brainPos.y + Math.sin(angle) * radius
+        x: toolBrainPos.x + Math.cos(angle) * radius,
+        y: toolBrainPos.y + Math.sin(angle) * radius
       }
     }
     
@@ -74,11 +74,11 @@ export function calculateComponentPosition(
     
     case 'memory': {
       // Memory components go to the left of the brain
-      const brainPos = brainComponents[0]?.position || { x: 400, y: 300 }
+      const memoryBrainPos = brainComponents[0]?.position || { x: 400, y: 300 }
       const memoryIndex = existingComponents.filter(c => c.type === 'memory').length
       return {
-        x: brainPos.x - 250,
-        y: brainPos.y + (memoryIndex * 120)
+        x: memoryBrainPos.x - 250,
+        y: memoryBrainPos.y + (memoryIndex * 120)
       }
     }
     

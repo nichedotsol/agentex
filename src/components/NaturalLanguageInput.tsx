@@ -6,9 +6,9 @@ import { useBuildStore } from '@/lib/stores/buildStore'
 import { useRegistryStore } from '@/lib/stores/registryStore'
 import { parseNaturalLanguage, type ParsedIntent as SimpleParsedIntent } from '@/lib/utils/naturalLanguageParser'
 import { LLMParser, type ParsedIntent as LLMParsedIntent } from '@/lib/utils/llmParser'
+import { calculateComponentPosition } from '@/hooks/useWorkspace'
 
 type ParsedIntent = SimpleParsedIntent | LLMParsedIntent
-import { calculateComponentPosition } from '@/hooks/useWorkspace'
 
 export default function NaturalLanguageInput() {
   const [input, setInput] = useState('')
