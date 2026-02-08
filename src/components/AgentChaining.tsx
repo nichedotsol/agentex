@@ -242,15 +242,25 @@ export default function AgentChaining({ onClose }: AgentChainingProps) {
             <div className="flex items-center gap-3">
               {selectedChain && view === 'editor' && (
                 <button
-                  onClick={handleStartExecution}
-                  className="px-4 py-2 bg-ax-primary text-white rounded-lg font-sans text-sm font-medium hover:bg-ax-primary-hover transition-all micro-bounce"
+                  type="button"
+                  onClick={(e) => {
+                    e.preventDefault()
+                    e.stopPropagation()
+                    handleStartExecution()
+                  }}
+                  className="px-4 py-2 bg-ax-primary text-white rounded-lg font-sans text-sm font-medium hover:bg-ax-primary-hover transition-all micro-bounce cursor-pointer relative z-10 pointer-events-auto"
                 >
                   Run Chain
                 </button>
               )}
               <button
-                onClick={onClose}
-                className="w-8 h-8 rounded-lg border border-ax-border hover:border-ax-error hover:bg-ax-error/20 flex items-center justify-center transition-all micro-bounce"
+                type="button"
+                onClick={(e) => {
+                  e.preventDefault()
+                  e.stopPropagation()
+                  onClose()
+                }}
+                className="w-8 h-8 rounded-lg border border-ax-border hover:border-ax-error hover:bg-ax-error/20 flex items-center justify-center transition-all micro-bounce cursor-pointer relative z-10 pointer-events-auto"
               >
                 <span className="text-ax-text">×</span>
               </button>
@@ -263,16 +273,19 @@ export default function AgentChaining({ onClose }: AgentChainingProps) {
               {(['chains', 'editor', 'executions'] as View[]).map(tab => (
                 <button
                   key={tab}
-                  onClick={() => {
+                  type="button"
+                  onClick={(e) => {
+                    e.preventDefault()
+                    e.stopPropagation()
                     setView(tab)
                     if (tab === 'editor' && !selectedChain && chains.length > 0) {
                       setSelectedChain(chains[0])
                     }
                   }}
-                  className={`px-4 py-2 font-sans text-sm rounded-lg transition-all ${
+                  className={`px-4 py-2 font-sans text-sm rounded-lg transition-all relative z-10 pointer-events-auto cursor-pointer ${
                     view === tab
                       ? 'bg-ax-primary text-white'
-                      : 'bg-ax-bg text-ax-text-secondary hover:bg-ax-bg-hover'
+                      : 'bg-ax-bg text-ax-text-secondary hover:bg-ax-bg-hover hover:text-ax-text'
                   }`}
                 >
                   {tab.charAt(0).toUpperCase() + tab.slice(1)}
@@ -295,8 +308,13 @@ export default function AgentChaining({ onClose }: AgentChainingProps) {
                     <div className="flex items-center justify-between mb-4">
                       <h3 className="font-sans text-lg font-semibold text-ax-text">Chains</h3>
                       <button
-                        onClick={() => setShowCreateChain(true)}
-                        className="px-4 py-2 bg-ax-primary text-white rounded-lg font-sans text-sm font-medium hover:bg-ax-primary-hover transition-all micro-bounce"
+                        type="button"
+                        onClick={(e) => {
+                          e.preventDefault()
+                          e.stopPropagation()
+                          setShowCreateChain(true)
+                        }}
+                        className="px-4 py-2 bg-ax-primary text-white rounded-lg font-sans text-sm font-medium hover:bg-ax-primary-hover transition-all micro-bounce cursor-pointer relative z-10 pointer-events-auto"
                       >
                         Create Chain
                       </button>
@@ -358,8 +376,13 @@ export default function AgentChaining({ onClose }: AgentChainingProps) {
                             Select or create a chain to edit
                           </p>
                           <button
-                            onClick={() => setShowCreateChain(true)}
-                            className="px-4 py-2 bg-ax-primary text-white rounded-lg font-sans text-sm font-medium hover:bg-ax-primary-hover transition-all"
+                            type="button"
+                            onClick={(e) => {
+                              e.preventDefault()
+                              e.stopPropagation()
+                              setShowCreateChain(true)
+                            }}
+                            className="px-4 py-2 bg-ax-primary text-white rounded-lg font-sans text-sm font-medium hover:bg-ax-primary-hover transition-all cursor-pointer relative z-10 pointer-events-auto"
                           >
                             Create Chain
                           </button>
@@ -386,8 +409,13 @@ export default function AgentChaining({ onClose }: AgentChainingProps) {
                           </div>
                           <div className="flex gap-2">
                             <button
-                              onClick={() => setShowAddNode(true)}
-                              className="px-3 py-1.5 bg-ax-bg border border-ax-border text-ax-text-secondary rounded-lg font-sans text-xs hover:bg-ax-bg-hover transition-all"
+                              type="button"
+                              onClick={(e) => {
+                                e.preventDefault()
+                                e.stopPropagation()
+                                setShowAddNode(true)
+                              }}
+                              className="px-3 py-1.5 bg-ax-bg border border-ax-border text-ax-text-secondary rounded-lg font-sans text-xs hover:bg-ax-bg-hover transition-all cursor-pointer relative z-10 pointer-events-auto"
                             >
                               Add Agent
                             </button>
@@ -605,19 +633,27 @@ export default function AgentChaining({ onClose }: AgentChainingProps) {
                 </div>
                 <div className="flex gap-3">
                   <button
-                    onClick={() => {
+                    type="button"
+                    onClick={(e) => {
+                      e.preventDefault()
+                      e.stopPropagation()
                       setShowCreateChain(false)
                       setChainName('')
                       setChainDescription('')
                     }}
-                    className="flex-1 px-4 py-2 bg-ax-bg text-ax-text-secondary rounded-lg font-sans text-sm hover:bg-ax-bg-hover transition-all"
+                    className="flex-1 px-4 py-2 bg-ax-bg text-ax-text-secondary rounded-lg font-sans text-sm hover:bg-ax-bg-hover transition-all cursor-pointer relative z-10 pointer-events-auto"
                   >
                     Cancel
                   </button>
                   <button
-                    onClick={handleCreateChain}
+                    type="button"
+                    onClick={(e) => {
+                      e.preventDefault()
+                      e.stopPropagation()
+                      handleCreateChain()
+                    }}
                     disabled={!chainName.trim()}
-                    className="flex-1 px-4 py-2 bg-ax-primary text-white rounded-lg font-sans text-sm font-medium hover:bg-ax-primary-hover disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                    className="flex-1 px-4 py-2 bg-ax-primary text-white rounded-lg font-sans text-sm font-medium hover:bg-ax-primary-hover disabled:opacity-50 disabled:cursor-not-allowed transition-all cursor-pointer relative z-10 pointer-events-auto"
                   >
                     Create
                   </button>
@@ -653,8 +689,13 @@ export default function AgentChaining({ onClose }: AgentChainingProps) {
                 </p>
                 <div className="flex gap-3">
                   <button
-                    onClick={() => setShowAddNode(false)}
-                    className="flex-1 px-4 py-2 bg-ax-bg text-ax-text-secondary rounded-lg font-sans text-sm hover:bg-ax-bg-hover transition-all"
+                    type="button"
+                    onClick={(e) => {
+                      e.preventDefault()
+                      e.stopPropagation()
+                      setShowAddNode(false)
+                    }}
+                    className="flex-1 px-4 py-2 bg-ax-bg text-ax-text-secondary rounded-lg font-sans text-sm hover:bg-ax-bg-hover transition-all cursor-pointer relative z-10 pointer-events-auto"
                   >
                     Cancel
                   </button>

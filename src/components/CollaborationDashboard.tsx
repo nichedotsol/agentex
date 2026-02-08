@@ -149,11 +149,16 @@ export default function CollaborationDashboard({ onClose, onLoadBuild }: Collabo
               {(['teams', 'workspaces', 'shared', 'comments'] as Tab[]).map(tab => (
                 <button
                   key={tab}
-                  onClick={() => setActiveTab(tab)}
-                  className={`px-4 py-2 font-sans text-sm rounded-lg transition-all ${
+                  type="button"
+                  onClick={(e) => {
+                    e.preventDefault()
+                    e.stopPropagation()
+                    setActiveTab(tab)
+                  }}
+                  className={`px-4 py-2 font-sans text-sm rounded-lg transition-all relative z-10 pointer-events-auto cursor-pointer ${
                     activeTab === tab
                       ? 'bg-ax-primary text-white'
-                      : 'bg-ax-bg text-ax-text-secondary hover:bg-ax-bg-hover'
+                      : 'bg-ax-bg text-ax-text-secondary hover:bg-ax-bg-hover hover:text-ax-text'
                   }`}
                 >
                   {tab.charAt(0).toUpperCase() + tab.slice(1)}
@@ -228,8 +233,13 @@ export default function CollaborationDashboard({ onClose, onLoadBuild }: Collabo
                     <div className="flex items-center justify-between mb-4">
                       <h3 className="font-sans text-lg font-semibold text-ax-text">Workspaces</h3>
                       <button
-                        onClick={() => setShowCreateWorkspace(true)}
-                        className="px-4 py-2 bg-ax-primary text-white rounded-lg font-sans text-sm font-medium hover:bg-ax-primary-hover transition-all micro-bounce"
+                        type="button"
+                        onClick={(e) => {
+                          e.preventDefault()
+                          e.stopPropagation()
+                          setShowCreateWorkspace(true)
+                        }}
+                        className="px-4 py-2 bg-ax-primary text-white rounded-lg font-sans text-sm font-medium hover:bg-ax-primary-hover transition-all micro-bounce cursor-pointer relative z-10 pointer-events-auto"
                       >
                         Create Workspace
                       </button>
@@ -241,8 +251,13 @@ export default function CollaborationDashboard({ onClose, onLoadBuild }: Collabo
                           No workspaces yet
                         </p>
                         <button
-                          onClick={() => setShowCreateWorkspace(true)}
-                          className="px-4 py-2 bg-ax-primary text-white rounded-lg font-sans text-sm font-medium hover:bg-ax-primary-hover transition-all"
+                          type="button"
+                          onClick={(e) => {
+                            e.preventDefault()
+                            e.stopPropagation()
+                            setShowCreateWorkspace(true)
+                          }}
+                          className="px-4 py-2 bg-ax-primary text-white rounded-lg font-sans text-sm font-medium hover:bg-ax-primary-hover transition-all cursor-pointer relative z-10 pointer-events-auto"
                         >
                           Create Your First Workspace
                         </button>
@@ -282,8 +297,13 @@ export default function CollaborationDashboard({ onClose, onLoadBuild }: Collabo
                     <div className="flex items-center justify-between mb-4">
                       <h3 className="font-sans text-lg font-semibold text-ax-text">Shared Builds</h3>
                       <button
-                        onClick={() => setShowShareDialog(true)}
-                        className="px-4 py-2 bg-ax-primary text-white rounded-lg font-sans text-sm font-medium hover:bg-ax-primary-hover transition-all micro-bounce"
+                        type="button"
+                        onClick={(e) => {
+                          e.preventDefault()
+                          e.stopPropagation()
+                          setShowShareDialog(true)
+                        }}
+                        className="px-4 py-2 bg-ax-primary text-white rounded-lg font-sans text-sm font-medium hover:bg-ax-primary-hover transition-all micro-bounce cursor-pointer relative z-10 pointer-events-auto"
                       >
                         Share Current Build
                       </button>
@@ -295,8 +315,13 @@ export default function CollaborationDashboard({ onClose, onLoadBuild }: Collabo
                           No shared builds yet
                         </p>
                         <button
-                          onClick={() => setShowShareDialog(true)}
-                          className="px-4 py-2 bg-ax-primary text-white rounded-lg font-sans text-sm font-medium hover:bg-ax-primary-hover transition-all"
+                          type="button"
+                          onClick={(e) => {
+                            e.preventDefault()
+                            e.stopPropagation()
+                            setShowShareDialog(true)
+                          }}
+                          className="px-4 py-2 bg-ax-primary text-white rounded-lg font-sans text-sm font-medium hover:bg-ax-primary-hover transition-all cursor-pointer relative z-10 pointer-events-auto"
                         >
                           Share Your First Build
                         </button>
@@ -325,8 +350,13 @@ export default function CollaborationDashboard({ onClose, onLoadBuild }: Collabo
                             </div>
                             <div className="flex gap-2">
                               <button
-                                onClick={() => handleLoadShared(shared)}
-                                className="flex-1 px-3 py-2 bg-ax-primary text-white rounded-lg font-sans text-xs font-medium hover:bg-ax-primary-hover transition-all"
+                                type="button"
+                                onClick={(e) => {
+                                  e.preventDefault()
+                                  e.stopPropagation()
+                                  handleLoadShared(shared)
+                                }}
+                                className="flex-1 px-3 py-2 bg-ax-primary text-white rounded-lg font-sans text-xs font-medium hover:bg-ax-primary-hover transition-all cursor-pointer relative z-10 pointer-events-auto"
                               >
                                 Load
                               </button>
@@ -448,19 +478,27 @@ export default function CollaborationDashboard({ onClose, onLoadBuild }: Collabo
                 </div>
                 <div className="flex gap-3">
                   <button
-                    onClick={() => {
+                    type="button"
+                    onClick={(e) => {
+                      e.preventDefault()
+                      e.stopPropagation()
                       setShowCreateTeam(false)
                       setTeamName('')
                       setTeamDescription('')
                     }}
-                    className="flex-1 px-4 py-2 bg-ax-bg text-ax-text-secondary rounded-lg font-sans text-sm hover:bg-ax-bg-hover transition-all"
+                    className="flex-1 px-4 py-2 bg-ax-bg text-ax-text-secondary rounded-lg font-sans text-sm hover:bg-ax-bg-hover transition-all cursor-pointer relative z-10 pointer-events-auto"
                   >
                     Cancel
                   </button>
                   <button
-                    onClick={handleCreateTeam}
+                    type="button"
+                    onClick={(e) => {
+                      e.preventDefault()
+                      e.stopPropagation()
+                      handleCreateTeam()
+                    }}
                     disabled={!teamName.trim()}
-                    className="flex-1 px-4 py-2 bg-ax-primary text-white rounded-lg font-sans text-sm font-medium hover:bg-ax-primary-hover disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                    className="flex-1 px-4 py-2 bg-ax-primary text-white rounded-lg font-sans text-sm font-medium hover:bg-ax-primary-hover disabled:opacity-50 disabled:cursor-not-allowed transition-all cursor-pointer relative z-10 pointer-events-auto"
                   >
                     Create
                   </button>
@@ -526,20 +564,28 @@ export default function CollaborationDashboard({ onClose, onLoadBuild }: Collabo
                 </div>
                 <div className="flex gap-3">
                   <button
-                    onClick={() => {
+                    type="button"
+                    onClick={(e) => {
+                      e.preventDefault()
+                      e.stopPropagation()
                       setShowCreateWorkspace(false)
                       setWorkspaceName('')
                       setWorkspaceDescription('')
                       setSelectedTeam('')
                     }}
-                    className="flex-1 px-4 py-2 bg-ax-bg text-ax-text-secondary rounded-lg font-sans text-sm hover:bg-ax-bg-hover transition-all"
+                    className="flex-1 px-4 py-2 bg-ax-bg text-ax-text-secondary rounded-lg font-sans text-sm hover:bg-ax-bg-hover transition-all cursor-pointer relative z-10 pointer-events-auto"
                   >
                     Cancel
                   </button>
                   <button
-                    onClick={handleCreateWorkspace}
+                    type="button"
+                    onClick={(e) => {
+                      e.preventDefault()
+                      e.stopPropagation()
+                      handleCreateWorkspace()
+                    }}
                     disabled={!workspaceName.trim() || !selectedTeam}
-                    className="flex-1 px-4 py-2 bg-ax-primary text-white rounded-lg font-sans text-sm font-medium hover:bg-ax-primary-hover disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                    className="flex-1 px-4 py-2 bg-ax-primary text-white rounded-lg font-sans text-sm font-medium hover:bg-ax-primary-hover disabled:opacity-50 disabled:cursor-not-allowed transition-all cursor-pointer relative z-10 pointer-events-auto"
                   >
                     Create
                   </button>
@@ -597,19 +643,27 @@ export default function CollaborationDashboard({ onClose, onLoadBuild }: Collabo
                 </div>
                 <div className="flex gap-3">
                   <button
-                    onClick={() => {
+                    type="button"
+                    onClick={(e) => {
+                      e.preventDefault()
+                      e.stopPropagation()
                       setShowShareDialog(false)
                       setShareTeamId('')
                       setSharePermissions('view')
                     }}
-                    className="flex-1 px-4 py-2 bg-ax-bg text-ax-text-secondary rounded-lg font-sans text-sm hover:bg-ax-bg-hover transition-all"
+                    className="flex-1 px-4 py-2 bg-ax-bg text-ax-text-secondary rounded-lg font-sans text-sm hover:bg-ax-bg-hover transition-all cursor-pointer relative z-10 pointer-events-auto"
                   >
                     Cancel
                   </button>
                   <button
-                    onClick={handleShare}
+                    type="button"
+                    onClick={(e) => {
+                      e.preventDefault()
+                      e.stopPropagation()
+                      handleShare()
+                    }}
                     disabled={!shareTeamId}
-                    className="flex-1 px-4 py-2 bg-ax-primary text-white rounded-lg font-sans text-sm font-medium hover:bg-ax-primary-hover disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                    className="flex-1 px-4 py-2 bg-ax-primary text-white rounded-lg font-sans text-sm font-medium hover:bg-ax-primary-hover disabled:opacity-50 disabled:cursor-not-allowed transition-all cursor-pointer relative z-10 pointer-events-auto"
                   >
                     Share
                   </button>

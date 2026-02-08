@@ -128,11 +128,16 @@ export default function TemplateSelector({ onClose }: TemplateSelectorProps) {
             {registry && (
               <div className="flex gap-2 flex-wrap">
                 <button
-                  onClick={() => setSelectedCategory('all')}
-                  className={`px-3 py-1.5 font-sans text-xs rounded-lg transition-all ${
+                  type="button"
+                  onClick={(e) => {
+                    e.preventDefault()
+                    e.stopPropagation()
+                    setSelectedCategory('all')
+                  }}
+                  className={`px-3 py-1.5 font-sans text-xs rounded-lg transition-all relative z-10 pointer-events-auto cursor-pointer ${
                     selectedCategory === 'all'
                       ? 'bg-ax-primary text-white'
-                      : 'bg-ax-bg text-ax-text-secondary hover:bg-ax-bg-hover'
+                      : 'bg-ax-bg text-ax-text-secondary hover:bg-ax-bg-hover hover:text-ax-text'
                   }`}
                 >
                   All
@@ -140,11 +145,16 @@ export default function TemplateSelector({ onClose }: TemplateSelectorProps) {
                 {Object.entries(registry.categories).map(([key, category]) => (
                   <button
                     key={key}
-                    onClick={() => setSelectedCategory(key)}
-                    className={`px-3 py-1.5 font-sans text-xs rounded-lg transition-all ${
+                    type="button"
+                    onClick={(e) => {
+                      e.preventDefault()
+                      e.stopPropagation()
+                      setSelectedCategory(key)
+                    }}
+                    className={`px-3 py-1.5 font-sans text-xs rounded-lg transition-all relative z-10 pointer-events-auto cursor-pointer ${
                       selectedCategory === key
                         ? 'bg-ax-primary text-white'
-                        : 'bg-ax-bg text-ax-text-secondary hover:bg-ax-bg-hover'
+                        : 'bg-ax-bg text-ax-text-secondary hover:bg-ax-bg-hover hover:text-ax-text'
                     }`}
                   >
                     {category.name}

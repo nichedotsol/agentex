@@ -162,8 +162,13 @@ export default function MemoryIntegration({ onClose }: MemoryIntegrationProps) {
               </p>
             </div>
             <button
-              onClick={onClose}
-              className="w-8 h-8 rounded-lg border border-ax-border hover:border-ax-error hover:bg-ax-error/20 flex items-center justify-center transition-all micro-bounce"
+              type="button"
+              onClick={(e) => {
+                e.preventDefault()
+                e.stopPropagation()
+                onClose()
+              }}
+              className="w-8 h-8 rounded-lg border border-ax-border hover:border-ax-error hover:bg-ax-error/20 flex items-center justify-center transition-all micro-bounce cursor-pointer relative z-10 pointer-events-auto"
             >
               <span className="text-ax-text">×</span>
             </button>
@@ -188,11 +193,16 @@ export default function MemoryIntegration({ onClose }: MemoryIntegrationProps) {
               {(['visualization', 'search', 'optimization'] as View[]).map(tab => (
                 <button
                   key={tab}
-                  onClick={() => setView(tab)}
-                  className={`px-4 py-2 font-sans text-sm rounded-lg transition-all ${
+                  type="button"
+                  onClick={(e) => {
+                    e.preventDefault()
+                    e.stopPropagation()
+                    setView(tab)
+                  }}
+                  className={`px-4 py-2 font-sans text-sm rounded-lg transition-all relative z-10 pointer-events-auto cursor-pointer ${
                     view === tab
                       ? 'bg-ax-primary text-white'
-                      : 'bg-ax-bg text-ax-text-secondary hover:bg-ax-bg-hover'
+                      : 'bg-ax-bg text-ax-text-secondary hover:bg-ax-bg-hover hover:text-ax-text'
                   }`}
                 >
                   {tab.charAt(0).toUpperCase() + tab.slice(1)}

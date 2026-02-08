@@ -137,14 +137,24 @@ export default function Marketplace({ onClose, onLoadAgent }: MarketplaceProps) 
             </div>
             <div className="flex gap-2">
               <button
-                onClick={() => setShowShareDialog(true)}
-                className="px-4 py-2 bg-ax-primary text-white rounded-lg font-sans text-sm font-medium hover:bg-ax-primary-hover transition-all micro-bounce"
+                type="button"
+                onClick={(e) => {
+                  e.preventDefault()
+                  e.stopPropagation()
+                  setShowShareDialog(true)
+                }}
+                className="px-4 py-2 bg-ax-primary text-white rounded-lg font-sans text-sm font-medium hover:bg-ax-primary-hover transition-all micro-bounce cursor-pointer relative z-10 pointer-events-auto"
               >
                 Share Agent
               </button>
               <button
-                onClick={onClose}
-                className="w-8 h-8 rounded-lg border border-ax-border hover:border-ax-error hover:bg-ax-error/20 flex items-center justify-center transition-all micro-bounce"
+                type="button"
+                onClick={(e) => {
+                  e.preventDefault()
+                  e.stopPropagation()
+                  onClose()
+                }}
+                className="w-8 h-8 rounded-lg border border-ax-border hover:border-ax-error hover:bg-ax-error/20 flex items-center justify-center transition-all micro-bounce cursor-pointer relative z-10 pointer-events-auto"
               >
                 <span className="text-ax-text">×</span>
               </button>
@@ -257,14 +267,24 @@ export default function Marketplace({ onClose, onLoadAgent }: MarketplaceProps) 
                     </div>
                     <div className="flex gap-2">
                       <button
-                        onClick={() => handleLoad(agent)}
-                        className="flex-1 px-3 py-2 bg-ax-primary text-white rounded-lg font-sans text-xs font-medium hover:bg-ax-primary-hover transition-all"
+                        type="button"
+                        onClick={(e) => {
+                          e.preventDefault()
+                          e.stopPropagation()
+                          handleLoad(agent)
+                        }}
+                        className="flex-1 px-3 py-2 bg-ax-primary text-white rounded-lg font-sans text-xs font-medium hover:bg-ax-primary-hover transition-all cursor-pointer relative z-10 pointer-events-auto"
                       >
                         Load
                       </button>
                       <button
-                        onClick={() => handleFork(agent)}
-                        className="flex-1 px-3 py-2 bg-ax-bg text-ax-text-secondary rounded-lg font-sans text-xs hover:bg-ax-bg-hover transition-all"
+                        type="button"
+                        onClick={(e) => {
+                          e.preventDefault()
+                          e.stopPropagation()
+                          handleFork(agent)
+                        }}
+                        className="flex-1 px-3 py-2 bg-ax-bg text-ax-text-secondary rounded-lg font-sans text-xs hover:bg-ax-bg-hover transition-all cursor-pointer relative z-10 pointer-events-auto"
                       >
                         Fork
                       </button>
@@ -343,20 +363,28 @@ export default function Marketplace({ onClose, onLoadAgent }: MarketplaceProps) 
                 </div>
                 <div className="flex gap-3">
                   <button
-                    onClick={() => {
+                    type="button"
+                    onClick={(e) => {
+                      e.preventDefault()
+                      e.stopPropagation()
                       setShowShareDialog(false)
                       setShareName('')
                       setShareDescription('')
                       setShareTags('')
                     }}
-                    className="flex-1 px-4 py-2 bg-ax-bg text-ax-text-secondary rounded-lg font-sans text-sm hover:bg-ax-bg-hover transition-all"
+                    className="flex-1 px-4 py-2 bg-ax-bg text-ax-text-secondary rounded-lg font-sans text-sm hover:bg-ax-bg-hover transition-all cursor-pointer relative z-10 pointer-events-auto"
                   >
                     Cancel
                   </button>
                   <button
-                    onClick={handleShare}
+                    type="button"
+                    onClick={(e) => {
+                      e.preventDefault()
+                      e.stopPropagation()
+                      handleShare()
+                    }}
                     disabled={!shareName.trim()}
-                    className="flex-1 px-4 py-2 bg-ax-primary text-white rounded-lg font-sans text-sm font-medium hover:bg-ax-primary-hover disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                    className="flex-1 px-4 py-2 bg-ax-primary text-white rounded-lg font-sans text-sm font-medium hover:bg-ax-primary-hover disabled:opacity-50 disabled:cursor-not-allowed transition-all cursor-pointer relative z-10 pointer-events-auto"
                   >
                     Share
                   </button>
