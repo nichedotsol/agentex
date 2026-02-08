@@ -76,9 +76,10 @@ export default function ComponentShowcase() {
 
       {/* Category Tabs */}
       {!searchQuery && registry && (
-        <div className="px-4 py-2 border-b border-ax-border flex gap-2">
-          {(['brains', 'tools', 'runtimes'] as const).map((category) => {
+        <div className="px-4 py-2 border-b border-ax-border flex gap-2 flex-wrap">
+          {(['brains', 'tools', 'runtimes', 'memories'] as const).map((category) => {
             const categoryData = registry.categories[category]
+            if (!categoryData) return null
             const categoryComponents = getCategoryComponents(category)
             return (
               <button
