@@ -6,7 +6,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { loadToolServer, loadAllToolsServer } from '@/lib/tools/server-loader';
 import { ToolSpec } from '@/lib/types/tool-spec';
-import { ToolSpec } from '@/lib/types/tool-spec';
 import { analyzeRequirements, recommendRuntime, checkRuntimeCompatibility, getRuntimeCost } from '@/lib/utils/runtime-selector';
 
 export interface ValidateRequest {
