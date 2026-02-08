@@ -1,0 +1,32 @@
+{
+  "id": "brain-llama-3-1-8b",
+  "type": "brain",
+  "name": "Llama 3.1 8B",
+  "version": "1.0.0",
+  "provider": "meta",
+  "config": {
+    "model": "meta-llama/Meta-Llama-3.1-8B-Instruct",
+    "base_url": "https://api.replicate.com/v1",
+    "temperature": 0.7,
+    "max_tokens": 8192,
+    "system_prompt": "",
+    "streaming": true
+  },
+  "interface": {
+    "inputs": ["messages", "context"],
+    "outputs": ["text", "tool_calls"],
+    "capabilities": ["text_generation", "tool_use"]
+  },
+  "resources": {
+    "token_cost": "$0.10 per million input tokens, $0.10 per million output tokens",
+    "context_window": 128000,
+    "cache_enabled": false,
+    "latency": "~1-2s average"
+  },
+  "metadata": {
+    "author": "Meta",
+    "description": "Lightweight open-source model perfect for cost-sensitive applications",
+    "tags": ["open-source", "lightweight", "ultra-cheap", "fast"],
+    "color": "#FF6B6B"
+  }
+}

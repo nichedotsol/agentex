@@ -43,7 +43,7 @@ export function useWorkspace() {
 }
 
 export function calculateComponentPosition(
-  componentType: 'brain' | 'tool' | 'runtime',
+  componentType: 'brain' | 'tool' | 'runtime' | 'memory',
   existingComponents: any[],
   index: number
 ): { x: number; y: number } {
@@ -71,13 +71,22 @@ export function calculateComponentPosition(
       // Runtime goes at bottom
       return { x: 400, y: 600 }
     
+    case 'memory':
+      // Memory components go to the left of the brain
+      const brainPos = brainComponents[0]?.position || { x: 400, y: 300 }
+      const memoryIndex = existingComponents.filter(c => c.type === 'memory').length
+      return {
+        x: brainPos.x - 250,
+        y: brainPos.y + (memoryIndex * 120)
+      }
+    
     default:
       return { x: 100 + (index * 20), y: 100 + (index * 20) }
   }
 }
 
 export function validateComponentPlacement(
-  componentType: 'brain' | 'tool' | 'runtime',
+  componentType: 'brain' | 'tool' | 'runtime' | 'memory',
   existingComponents: any[]
 ): { valid: boolean; error?: string } {
   if (componentType === 'brain') {

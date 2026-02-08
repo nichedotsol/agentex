@@ -1,0 +1,31 @@
+{
+  "id": "runtime-cloudflare-workers",
+  "type": "runtime",
+  "name": "Cloudflare Workers",
+  "version": "1.0.0",
+  "provider": "cloudflare",
+  "config": {
+    "platform": "cloudflare",
+    "framework": "workers",
+    "language": "javascript|typescript",
+    "region": "global",
+    "cpu_time": "10ms",
+    "memory": "128MB"
+  },
+  "interface": {
+    "inputs": ["request"],
+    "outputs": ["response"],
+    "capabilities": ["edge_computing", "global_deployment", "fast_cold_start"]
+  },
+  "resources": {
+    "pricing": "Free tier: 100K requests/day, then $5/month for 10M requests",
+    "startup_time": "<1ms (edge computing)",
+    "requirements": "Cloudflare account"
+  },
+  "metadata": {
+    "author": "AgentEX",
+    "description": "Deploy to Cloudflare's global edge network for ultra-low latency. Runs at the edge in 300+ locations.",
+    "tags": ["cloudflare", "edge", "fast", "global", "serverless"],
+    "color": "#F38020"
+  }
+}

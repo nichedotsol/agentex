@@ -1,0 +1,30 @@
+{
+  "id": "runtime-fly-io",
+  "type": "runtime",
+  "name": "Fly.io",
+  "version": "1.0.0",
+  "provider": "fly",
+  "config": {
+    "platform": "fly",
+    "framework": "docker",
+    "language": "python|nodejs|go|rust|elixir",
+    "region": "global",
+    "vm_size": "shared-cpu-1x"
+  },
+  "interface": {
+    "inputs": ["request"],
+    "outputs": ["response"],
+    "capabilities": ["global_edge", "docker", "low_latency", "scaling"]
+  },
+  "resources": {
+    "pricing": "$1.94/month per VM, scales automatically",
+    "startup_time": "~5-10s",
+    "requirements": "Fly.io account, Dockerfile"
+  },
+  "metadata": {
+    "author": "AgentEX",
+    "description": "Global edge deployment with Docker. Deploy close to users worldwide for low latency.",
+    "tags": ["fly", "edge", "docker", "global", "low-latency"],
+    "color": "#8B5CF6"
+  }
+}

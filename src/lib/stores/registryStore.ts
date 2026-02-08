@@ -9,6 +9,7 @@ export interface RegistryState {
     brains: Component[]
     tools: Component[]
     runtimes: Component[]
+    memories: Component[]
   }
   loading: boolean
   error: string | null
@@ -16,7 +17,7 @@ export interface RegistryState {
   // Actions
   loadRegistry: () => Promise<void>
   getComponentById: (id: string) => Component | undefined
-  getComponentsByType: (type: 'brain' | 'tool' | 'runtime') => Component[]
+  getComponentsByType: (type: 'brain' | 'tool' | 'runtime' | 'memory') => Component[]
 }
 
 export const useRegistryStore = create<RegistryState>((set, get) => ({
@@ -24,7 +25,8 @@ export const useRegistryStore = create<RegistryState>((set, get) => ({
   components: {
     brains: [],
     tools: [],
-    runtimes: []
+    runtimes: [],
+    memories: []
   },
   loading: false,
   error: null,
@@ -43,10 +45,12 @@ export const useRegistryStore = create<RegistryState>((set, get) => ({
         brains: Component[]
         tools: Component[]
         runtimes: Component[]
+        memories: Component[]
       } = {
         brains: [],
         tools: [],
-        runtimes: []
+        runtimes: [],
+        memories: []
       }
 
       // Load brains
@@ -88,6 +92,21 @@ export const useRegistryStore = create<RegistryState>((set, get) => ({
         }
       }
 
+      // Load memories
+      if (registryData.components.memories) {
+        for (const filename of registryData.components.memories) {
+          try {
+            const response = await fetch(`/components/${filename}`)
+            if (response.ok) {
+              const component: Component = await response.json()
+              loadedComponents.memories.push(component)
+            }
+          } catch (err) {
+            console.warn(`Failed to load ${filename}:`, err)
+          }
+        }
+      }
+
       set({
         registry: registryData,
         components: loadedComponents,
@@ -106,7 +125,8 @@ export const useRegistryStore = create<RegistryState>((set, get) => ({
     const allComponents = [
       ...state.components.brains,
       ...state.components.tools,
-      ...state.components.runtimes
+      ...state.components.runtimes,
+      ...state.components.memories
     ]
     return allComponents.find(comp => comp.id === id)
   },
@@ -116,6 +136,7 @@ export const useRegistryStore = create<RegistryState>((set, get) => ({
     if (type === 'brain') return state.components.brains
     if (type === 'tool') return state.components.tools
     if (type === 'runtime') return state.components.runtimes
+    if (type === 'memory') return state.components.memories
     return []
   }
 }))

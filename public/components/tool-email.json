@@ -1,0 +1,29 @@
+{
+  "id": "tool-email",
+  "type": "tool",
+  "name": "Email",
+  "version": "1.0.0",
+  "provider": "smtp",
+  "config": {
+    "endpoint": "smtp.gmail.com",
+    "auth_type": "oauth2",
+    "method": "POST",
+    "port": 587
+  },
+  "interface": {
+    "inputs": ["to", "subject", "body", "attachments"],
+    "outputs": ["message_id", "status"],
+    "capabilities": ["send_email", "read_inbox", "search_emails", "manage_labels"]
+  },
+  "resources": {
+    "rate_limit": "100 emails/day (Gmail), 1000/day (SMTP)",
+    "timeout": "30s",
+    "cost": "Free (Gmail) or SMTP provider costs"
+  },
+  "metadata": {
+    "author": "AgentEX",
+    "description": "Send and receive emails via SMTP or Gmail API. Supports attachments and HTML emails.",
+    "tags": ["email", "communication", "smtp", "gmail"],
+    "color": "#EA4335"
+  }
+}

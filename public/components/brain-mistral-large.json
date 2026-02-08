@@ -1,0 +1,32 @@
+{
+  "id": "brain-mistral-large",
+  "type": "brain",
+  "name": "Mistral Large",
+  "version": "1.0.0",
+  "provider": "mistral",
+  "config": {
+    "model": "mistral-large-latest",
+    "base_url": "https://api.mistral.ai/v1",
+    "temperature": 0.7,
+    "max_tokens": 8192,
+    "system_prompt": "",
+    "streaming": true
+  },
+  "interface": {
+    "inputs": ["messages", "context"],
+    "outputs": ["text", "tool_calls"],
+    "capabilities": ["text_generation", "tool_use", "reasoning"]
+  },
+  "resources": {
+    "token_cost": "$2.00 per million input tokens, $6.00 per million output tokens",
+    "context_window": 32768,
+    "cache_enabled": false,
+    "latency": "~1-3s average"
+  },
+  "metadata": {
+    "author": "Mistral AI",
+    "description": "High-performance model with strong reasoning capabilities and competitive pricing",
+    "tags": ["reasoning", "european", "cost-effective", "fast"],
+    "color": "#FF6B35"
+  }
+}

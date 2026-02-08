@@ -1,0 +1,29 @@
+{
+  "id": "memory-sql",
+  "type": "memory",
+  "name": "SQL Memory",
+  "version": "1.0.0",
+  "provider": "postgresql",
+  "config": {
+    "endpoint": "configurable",
+    "auth_type": "connection_string",
+    "database": "agentex_memory",
+    "table": "memories"
+  },
+  "interface": {
+    "inputs": ["key", "value", "metadata", "query"],
+    "outputs": ["results", "row_count"],
+    "capabilities": ["store_structured", "query_memories", "relational_storage", "transactional"]
+  },
+  "resources": {
+    "storage": "Unlimited (database limits)",
+    "query_rate": "Unlimited",
+    "cost": "Free (self-hosted) or database provider costs"
+  },
+  "metadata": {
+    "author": "AgentEX",
+    "description": "Store structured memories in SQL database. Perfect for relational data, conversations, and queryable memory.",
+    "tags": ["memory", "sql", "database", "structured", "relational"],
+    "color": "#336791"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "id": "tool-vector-database",
+  "type": "tool",
+  "name": "Vector Database",
+  "version": "1.0.0",
+  "provider": "pinecone",
+  "config": {
+    "endpoint": "https://api.pinecone.io",
+    "auth_type": "api_key",
+    "method": "POST",
+    "index_name": "configurable"
+  },
+  "interface": {
+    "inputs": ["vectors", "query_vector", "metadata", "operation"],
+    "outputs": ["results", "similarities", "ids"],
+    "capabilities": ["store_embeddings", "semantic_search", "similarity_search", "rag", "retrieval"]
+  },
+  "resources": {
+    "rate_limit": "varies by provider",
+    "timeout": "30s",
+    "cost": "Free tier available, then usage-based"
+  },
+  "metadata": {
+    "author": "AgentEX",
+    "description": "Store embeddings and perform semantic search. Enables RAG (Retrieval Augmented Generation) capabilities.",
+    "tags": ["vector", "embeddings", "rag", "semantic-search", "memory"],
+    "color": "#10B981"
+  }
+}

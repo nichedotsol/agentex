@@ -5,7 +5,7 @@ import { create } from 'zustand'
 export interface UIState {
   // Component Library
   componentLibraryVisible: boolean
-  activeCategory: 'brains' | 'tools' | 'runtimes'
+  activeCategory: 'brains' | 'tools' | 'runtimes' | 'memories'
   searchQuery: string
   
   // Configuration Panel
@@ -19,7 +19,7 @@ export interface UIState {
   
   // Actions
   toggleComponentLibrary: () => void
-  setActiveCategory: (category: 'brains' | 'tools' | 'runtimes') => void
+  setActiveCategory: (category: 'brains' | 'tools' | 'runtimes' | 'memories') => void
   setSearchQuery: (query: string) => void
   openConfigPanel: (componentId: string | null) => void
   closeConfigPanel: () => void

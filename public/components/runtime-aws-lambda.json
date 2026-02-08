@@ -1,0 +1,31 @@
+{
+  "id": "runtime-aws-lambda",
+  "type": "runtime",
+  "name": "AWS Lambda",
+  "version": "1.0.0",
+  "provider": "aws",
+  "config": {
+    "platform": "aws",
+    "framework": "serverless",
+    "language": "python|nodejs",
+    "region": "us-east-1",
+    "memory": "512MB",
+    "timeout": "30s"
+  },
+  "interface": {
+    "inputs": ["event", "context"],
+    "outputs": ["response"],
+    "capabilities": ["serverless", "auto_scaling", "event_driven"]
+  },
+  "resources": {
+    "pricing": "$0.20 per 1M requests + compute time",
+    "startup_time": "Cold start: 1-5s, Warm: <100ms",
+    "requirements": "AWS account, IAM role"
+  },
+  "metadata": {
+    "author": "AgentEX",
+    "description": "Deploy to AWS Lambda for serverless, auto-scaling execution. Pay only for what you use.",
+    "tags": ["aws", "serverless", "auto-scaling", "cloud"],
+    "color": "#FF9900"
+  }
+}

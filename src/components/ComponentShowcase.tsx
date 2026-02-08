@@ -47,8 +47,8 @@ export default function ComponentShowcase() {
     selectComponent(newComponentId)
   }
 
-  const getCategoryComponents = (category: 'brains' | 'tools' | 'runtimes') => {
-    return components[category]
+  const getCategoryComponents = (category: 'brains' | 'tools' | 'runtimes' | 'memories') => {
+    return components[category] || []
   }
 
   if (loading) {
@@ -141,6 +141,15 @@ export default function ComponentShowcase() {
                   onAddComponent={handleAddComponent}
                   active={activeCategory === 'runtimes'}
                 />
+                {components.memories && components.memories.length > 0 && (
+                  <ShowcaseSection 
+                    title="MEMORY" 
+                    items={components.memories}
+                    categoryData={registry.categories.memories}
+                    onAddComponent={handleAddComponent}
+                    active={activeCategory === 'memories'}
+                  />
+                )}
               </>
             )}
           </>

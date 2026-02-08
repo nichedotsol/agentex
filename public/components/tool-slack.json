@@ -1,0 +1,29 @@
+{
+  "id": "tool-slack",
+  "type": "tool",
+  "name": "Slack Integration",
+  "version": "1.0.0",
+  "provider": "slack",
+  "config": {
+    "endpoint": "https://slack.com/api",
+    "auth_type": "bearer",
+    "method": "POST",
+    "api_version": "v1"
+  },
+  "interface": {
+    "inputs": ["channel", "message", "thread_ts"],
+    "outputs": ["ts", "status"],
+    "capabilities": ["send_message", "read_messages", "list_channels", "manage_workspace", "reactions"]
+  },
+  "resources": {
+    "rate_limit": "1 request per second (Tier 2)",
+    "timeout": "30s",
+    "cost": "Free"
+  },
+  "metadata": {
+    "author": "AgentEX",
+    "description": "Send messages, read channels, and manage Slack workspace. Full Slack API integration.",
+    "tags": ["slack", "communication", "team", "messaging"],
+    "color": "#4A154B"
+  }
+}

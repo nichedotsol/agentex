@@ -1,0 +1,30 @@
+{
+  "id": "runtime-railway",
+  "type": "runtime",
+  "name": "Railway",
+  "version": "1.0.0",
+  "provider": "railway",
+  "config": {
+    "platform": "railway",
+    "framework": "docker",
+    "language": "python|nodejs|go|rust",
+    "region": "us-east-1",
+    "auto_deploy": true
+  },
+  "interface": {
+    "inputs": ["request"],
+    "outputs": ["response"],
+    "capabilities": ["docker", "auto_deploy", "simple_setup", "scaling"]
+  },
+  "resources": {
+    "pricing": "$5/month starter, usage-based scaling",
+    "startup_time": "~10-30s",
+    "requirements": "Railway account, Docker support"
+  },
+  "metadata": {
+    "author": "AgentEX",
+    "description": "Simple deployment platform with automatic scaling. Perfect for Docker-based deployments.",
+    "tags": ["railway", "docker", "simple", "auto-scaling"],
+    "color": "#0B0D0E"
+  }
+}

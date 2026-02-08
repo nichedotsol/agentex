@@ -6,7 +6,12 @@
       "brain-claude-sonnet-4.json",
       "brain-gpt-4.json",
       "brain-llama-3-70b.json",
-      "brain-openclaw.json"
+      "brain-openclaw.json",
+      "brain-gemini-pro.json",
+      "brain-mistral-large.json",
+      "brain-gpt-4-turbo.json",
+      "brain-claude-haiku.json",
+      "brain-llama-3-1-8b.json"
     ],
         "tools": [
           "tool-web-search.json",
@@ -14,11 +19,32 @@
           "tool-blockchain-query.json",
           "tool-token-price.json",
           "tool-twitter-post.json",
-          "tool-agent-builder.json"
+          "tool-agent-builder.json",
+          "tool-file-operations.json",
+          "tool-database-query.json",
+          "tool-email.json",
+          "tool-calendar.json",
+          "tool-slack.json",
+          "tool-image-generation.json",
+          "tool-pdf-processing.json",
+          "tool-api-client.json",
+          "tool-vector-database.json",
+          "tool-audio-processing.json"
         ],
     "runtimes": [
       "runtime-vercel.json",
-      "runtime-local-docker.json"
+      "runtime-local-docker.json",
+      "runtime-aws-lambda.json",
+      "runtime-cloudflare-workers.json",
+      "runtime-railway.json",
+      "runtime-fly-io.json",
+      "runtime-render.json"
+    ],
+    "memories": [
+      "memory-vector.json",
+      "memory-sql.json",
+      "memory-file.json",
+      "memory-redis.json"
     ]
   },
   "categories": {
@@ -39,6 +65,12 @@
       "description": "Where your agent runs",
       "icon": "🚀",
       "color": "#10B981"
+    },
+    "memories": {
+      "name": "Memory",
+      "description": "How your agent remembers and stores information",
+      "icon": "🧠",
+      "color": "#8B5CF6"
     }
   }
 }

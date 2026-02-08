@@ -1,0 +1,29 @@
+{
+  "id": "memory-file",
+  "type": "memory",
+  "name": "File Memory",
+  "version": "1.0.0",
+  "provider": "local",
+  "config": {
+    "endpoint": "local",
+    "auth_type": "none",
+    "base_path": "./memory",
+    "format": "json"
+  },
+  "interface": {
+    "inputs": ["key", "value", "file_path"],
+    "outputs": ["file_content", "status"],
+    "capabilities": ["store_files", "read_files", "persistent_storage", "document_storage"]
+  },
+  "resources": {
+    "storage": "Unlimited (disk space)",
+    "query_rate": "Unlimited",
+    "cost": "Free"
+  },
+  "metadata": {
+    "author": "AgentEX",
+    "description": "Store memories as files on disk. Simple, persistent storage for conversations, documents, and agent state.",
+    "tags": ["memory", "file", "local", "persistent", "simple"],
+    "color": "#8B5CF6"
+  }
+}

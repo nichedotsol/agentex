@@ -1,0 +1,31 @@
+{
+  "id": "runtime-render",
+  "type": "runtime",
+  "name": "Render",
+  "version": "1.0.0",
+  "provider": "render",
+  "config": {
+    "platform": "render",
+    "framework": "docker|native",
+    "language": "python|nodejs|go|rust|ruby",
+    "region": "us-east-1",
+    "auto_deploy": true,
+    "health_check": "/health"
+  },
+  "interface": {
+    "inputs": ["request"],
+    "outputs": ["response"],
+    "capabilities": ["docker", "auto_deploy", "health_checks", "scaling"]
+  },
+  "resources": {
+    "pricing": "$7/month starter, auto-scaling available",
+    "startup_time": "~15-30s",
+    "requirements": "Render account"
+  },
+  "metadata": {
+    "author": "AgentEX",
+    "description": "Simple platform for deploying Docker containers with automatic scaling and health checks.",
+    "tags": ["render", "docker", "simple", "health-checks"],
+    "color": "#46E3B7"
+  }
+}

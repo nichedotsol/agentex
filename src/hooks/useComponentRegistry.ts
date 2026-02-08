@@ -4,7 +4,7 @@ import { useState, useEffect, useMemo } from 'react'
 
 export interface Component {
   id: string
-  type: 'brain' | 'tool' | 'runtime'
+  type: 'brain' | 'tool' | 'runtime' | 'memory'
   name: string
   version: string
   provider: string
@@ -15,7 +15,7 @@ export interface Component {
     author: string
     description: string
     tags: string[]
-    icon: string
+    icon?: string
     color: string
   }
 }
@@ -27,6 +27,7 @@ export interface RegistryData {
     brains: string[]
     tools: string[]
     runtimes: string[]
+    memories?: string[]
   }
   categories: {
     [key: string]: {
@@ -44,10 +45,12 @@ export function useComponentRegistry() {
     brains: Component[]
     tools: Component[]
     runtimes: Component[]
+    memories: Component[]
   }>({
     brains: [],
     tools: [],
-    runtimes: []
+    runtimes: [],
+    memories: []
   })
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -66,10 +69,12 @@ export function useComponentRegistry() {
           brains: Component[]
           tools: Component[]
           runtimes: Component[]
+          memories: Component[]
         } = {
           brains: [],
           tools: [],
-          runtimes: []
+          runtimes: [],
+          memories: []
         }
 
         // Load brains
@@ -111,6 +116,21 @@ export function useComponentRegistry() {
           }
         }
 
+        // Load memories
+        if (registryData.components.memories) {
+          for (const filename of registryData.components.memories) {
+            try {
+              const response = await fetch(`/components/${filename}`)
+              if (response.ok) {
+                const component: Component = await response.json()
+                loadedComponents.memories.push(component)
+              }
+            } catch (err) {
+              console.warn(`Failed to load ${filename}:`, err)
+            }
+          }
+        }
+
         setComponents(loadedComponents)
         setLoading(false)
       } catch (err) {
@@ -131,9 +151,9 @@ export function useComponentRegistry() {
 }
 
 export function useComponentSearch(
-  components: { brains: Component[]; tools: Component[]; runtimes: Component[] },
+  components: { brains: Component[]; tools: Component[]; runtimes: Component[]; memories?: Component[] },
   searchQuery: string,
-  activeCategory: 'brains' | 'tools' | 'runtimes' | 'all'
+  activeCategory: 'brains' | 'tools' | 'runtimes' | 'memories' | 'all'
 ) {
   const filteredComponents = useMemo(() => {
     let allComponents: Component[] = []
@@ -146,6 +166,9 @@ export function useComponentSearch(
     }
     if (activeCategory === 'all' || activeCategory === 'runtimes') {
       allComponents = [...allComponents, ...components.runtimes]
+    }
+    if (activeCategory === 'all' || activeCategory === 'memories') {
+      allComponents = [...allComponents, ...(components.memories || [])]
     }
 
     if (!searchQuery.trim()) {

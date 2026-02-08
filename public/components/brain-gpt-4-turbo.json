@@ -1,0 +1,32 @@
+{
+  "id": "brain-gpt-4-turbo",
+  "type": "brain",
+  "name": "GPT-4 Turbo",
+  "version": "1.0.0",
+  "provider": "openai",
+  "config": {
+    "model": "gpt-4-turbo-preview",
+    "base_url": "https://api.openai.com/v1",
+    "temperature": 0.7,
+    "max_tokens": 4096,
+    "system_prompt": "",
+    "streaming": true
+  },
+  "interface": {
+    "inputs": ["messages", "context"],
+    "outputs": ["text", "tool_calls"],
+    "capabilities": ["text_generation", "tool_use", "multimodal"]
+  },
+  "resources": {
+    "token_cost": "$10.00 per million input tokens, $30.00 per million output tokens",
+    "context_window": 128000,
+    "cache_enabled": true,
+    "latency": "~2-4s average"
+  },
+  "metadata": {
+    "author": "OpenAI",
+    "description": "Faster and more cost-effective version of GPT-4 with extended context window",
+    "tags": ["fast", "multimodal", "popular", "cached"],
+    "color": "#10A37F"
+  }
+}

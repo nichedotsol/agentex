@@ -1,0 +1,29 @@
+{
+  "id": "memory-redis",
+  "type": "memory",
+  "name": "Redis Memory",
+  "version": "1.0.0",
+  "provider": "redis",
+  "config": {
+    "endpoint": "configurable",
+    "auth_type": "password",
+    "database": 0,
+    "ttl": 3600
+  },
+  "interface": {
+    "inputs": ["key", "value", "ttl", "pattern"],
+    "outputs": ["value", "keys"],
+    "capabilities": ["key_value_storage", "fast_retrieval", "caching", "session_storage", "pub_sub"]
+  },
+  "resources": {
+    "storage": "Unlimited (memory-based)",
+    "query_rate": "100K+ operations/second",
+    "cost": "Free (self-hosted) or Redis Cloud pricing"
+  },
+  "metadata": {
+    "author": "AgentEX",
+    "description": "Fast in-memory key-value storage for agent memory. Perfect for caching, sessions, and high-speed retrieval.",
+    "tags": ["memory", "redis", "cache", "fast", "key-value"],
+    "color": "#DC382D"
+  }
+}

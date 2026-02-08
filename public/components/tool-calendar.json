@@ -1,0 +1,29 @@
+{
+  "id": "tool-calendar",
+  "type": "tool",
+  "name": "Calendar",
+  "version": "1.0.0",
+  "provider": "google",
+  "config": {
+    "endpoint": "https://www.googleapis.com/calendar/v3",
+    "auth_type": "oauth2",
+    "method": "POST",
+    "calendar_id": "primary"
+  },
+  "interface": {
+    "inputs": ["title", "start_time", "end_time", "description", "attendees"],
+    "outputs": ["event_id", "status"],
+    "capabilities": ["create_event", "read_calendar", "update_event", "delete_event", "list_events"]
+  },
+  "resources": {
+    "rate_limit": "1000 requests/day",
+    "timeout": "30s",
+    "cost": "Free"
+  },
+  "metadata": {
+    "author": "AgentEX",
+    "description": "Manage calendar events via Google Calendar API. Create, read, update, and delete events.",
+    "tags": ["calendar", "scheduling", "google", "events"],
+    "color": "#4285F4"
+  }
+}

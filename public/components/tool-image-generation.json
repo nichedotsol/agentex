@@ -1,0 +1,29 @@
+{
+  "id": "tool-image-generation",
+  "type": "tool",
+  "name": "Image Generation",
+  "version": "1.0.0",
+  "provider": "openai",
+  "config": {
+    "endpoint": "https://api.openai.com/v1/images/generations",
+    "auth_type": "bearer",
+    "method": "POST",
+    "model": "dall-e-3"
+  },
+  "interface": {
+    "inputs": ["prompt", "size", "quality", "style"],
+    "outputs": ["image_url", "revised_prompt"],
+    "capabilities": ["generate_image", "edit_image", "variation"]
+  },
+  "resources": {
+    "rate_limit": "7 requests/minute",
+    "timeout": "60s",
+    "cost": "$0.040 per image (1024x1024, standard quality)"
+  },
+  "metadata": {
+    "author": "AgentEX",
+    "description": "Generate images from text prompts using DALL-E 3. Supports multiple sizes and styles.",
+    "tags": ["image", "generation", "dall-e", "multimodal", "creative"],
+    "color": "#FF6B9D"
+  }
+}

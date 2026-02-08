@@ -1,0 +1,29 @@
+{
+  "id": "tool-pdf-processing",
+  "type": "tool",
+  "name": "PDF Processing",
+  "version": "1.0.0",
+  "provider": "universal",
+  "config": {
+    "endpoint": "local",
+    "auth_type": "none",
+    "method": "POST",
+    "library": "pdf-lib"
+  },
+  "interface": {
+    "inputs": ["pdf_file", "operation", "options"],
+    "outputs": ["extracted_text", "pdf_file", "metadata"],
+    "capabilities": ["extract_text", "parse_document", "generate_pdf", "merge_pdfs", "split_pdf"]
+  },
+  "resources": {
+    "rate_limit": "unlimited",
+    "timeout": "60s",
+    "cost": "Free"
+  },
+  "metadata": {
+    "author": "AgentEX",
+    "description": "Extract text from PDFs, parse documents, and generate PDF files. Full PDF manipulation capabilities.",
+    "tags": ["pdf", "document", "parsing", "extraction"],
+    "color": "#DC2626"
+  }
+}

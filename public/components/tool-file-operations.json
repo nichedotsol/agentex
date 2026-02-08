@@ -1,0 +1,29 @@
+{
+  "id": "tool-file-operations",
+  "type": "tool",
+  "name": "File Operations",
+  "version": "1.0.0",
+  "provider": "local",
+  "config": {
+    "endpoint": "local",
+    "auth_type": "none",
+    "method": "POST",
+    "base_path": "./files"
+  },
+  "interface": {
+    "inputs": ["operation", "path", "content"],
+    "outputs": ["file_content", "status"],
+    "capabilities": ["read_file", "write_file", "list_directory", "delete_file", "search_files"]
+  },
+  "resources": {
+    "rate_limit": "unlimited",
+    "timeout": "30s",
+    "cost": "Free"
+  },
+  "metadata": {
+    "author": "AgentEX",
+    "description": "Read, write, and manage files and directories. Supports text files, JSON, CSV, and more.",
+    "tags": ["files", "storage", "local", "essential"],
+    "color": "#8B5CF6"
+  }
+}

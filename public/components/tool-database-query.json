@@ -1,0 +1,29 @@
+{
+  "id": "tool-database-query",
+  "type": "tool",
+  "name": "Database Query",
+  "version": "1.0.0",
+  "provider": "universal",
+  "config": {
+    "endpoint": "configurable",
+    "auth_type": "connection_string",
+    "method": "POST",
+    "supported_databases": ["postgresql", "mysql", "mongodb", "sqlite"]
+  },
+  "interface": {
+    "inputs": ["query", "database_type", "connection_string"],
+    "outputs": ["results", "row_count"],
+    "capabilities": ["sql_query", "nosql_query", "transaction", "schema_query"]
+  },
+  "resources": {
+    "rate_limit": "unlimited",
+    "timeout": "60s",
+    "cost": "Free (infrastructure costs apply)"
+  },
+  "metadata": {
+    "author": "AgentEX",
+    "description": "Execute SQL and NoSQL queries against databases. Supports PostgreSQL, MySQL, MongoDB, and SQLite.",
+    "tags": ["database", "sql", "nosql", "data", "essential"],
+    "color": "#3B82F6"
+  }
+}

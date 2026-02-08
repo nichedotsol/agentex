@@ -1,0 +1,30 @@
+{
+  "id": "memory-vector",
+  "type": "memory",
+  "name": "Vector Memory",
+  "version": "1.0.0",
+  "provider": "pinecone",
+  "config": {
+    "endpoint": "https://api.pinecone.io",
+    "auth_type": "api_key",
+    "index_name": "agentex-memory",
+    "dimension": 1536,
+    "metric": "cosine"
+  },
+  "interface": {
+    "inputs": ["embeddings", "query", "metadata"],
+    "outputs": ["retrieved_memories", "similarities"],
+    "capabilities": ["store_embeddings", "semantic_search", "retrieval", "rag"]
+  },
+  "resources": {
+    "storage": "Unlimited (usage-based pricing)",
+    "query_rate": "100 queries/second",
+    "cost": "Free tier: 1 index, then $70/month per index"
+  },
+  "metadata": {
+    "author": "AgentEX",
+    "description": "Store and retrieve memories using vector embeddings. Enables semantic search and RAG capabilities for long-term agent memory.",
+    "tags": ["memory", "vector", "embeddings", "rag", "semantic"],
+    "color": "#10B981"
+  }
+}

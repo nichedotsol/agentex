@@ -1,0 +1,29 @@
+{
+  "id": "tool-audio-processing",
+  "type": "tool",
+  "name": "Audio Processing",
+  "version": "1.0.0",
+  "provider": "openai",
+  "config": {
+    "endpoint": "https://api.openai.com/v1/audio",
+    "auth_type": "bearer",
+    "method": "POST",
+    "model": "whisper-1"
+  },
+  "interface": {
+    "inputs": ["audio_file", "operation", "language"],
+    "outputs": ["text", "audio_file", "transcription"],
+    "capabilities": ["speech_to_text", "text_to_speech", "transcription", "translation"]
+  },
+  "resources": {
+    "rate_limit": "50 requests/minute",
+    "timeout": "60s",
+    "cost": "$0.006 per minute (Whisper)"
+  },
+  "metadata": {
+    "author": "AgentEX",
+    "description": "Convert speech to text, text to speech, and process audio files. Uses Whisper for transcription.",
+    "tags": ["audio", "speech", "transcription", "tts", "multimodal"],
+    "color": "#8B5CF6"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "id": "tool-api-client",
+  "type": "tool",
+  "name": "API Client",
+  "version": "1.0.0",
+  "provider": "universal",
+  "config": {
+    "endpoint": "configurable",
+    "auth_type": "configurable",
+    "method": "GET|POST|PUT|DELETE|PATCH"
+  },
+  "interface": {
+    "inputs": ["url", "method", "headers", "body", "params"],
+    "outputs": ["response", "status_code", "headers"],
+    "capabilities": ["http_request", "rest_api", "graphql_query", "custom_auth"]
+  },
+  "resources": {
+    "rate_limit": "configurable",
+    "timeout": "30s",
+    "cost": "Free (API provider costs may apply)"
+  },
+  "metadata": {
+    "author": "AgentEX",
+    "description": "Make HTTP requests to any REST API or GraphQL endpoint. Supports custom authentication and headers.",
+    "tags": ["api", "http", "rest", "graphql", "universal"],
+    "color": "#6366F1"
+  }
+}

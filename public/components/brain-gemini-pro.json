@@ -1,0 +1,32 @@
+{
+  "id": "brain-gemini-pro",
+  "type": "brain",
+  "name": "Gemini Pro",
+  "version": "1.0.0",
+  "provider": "google",
+  "config": {
+    "model": "gemini-pro",
+    "base_url": "https://generativelanguage.googleapis.com/v1beta",
+    "temperature": 0.7,
+    "max_tokens": 8192,
+    "system_prompt": "",
+    "streaming": true
+  },
+  "interface": {
+    "inputs": ["messages", "context"],
+    "outputs": ["text", "tool_calls"],
+    "capabilities": ["text_generation", "tool_use", "multimodal"]
+  },
+  "resources": {
+    "token_cost": "$0.50 per million input tokens, $1.50 per million output tokens",
+    "context_window": 32768,
+    "cache_enabled": false,
+    "latency": "~1-2s average"
+  },
+  "metadata": {
+    "author": "Google",
+    "description": "Google's powerful multimodal AI model with fast response times and competitive pricing",
+    "tags": ["multimodal", "fast", "google", "cost-effective"],
+    "color": "#4285F4"
+  }
+}
