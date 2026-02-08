@@ -35,6 +35,11 @@ export default function Footer() {
                   API Docs
                 </a>
               </li>
+              <li>
+                <a href="/skill" className="hover:text-ax-primary transition-colors">
+                  Install Skill
+                </a>
+              </li>
             </ul>
           </div>
           
