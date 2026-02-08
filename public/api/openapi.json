@@ -1,0 +1,819 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "AgentEX Skill API",
+    "version": "2.0.0",
+    "description": "API for autonomous AI agents to programmatically build other agents. This API enables agents to validate requirements, generate code, deploy, and discover tools.",
+    "contact": {
+      "name": "AgentEX Support",
+      "url": "https://discord.gg/agentex",
+      "email": "support@agentex.dev"
+    },
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://agentexs.vercel.app/api/agentex/v2",
+      "description": "Production server"
+    },
+    {
+      "url": "http://localhost:3000/api/agentex/v2",
+      "description": "Local development server"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Validation",
+      "description": "Validate agent requirements and get recommendations"
+    },
+    {
+      "name": "Generation",
+      "description": "Generate agent code asynchronously"
+    },
+    {
+      "name": "Deployment",
+      "description": "Deploy agents to hosting platforms"
+    },
+    {
+      "name": "Tools",
+      "description": "Discover and search available tools"
+    }
+  ],
+  "paths": {
+    "/validate": {
+      "post": {
+        "tags": ["Validation"],
+        "summary": "Validate agent requirements",
+        "description": "Validates agent configuration, checks tool compatibility, recommends runtime, and estimates costs.",
+        "operationId": "validateAgent",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValidateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Validation successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidateResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/generate": {
+      "post": {
+        "tags": ["Generation"],
+        "summary": "Generate agent code",
+        "description": "Starts asynchronous generation of agent code. Returns a build ID to track progress.",
+        "operationId": "generateAgent",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenerateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Generation started",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenerateResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/status/{buildId}": {
+      "get": {
+        "tags": ["Generation"],
+        "summary": "Get build status",
+        "description": "Check the status of an agent build generation.",
+        "operationId": "getBuildStatus",
+        "parameters": [
+          {
+            "name": "buildId",
+            "in": "path",
+            "required": true,
+            "description": "The build ID returned from /generate",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Build status",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BuildStatus"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Build not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/deploy": {
+      "post": {
+        "tags": ["Deployment"],
+        "summary": "Deploy agent",
+        "description": "Deploys a completed agent build to a hosting platform.",
+        "operationId": "deployAgent",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeployRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Deployment started",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeployResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request or build not complete",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tools/search": {
+      "post": {
+        "tags": ["Tools"],
+        "summary": "Search tools",
+        "description": "Search available tools by query, category, or capabilities.",
+        "operationId": "searchTools",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ToolSearchRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Search results",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ToolSearchResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tools/{toolId}": {
+      "get": {
+        "tags": ["Tools"],
+        "summary": "Get tool details",
+        "description": "Get detailed information about a specific tool.",
+        "operationId": "getTool",
+        "parameters": [
+          {
+            "name": "toolId",
+            "in": "path",
+            "required": true,
+            "description": "The tool ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Tool details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ToolSpec"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Tool not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ValidateRequest": {
+        "type": "object",
+        "required": ["name", "description", "brain", "tools"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Agent name",
+            "example": "Research Assistant"
+          },
+          "description": {
+            "type": "string",
+            "description": "Agent description",
+            "example": "An AI agent that helps with research tasks"
+          },
+          "brain": {
+            "type": "string",
+            "description": "Brain provider (e.g., 'openai', 'anthropic', 'openclaw')",
+            "example": "openai"
+          },
+          "tools": {
+            "type": "array",
+            "description": "List of tool IDs to use",
+            "items": {
+              "type": "string"
+            },
+            "example": ["tool-openai-api", "tool-resend-email"]
+          },
+          "runtime": {
+            "type": "string",
+            "description": "Preferred runtime (optional, will be recommended if not provided)",
+            "enum": ["vercel", "railway", "render", "fly.io", "netlify", "cloudflare-pages", "docker"],
+            "example": "vercel"
+          },
+          "config": {
+            "$ref": "#/components/schemas/AgentConfig"
+          }
+        }
+      },
+      "ValidateResponse": {
+        "type": "object",
+        "properties": {
+          "valid": {
+            "type": "boolean",
+            "description": "Whether the configuration is valid"
+          },
+          "issues": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Issue"
+            }
+          },
+          "recommendation": {
+            "$ref": "#/components/schemas/RuntimeRecommendation"
+          },
+          "estimatedCost": {
+            "$ref": "#/components/schemas/CostEstimate"
+          },
+          "requiredEnv": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EnvironmentVariable"
+            }
+          }
+        }
+      },
+      "GenerateRequest": {
+        "type": "object",
+        "required": ["name", "description", "brain", "tools"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Agent name",
+            "example": "Research Assistant"
+          },
+          "description": {
+            "type": "string",
+            "description": "Agent description",
+            "example": "An AI agent that helps with research tasks"
+          },
+          "brain": {
+            "type": "string",
+            "description": "Brain provider",
+            "example": "openai"
+          },
+          "tools": {
+            "type": "array",
+            "description": "List of tool IDs",
+            "items": {
+              "type": "string"
+            }
+          },
+          "runtime": {
+            "type": "string",
+            "description": "Target runtime",
+            "example": "vercel"
+          },
+          "config": {
+            "$ref": "#/components/schemas/AgentConfig"
+          }
+        }
+      },
+      "GenerateResponse": {
+        "type": "object",
+        "properties": {
+          "buildId": {
+            "type": "string",
+            "description": "Unique build ID to track progress",
+            "example": "build_abc123"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["queued", "generating", "complete", "failed"],
+            "description": "Current build status"
+          },
+          "estimatedTime": {
+            "type": "string",
+            "description": "Estimated time to completion",
+            "example": "2-3 minutes"
+          },
+          "statusUrl": {
+            "type": "string",
+            "description": "URL to check build status",
+            "example": "/api/agentex/v2/status/build_abc123"
+          }
+        }
+      },
+      "BuildStatus": {
+        "type": "object",
+        "properties": {
+          "buildId": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["queued", "generating", "complete", "failed", "deploying"]
+          },
+          "progress": {
+            "type": "number",
+            "description": "Progress percentage (0-100)",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "createdAt": {
+            "type": "number",
+            "description": "Unix timestamp"
+          },
+          "updatedAt": {
+            "type": "number",
+            "description": "Unix timestamp"
+          },
+          "result": {
+            "$ref": "#/components/schemas/BuildResult"
+          },
+          "error": {
+            "$ref": "#/components/schemas/BuildError"
+          }
+        }
+      },
+      "BuildResult": {
+        "type": "object",
+        "properties": {
+          "downloadUrl": {
+            "type": "string",
+            "description": "URL to download generated code"
+          },
+          "previewUrl": {
+            "type": "string",
+            "description": "URL to preview generated code"
+          },
+          "setupInstructionsUrl": {
+            "type": "string",
+            "description": "URL to setup instructions"
+          },
+          "deployUrl": {
+            "type": "string",
+            "description": "Deployment URL (if deployed)"
+          },
+          "deployId": {
+            "type": "string",
+            "description": "Deployment ID"
+          },
+          "sourceCode": {
+            "type": "object",
+            "properties": {
+              "typescript": {
+                "type": "string",
+                "description": "Generated TypeScript code (JSON stringified)"
+              },
+              "python": {
+                "type": "string",
+                "description": "Generated Python code (JSON stringified)"
+              }
+            }
+          }
+        }
+      },
+      "BuildError": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "code": {
+            "type": "string"
+          },
+          "canRetry": {
+            "type": "boolean"
+          },
+          "suggestedFix": {
+            "type": "string"
+          }
+        }
+      },
+      "DeployRequest": {
+        "type": "object",
+        "required": ["buildId", "platform", "credentials"],
+        "properties": {
+          "buildId": {
+            "type": "string",
+            "description": "Build ID from /generate"
+          },
+          "platform": {
+            "type": "string",
+            "enum": ["vercel", "github", "railway"],
+            "description": "Target deployment platform"
+          },
+          "credentials": {
+            "type": "object",
+            "description": "Platform-specific credentials",
+            "properties": {
+              "apiKey": {
+                "type": "string",
+                "description": "API key or token for the platform"
+              },
+              "projectName": {
+                "type": "string",
+                "description": "Project/repository name"
+              }
+            }
+          }
+        }
+      },
+      "DeployResponse": {
+        "type": "object",
+        "properties": {
+          "deployId": {
+            "type": "string",
+            "description": "Deployment ID"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["queued", "deploying", "complete", "failed"]
+          },
+          "estimatedTime": {
+            "type": "string",
+            "example": "3-5 minutes"
+          },
+          "statusUrl": {
+            "type": "string",
+            "description": "URL to check deployment status"
+          }
+        }
+      },
+      "ToolSearchRequest": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Search query",
+            "example": "email"
+          },
+          "category": {
+            "type": "string",
+            "enum": ["blockchain", "communication", "data", "ai", "utility", "finance", "developer", "social"],
+            "description": "Filter by category"
+          },
+          "capabilities": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Filter by required capabilities",
+            "example": ["send_email", "template"]
+          }
+        }
+      },
+      "ToolSearchResponse": {
+        "type": "object",
+        "properties": {
+          "tools": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ToolSummary"
+            }
+          },
+          "total": {
+            "type": "number",
+            "description": "Total number of matching tools"
+          }
+        }
+      },
+      "ToolSummary": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "category": {
+            "type": "string"
+          }
+        }
+      },
+      "ToolSpec": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "category": {
+            "type": "string"
+          },
+          "requiredEnv": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EnvironmentVariable"
+            }
+          },
+          "implementation": {
+            "$ref": "#/components/schemas/ToolImplementation"
+          },
+          "cost": {
+            "$ref": "#/components/schemas/ToolCost"
+          },
+          "capabilities": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "documentation": {
+            "type": "string"
+          }
+        }
+      },
+      "AgentConfig": {
+        "type": "object",
+        "properties": {
+          "temperature": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 2,
+            "default": 0.7,
+            "description": "Model temperature"
+          },
+          "maxTokens": {
+            "type": "number",
+            "default": 4096,
+            "description": "Maximum tokens"
+          },
+          "cronSchedule": {
+            "type": "string",
+            "description": "Cron schedule for scheduled tasks",
+            "example": "0 * * * *"
+          },
+          "timeout": {
+            "type": "number",
+            "description": "Request timeout in seconds",
+            "default": 30
+          }
+        }
+      },
+      "RuntimeRecommendation": {
+        "type": "object",
+        "properties": {
+          "primary": {
+            "type": "string",
+            "description": "Recommended runtime"
+          },
+          "reasoning": {
+            "type": "string",
+            "description": "Why this runtime was recommended"
+          },
+          "alternatives": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "cost": {
+            "type": "string",
+            "example": "$5-10/month"
+          },
+          "limitations": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "difficulty": {
+            "type": "string",
+            "enum": ["easy", "medium", "hard"]
+          },
+          "estimatedTime": {
+            "type": "string",
+            "example": "5 minutes"
+          }
+        }
+      },
+      "CostEstimate": {
+        "type": "object",
+        "properties": {
+          "total": {
+            "type": "string",
+            "example": "$15/month"
+          },
+          "breakdown": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "service": {
+                  "type": "string"
+                },
+                "cost": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "Issue": {
+        "type": "object",
+        "properties": {
+          "severity": {
+            "type": "string",
+            "enum": ["error", "warning"]
+          },
+          "message": {
+            "type": "string"
+          },
+          "field": {
+            "type": "string",
+            "description": "Field that has the issue"
+          }
+        }
+      },
+      "EnvironmentVariable": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "example": "OPENAI_API_KEY"
+          },
+          "purpose": {
+            "type": "string",
+            "example": "OpenAI API authentication"
+          },
+          "getFrom": {
+            "type": "string",
+            "example": "https://platform.openai.com/api-keys"
+          },
+          "required": {
+            "type": "boolean"
+          },
+          "example": {
+            "type": "string",
+            "example": "sk-..."
+          }
+        }
+      },
+      "ToolImplementation": {
+        "type": "object",
+        "properties": {
+          "npm": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "NPM packages to install"
+          },
+          "endpoint": {
+            "type": "string",
+            "description": "API endpoint URL"
+          },
+          "template": {
+            "type": "string",
+            "description": "Code template path"
+          }
+        }
+      },
+      "ToolCost": {
+        "type": "object",
+        "properties": {
+          "tier": {
+            "type": "string",
+            "enum": ["free", "freemium", "paid"]
+          },
+          "estimate": {
+            "type": "string",
+            "example": "$0.01 per 1000 requests"
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "object",
+            "properties": {
+              "message": {
+                "type": "string"
+              },
+              "code": {
+                "type": "string"
+              },
+              "details": {
+                "type": "object",
+                "description": "Additional error details"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

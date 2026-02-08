@@ -30,6 +30,11 @@ export default function Footer() {
                   Documentation
                 </a>
               </li>
+              <li>
+                <a href="/api-docs" className="hover:text-ax-primary transition-colors">
+                  API Docs
+                </a>
+              </li>
             </ul>
           </div>
           
