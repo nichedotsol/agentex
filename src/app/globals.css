@@ -5,8 +5,7 @@
 @layer base {
   :root {
     --font-inter: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    --font-geist: 'Geist', system-ui, sans-serif;
-    --font-geist-mono: 'Geist Mono', monospace;
+    --font-jetbrains-mono: 'JetBrains Mono', monospace;
   }
 
   * {
