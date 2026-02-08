@@ -2,6 +2,7 @@
   "name": "agentex",
   "version": "0.1.0",
   "description": "The universal standard for building and deploying AI agents",
+  "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -9,24 +10,29 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.30.0",
+    "@monaco-editor/react": "^4.6.0",
+    "@react-three/drei": "^9.105.0",
+    "@react-three/fiber": "^8.16.0",
+    "file-saver": "^2.0.5",
+    "framer-motion": "^11.0.0",
+    "jszip": "^3.10.1",
     "next": "14.2.0",
     "react": "^18.3.0",
     "react-dom": "^18.3.0",
-    "@anthropic-ai/sdk": "^0.30.0",
+    "react-draggable": "^4.4.6",
     "three": "^0.162.0",
-    "@react-three/fiber": "^8.16.0",
-    "@react-three/drei": "^9.105.0",
-    "framer-motion": "^11.0.0",
     "zustand": "^4.5.0"
   },
   "devDependencies": {
+    "@types/file-saver": "^2.0.7",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "@types/three": "^0.162.0",
-    "typescript": "^5",
-    "tailwindcss": "^3.4.0",
     "autoprefixer": "^10.4.0",
-    "postcss": "^8.4.0"
+    "postcss": "^8.4.0",
+    "tailwindcss": "^3.4.0",
+    "typescript": "^5"
   }
 }

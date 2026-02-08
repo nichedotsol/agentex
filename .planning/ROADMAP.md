@@ -204,6 +204,212 @@ These files complete the project foundation and make the project ready for devel
 
 ---
 
+## Current Milestone: v2.0 Visual Builder UI
+
+### Phase 11: Next.js App Setup & Layout - Hybrid Aesthetic ✅
+
+**Goal:** Set up Next.js App Router with hybrid aesthetic (Overrides.com grid + Garden Intel CRT + Lain floating windows)
+**Depends on:** Phase 10
+**Plans:** 13 plans
+
+Plans:
+- [x] Update package.json with additional dependencies (@monaco-editor/react, react-draggable)
+- [x] Create enhanced Tailwind config with custom colors, fonts (Inter/JetBrains/VT323), and CRT animations
+- [x] Create PostCSS configuration
+- [x] Create global styles with CRT effects (scan lines, noise, curvature), chrome aberration, grid patterns
+- [x] Create root layout loading Google Fonts and applying font variables
+- [x] Create BackgroundLayers component (grid dots, blurred gradients, noise texture)
+- [x] Create TopBar component (terminal-style header with status and action buttons)
+- [x] Create ComponentShowcase component (grid-based specimens with hover effects)
+- [x] Create Canvas component (floating draggable windows with Lain-style design)
+- [x] Create PropertiesPanel component (cost analysis, metrics, build config with animations)
+- [x] Create StatusBar component (bottom status display)
+- [x] Create main builder page integrating all components
+- [x] Set up TypeScript configuration with path aliases
+
+**Details:**
+Sets up the Next.js application with a hybrid aesthetic combining:
+- **Overrides.com style**: Interactive component specimens in grid layout with hover effects
+- **Garden Intel style**: CRT effects (scan lines, noise texture, blurred gradient backgrounds)
+- **Lain style**: Floating draggable windows with layered depth
+
+Features include terminal/CRT aesthetic, custom color palette (ax-cyan, ax-red, ax-blue), mixed typography (Inter, JetBrains Mono, VT323 pixel font), RGB chromatic aberration, and window glass effects. The builder page includes TopBar, ComponentShowcase sidebar, Canvas workspace with floating windows, PropertiesPanel, and StatusBar.
+
+### Phase 12: Landing Page ✅
+
+**Goal:** Create attractive landing page with hero section, features, and quick start
+**Depends on:** Phase 11
+**Plans:** 6 plans
+
+Plans:
+- [x] Create hero section with headline, subheadline, and CTAs
+- [x] Create features section with 4 key features (Lightweight, Simple, Universal, Portable)
+- [x] Create component showcase section with category tabs and component cards
+- [x] Create "How It Works" section with 3-step process
+- [x] Create export targets section showing deployment options
+- [x] Create footer with links, license, and contact info
+
+**Details:**
+Creates a modern, attractive landing page that showcases AgentEX:
+- Hero section with compelling headline and call-to-action buttons
+- Features section highlighting key value propositions
+- Component showcase displaying available components from registry
+- How it works section explaining the 3-step process
+- Export targets section showing deployment options (GitHub, Vercel, Cursor, Local)
+- Responsive design with smooth animations using Framer Motion
+
+### Phase 13: Component Library UI ✅
+
+**Goal:** Create component library sidebar with searchable, categorized component cards
+**Depends on:** Phase 11, Phase 6
+**Plans:** 5 plans
+
+Plans:
+- [x] Create component library hook (useComponentRegistry) to load and filter registry data
+- [x] Create component library sidebar with category tabs (Brains, Tools, Runtimes)
+- [x] Create component card component displaying icon, name, description, and tags
+- [x] Create search bar with real-time filtering functionality
+- [x] Create component details panel for expanded component information
+
+**Details:**
+Creates a searchable component library that displays all available components:
+- Sidebar with category tabs showing component counts
+- Component cards with icons, names, descriptions, and color accents
+- Real-time search filtering by name, description, or tags
+- Component details panel showing full information on click/hover
+- Drag-and-drop ready for workspace integration
+- Loads components dynamically from the registry JSON files
+
+### Phase 14: Visual Builder Workspace ✅
+
+**Goal:** Create 3D/visual workspace canvas for drag-and-drop component assembly
+**Depends on:** Phase 11, Phase 13
+**Plans:** 6 plans
+
+Plans:
+- [x] Set up Three.js scene with React Three Fiber (scene, camera, lighting, grid)
+- [x] Create component nodes as 3D representations positioned in workspace zones
+- [x] Implement drag-and-drop from component library to workspace
+- [x] Create connection lines between components with validation
+- [x] Add workspace controls (camera controls, zoom, pan, view presets)
+- [x] Integrate with state management for build configuration updates
+
+**Details:**
+Enhances the visual workspace with connection visualization and workspace controls:
+- Connection lines between components (Brain→Tools, Tools→Runtime, Brain→Runtime) with animated flow indicators
+- Workspace controls (zoom in/out, reset, view presets: default, top, side, isometric)
+- Component zones with smart positioning (Brain center, Tools in circle around brain, Runtime at bottom)
+- Position validation (only one brain, only one runtime allowed)
+- Enhanced floating windows displaying component metadata from registry
+- Component selection with visual highlighting
+- Real-time position updates when components are dragged
+
+### Phase 15: Component Configuration UI ✅
+
+**Goal:** Create configuration panels for editing component settings (brain, tools, runtime)
+**Depends on:** Phase 13, Phase 14
+**Plans:** 7 plans
+
+Plans:
+- [x] Create configuration panel component (slide-out or modal) with tabbed interface
+- [x] Create brain configuration form (model, temperature, max_tokens, system prompt, streaming)
+- [x] Create tool configuration form (endpoint, auth, parameters, rate limits)
+- [x] Create runtime configuration form (platform, framework, environment variables)
+- [x] Create build settings form (token budget, timeout, retry policy, metadata)
+- [x] Add form validation with real-time error display
+- [x] Integrate with state management to save configuration changes
+
+**Details:**
+Creates configuration panels for editing component and build settings:
+- Slide-out or modal panel with tabbed interface for different component types
+- Brain config: model selection, temperature slider, max tokens, system prompt, streaming toggle
+- Tool config: endpoint URL, authentication setup, parameter forms, rate limit display
+- Runtime config: platform selection, framework options, environment variables editor
+- Build settings: token budget, timeout, retry policy, build name/description/author
+- Real-time validation with error messages and helpful tooltips
+
+### Phase 16: State Management & Build System ✅
+
+**Goal:** Set up Zustand store for build state and integrate validation/export logic
+**Depends on:** Phase 14, Phase 15, Phase 9
+**Plans:** 6 plans
+
+Plans:
+- [x] Create Zustand stores (buildStore, uiStore, registryStore) with TypeScript types
+- [x] Implement build actions (addComponent, removeComponent, updateConfig, connectComponents)
+- [x] Integrate validation from Phase 9 with real-time validation on changes
+- [x] Create build utilities (export formatter, build loader, configuration merger)
+- [x] Add optional persistence (LocalStorage for draft saves)
+- [x] Connect UI components to stores
+
+**Details:**
+Implemented comprehensive state management with Zustand:
+- **Build Store** (`buildStore.ts`): Manages build configuration, components (brain, tools, runtime), positions, connections, settings, and validation. Includes LocalStorage persistence.
+- **UI Store** (`uiStore.ts`): Manages UI state including component library visibility, configuration panel state, selected components, workspace zoom/pan/view, active category, and search query.
+- **Registry Store** (`registryStore.ts`): Manages component registry loading, caching, and filtering.
+- **Build Utilities** (`buildUtils.ts`): Provides functions for formatting builds for export, generating connections, loading build configs, and default settings.
+- **Component Integration**: All UI components (Canvas, ComponentShowcase, PropertiesPanel, ConfigPanel) now use Zustand stores instead of local state.
+- **Validation Integration**: Build validation runs automatically on component add/remove/update and settings changes.
+- **Persistence**: Build state automatically saves to LocalStorage and restores on page load.
+- [ ] Connect all UI components to Zustand stores
+
+**Details:**
+Sets up comprehensive state management for the entire application:
+- Build store: manages build configuration, selected components, connections, settings
+- UI store: manages component library visibility, config panel state, workspace camera, selections
+- Registry store: manages loaded components, filtering, search, component cache
+- Actions for component management, configuration updates, connection management
+- Integration with validator from Phase 9 for real-time build validation
+- Build utilities for exporting, loading, and formatting build configurations
+
+### Phase 17: Export & Deployment UI ✅
+
+**Goal:** Create export interface for GitHub, Vercel, Cursor, and local download
+**Depends on:** Phase 16, Phase 7, Phase 8
+**Plans:** 8 plans
+
+Plans:
+- [x] Create export modal component with target selection
+- [x] Create export target components (GitHub, Vercel, Cursor, Local)
+- [x] Create build summary component with validation status
+- [x] Create code preview component with syntax highlighting
+- [x] Create export progress component
+- [x] Implement code generation from templates (TypeScript, Python)
+- [x] Implement local ZIP export functionality
+- [x] Integrate export modal with TopBar Export button
+
+**Details:**
+Implemented complete export and deployment system:
+- **Export Modal** (`ExportModal.tsx`): Full-featured modal with export target selection, format selection (TypeScript/Python), build summary, code preview, and progress tracking.
+- **Build Summary** (`BuildSummary.tsx`): Displays build configuration, validation status, components, token budget, and estimated cost.
+- **Export Targets** (`ExportTarget.tsx`): Cards for Local Download, Cursor, GitHub (placeholder), and Vercel (placeholder).
+- **Code Preview** (`CodePreview.tsx`): Preview generated code files with tabbed interface and copy-to-clipboard functionality.
+- **Export Progress** (`ExportProgress.tsx`): Real-time progress indicator with step-by-step status and error handling.
+- **Code Generator** (`codeGenerator.ts`): Generates TypeScript/Next.js and Python/FastAPI code from templates with variable replacement, includes package.json, requirements.txt, README, .env.example, and .gitignore.
+- **Export Utils** (`exportUtils.ts`): Handles ZIP file creation and download, with progress callbacks. Placeholders for GitHub and Vercel API integration.
+- **Integration**: Export button in TopBar opens the export modal. Local export generates ZIP with all files. Cursor export generates deep link.
+- [ ] Create export modal with export target selection and build summary
+- [ ] Create export target cards (GitHub, Vercel, Cursor, Local) with descriptions
+- [ ] Implement code generation from templates (replace BUILD_ID, TIMESTAMP, AGENT_CONFIG)
+- [ ] Implement GitHub export (create repo via API, push code)
+- [ ] Implement Vercel export (deploy via API)
+- [ ] Implement Cursor export (generate deep link)
+- [ ] Implement local export (generate ZIP file, trigger download)
+- [ ] Add export progress tracking with step-by-step status and error handling
+
+**Details:**
+Creates a complete export system for deploying agents:
+- Export modal with target selection (GitHub, Vercel, Cursor, Local download)
+- Build summary showing selected components, token budget, estimated cost, validation status
+- Code generation from templates (TypeScript and Python) with variable replacement
+- GitHub export: creates repository and pushes generated code
+- Vercel export: deploys Next.js application automatically
+- Cursor export: generates deep link to open project in Cursor
+- Local export: creates ZIP file with all generated code and dependencies
+- Progress tracking with clear status updates and error messages
+
+---
+
 ## Future Milestones
 
 ---
