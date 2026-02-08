@@ -1,6 +1,6 @@
 import { Component } from '@/hooks/useComponentRegistry'
 
-interface ParsedIntent {
+export interface ParsedIntent {
   action: 'add' | 'remove' | 'configure' | 'deploy'
   componentType?: 'brain' | 'tool' | 'runtime'
   componentName?: string

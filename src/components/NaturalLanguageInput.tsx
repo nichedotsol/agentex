@@ -1,77 +1,154 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useBuildStore } from '@/lib/stores/buildStore'
 import { useRegistryStore } from '@/lib/stores/registryStore'
-import { parseNaturalLanguage } from '@/lib/utils/naturalLanguageParser'
+import { parseNaturalLanguage, type ParsedIntent as SimpleParsedIntent } from '@/lib/utils/naturalLanguageParser'
+import { LLMParser, type ParsedIntent as LLMParsedIntent } from '@/lib/utils/llmParser'
+
+type ParsedIntent = SimpleParsedIntent | LLMParsedIntent
 import { calculateComponentPosition } from '@/hooks/useWorkspace'
 
 export default function NaturalLanguageInput() {
   const [input, setInput] = useState('')
   const [isProcessing, setIsProcessing] = useState(false)
+  const [suggestions, setSuggestions] = useState<string[]>([])
+  const [showSuggestions, setShowSuggestions] = useState(false)
+  const [parser, setParser] = useState<LLMParser | null>(null)
   const { addComponent } = useBuildStore()
   const { components } = useRegistryStore()
+
+  // Initialize parser when components are loaded
+  useEffect(() => {
+    if (components.brains.length > 0) {
+      setParser(new LLMParser(components))
+    }
+  }, [components])
+
+  // Generate suggestions as user types
+  useEffect(() => {
+    if (!parser || !input.trim() || input.length < 3) {
+      setSuggestions([])
+      setShowSuggestions(false)
+      return
+    }
+
+    const generateSuggestions = async () => {
+      try {
+        const result = await parser.parse(input)
+        if (result.suggestions && result.suggestions.length > 0) {
+          setSuggestions(result.suggestions)
+          setShowSuggestions(true)
+        } else {
+          setSuggestions([])
+          setShowSuggestions(false)
+        }
+      } catch (error) {
+        console.error('Error generating suggestions:', error)
+      }
+    }
+
+    const debounceTimer = setTimeout(generateSuggestions, 300)
+    return () => clearTimeout(debounceTimer)
+  }, [input, parser])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!input.trim() || isProcessing) return
 
     setIsProcessing(true)
+    setShowSuggestions(false)
     
     try {
-      // Parse natural language input
-      const intent = parseNaturalLanguage(input, components)
+      let intent
+
+      // Try LLM parser first
+      if (parser) {
+        const result = await parser.parse(input)
+        intent = result.intent
+        
+        // Show suggestions if confidence is low
+        if (result.intent.confidence < 0.7 && result.suggestions && result.suggestions.length > 0) {
+          setSuggestions(result.suggestions)
+          setShowSuggestions(true)
+        }
+      } else {
+        // Fallback to simple parser
+        intent = parseNaturalLanguage(input, components)
+      }
       
-      if (!intent) {
-        // If parsing fails, try LLM-based parsing (future enhancement)
+      if (!intent || ('confidence' in intent && intent.confidence < 0.5)) {
         console.warn('Could not parse input:', input)
         setIsProcessing(false)
         return
       }
 
-      if (intent.action === 'add' && intent.componentName) {
-        // Find the component
-        const allComponents = [
-          ...components.brains,
-          ...components.tools,
-          ...components.runtimes,
-        ]
-        const matchedComponent = allComponents.find(c => c.id === intent.componentName)
-
-        if (matchedComponent) {
-          // Get current build components for positioning
-          const buildComponents = useBuildStore.getState().getAllComponents()
-          
-          // Calculate position
-          const position = calculateComponentPosition(
-            matchedComponent.type,
-            buildComponents,
-            buildComponents.length
-          )
-
-          // Add component with optional config
-          const timestamp = Date.now()
-          const newComponentId = `${matchedComponent.type}_${timestamp}`
-          
-          addComponent(matchedComponent, position)
-          
-          // Apply configuration if provided
-          if (intent.config && Object.keys(intent.config).length > 0) {
-            // TODO: Apply config to component
-            // updateComponentConfig(newComponentId, intent.config)
-          }
-          
-          setInput('')
+      // Handle multi-step requests
+      if (parser && (input.includes(' and ') || input.includes(' then '))) {
+        const intents = await parser.parseMultiStep(input)
+        for (const stepIntent of intents) {
+          await processIntent(stepIntent)
         }
-      } else if (intent.action === 'deploy') {
-        // TODO: Trigger deployment flow
-        console.log('Deploy action:', intent)
+      } else {
+        await processIntent(intent)
       }
+      
+      setInput('')
+      setSuggestions([])
     } catch (error) {
       console.error('Error processing natural language input:', error)
     } finally {
       setIsProcessing(false)
+    }
+  }
+
+  const processIntent = async (intent: ParsedIntent | any) => {
+    if (intent.action === 'add' && intent.componentName) {
+      // Find the component
+      const allComponents = [
+        ...components.brains,
+        ...components.tools,
+        ...components.runtimes,
+        ...components.memories || [],
+      ]
+      const matchedComponent = allComponents.find(c => c.id === intent.componentName)
+
+      if (matchedComponent) {
+        // Get current build components for positioning
+        const buildComponents = useBuildStore.getState().getAllComponents()
+        
+        // Calculate position
+        const position = calculateComponentPosition(
+          matchedComponent.type,
+          buildComponents,
+          buildComponents.length
+        )
+
+        // Add component with optional config
+        addComponent(matchedComponent, position)
+        
+        // Apply configuration if provided
+        if (intent.config && Object.keys(intent.config).length > 0) {
+          // Get the newly added component ID
+          const newComponents = useBuildStore.getState().getAllComponents()
+          const newComponent = newComponents.find(c => 
+            c.component.id === matchedComponent.id &&
+            !buildComponents.some(bc => bc.id === c.id)
+          )
+          
+          if (newComponent) {
+            useBuildStore.getState().updateComponentConfig(newComponent.id, intent.config)
+          }
+        }
+      }
+    } else if (intent.action === 'remove' && intent.componentId) {
+      useBuildStore.getState().removeComponent(intent.componentId)
+    } else if (intent.action === 'configure' && intent.componentId && intent.config) {
+      useBuildStore.getState().updateComponentConfig(intent.componentId, intent.config)
+    } else if (intent.action === 'deploy') {
+      // TODO: Trigger deployment flow
+      console.log('Deploy action:', intent)
     }
   }
 
@@ -150,7 +227,26 @@ export default function NaturalLanguageInput() {
       </form>
 
       <AnimatePresence>
-        {input && (
+        {showSuggestions && suggestions.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            className="mt-4 pt-4 border-t border-ax-border"
+          >
+            <div className="font-sans text-xs text-ax-text-secondary mb-2 font-medium">
+              💡 Suggestions:
+            </div>
+            <ul className="space-y-1">
+              {suggestions.map((suggestion, i) => (
+                <li key={i} className="font-sans text-xs text-ax-text-tertiary">
+                  • {suggestion}
+                </li>
+              ))}
+            </ul>
+          </motion.div>
+        )}
+        {input && !showSuggestions && (
           <motion.div
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
@@ -158,7 +254,7 @@ export default function NaturalLanguageInput() {
             className="mt-4 pt-4 border-t border-ax-border"
           >
             <p className="font-sans text-xs text-ax-text-tertiary">
-              💡 Tip: Be specific about components. Example: "Claude brain", "web search tool", "Vercel runtime"
+              💡 Tip: Be specific about components. Example: "Add Claude brain with temperature 0.7" or "Add web search tool and email tool"
             </p>
           </motion.div>
         )}
