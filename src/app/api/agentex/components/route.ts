@@ -6,7 +6,11 @@ export async function GET(request: NextRequest) {
     const registryResponse = await fetch(`${request.nextUrl.origin}/components/registry.json`)
     const registry = await registryResponse.json()
 
-    const components = {
+    const components: {
+      brains: any[]
+      tools: any[]
+      runtimes: any[]
+    } = {
       brains: [],
       tools: [],
       runtimes: []
@@ -15,15 +19,18 @@ export async function GET(request: NextRequest) {
     // Load all components
     for (const brainId of registry.components.brains) {
       const comp = await fetch(`${request.nextUrl.origin}/components/${brainId}`)
-      components.brains.push(await comp.json())
+      const componentData = await comp.json()
+      components.brains.push(componentData)
     }
     for (const toolId of registry.components.tools) {
       const comp = await fetch(`${request.nextUrl.origin}/components/${toolId}`)
-      components.tools.push(await comp.json())
+      const componentData = await comp.json()
+      components.tools.push(componentData)
     }
     for (const runtimeId of registry.components.runtimes) {
       const comp = await fetch(`${request.nextUrl.origin}/components/${runtimeId}`)
-      components.runtimes.push(await comp.json())
+      const componentData = await comp.json()
+      components.runtimes.push(componentData)
     }
 
     return NextResponse.json(components)

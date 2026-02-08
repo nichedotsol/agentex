@@ -163,6 +163,6 @@ export default function NaturalLanguageInput() {
           </motion.div>
         )}
       </AnimatePresence>
-    </div>
+    </motion.div>
   )
 }
