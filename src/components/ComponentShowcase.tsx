@@ -278,8 +278,12 @@ function ComponentCard({
         transition: { duration: 0.2 }
       }}
       whileTap={{ scale: 0.98 }}
-      onClick={onAdd}
-      className="group relative card-hover p-4 cursor-pointer overflow-hidden micro-lift"
+      onClick={(e) => {
+        e.preventDefault()
+        e.stopPropagation()
+        onAdd()
+      }}
+      className="group relative card-hover p-4 cursor-pointer overflow-hidden micro-lift pointer-events-auto z-10"
     >
       {/* Enhanced hover glow effect with gradient */}
       <div 

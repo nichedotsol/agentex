@@ -22,8 +22,13 @@ export default function WorkspaceControls({
   return (
     <div className="absolute top-4 right-4 z-30">
       <button
-        onClick={() => setShowControls(!showControls)}
-        className="w-10 h-10 bg-ax-bg-elevated/90 backdrop-blur-sm border border-ax-border flex items-center justify-center hover:border-ax-cyan transition-all"
+        type="button"
+        onClick={(e) => {
+          e.preventDefault()
+          e.stopPropagation()
+          setShowControls(!showControls)
+        }}
+        className="w-10 h-10 bg-ax-bg-elevated/90 backdrop-blur-sm border border-ax-border flex items-center justify-center hover:border-ax-cyan transition-all cursor-pointer relative z-30 pointer-events-auto"
       >
         <span className="font-mono text-xs text-ax-cyan">⚙</span>
       </button>
@@ -37,14 +42,24 @@ export default function WorkspaceControls({
             <div className="font-mono text-[10px] text-ax-text-dim">ZOOM: {Math.round(zoom * 100)}%</div>
             <div className="flex gap-2">
               <button
-                onClick={onZoomOut}
-                className="flex-1 px-2 py-1 bg-ax-bg border border-ax-border text-ax-text font-mono text-[10px] hover:border-ax-cyan transition-all"
+                type="button"
+                onClick={(e) => {
+                  e.preventDefault()
+                  e.stopPropagation()
+                  onZoomOut()
+                }}
+                className="flex-1 px-2 py-1 bg-ax-bg border border-ax-border text-ax-text font-mono text-[10px] hover:border-ax-cyan transition-all cursor-pointer pointer-events-auto"
               >
                 −
               </button>
               <button
-                onClick={onZoomIn}
-                className="flex-1 px-2 py-1 bg-ax-bg border border-ax-border text-ax-text font-mono text-[10px] hover:border-ax-cyan transition-all"
+                type="button"
+                onClick={(e) => {
+                  e.preventDefault()
+                  e.stopPropagation()
+                  onZoomIn()
+                }}
+                className="flex-1 px-2 py-1 bg-ax-bg border border-ax-border text-ax-text font-mono text-[10px] hover:border-ax-cyan transition-all cursor-pointer pointer-events-auto"
               >
                 +
               </button>
@@ -58,8 +73,13 @@ export default function WorkspaceControls({
               {(['default', 'top', 'side', 'isometric'] as const).map((view) => (
                 <button
                   key={view}
-                  onClick={() => onViewChange(view)}
-                  className="px-2 py-1 bg-ax-bg border border-ax-border text-ax-text font-mono text-[9px] hover:border-ax-cyan transition-all"
+                  type="button"
+                  onClick={(e) => {
+                    e.preventDefault()
+                    e.stopPropagation()
+                    onViewChange(view)
+                  }}
+                  className="px-2 py-1 bg-ax-bg border border-ax-border text-ax-text font-mono text-[9px] hover:border-ax-cyan transition-all cursor-pointer pointer-events-auto"
                 >
                   {view.toUpperCase()}
                 </button>
@@ -69,8 +89,13 @@ export default function WorkspaceControls({
 
           {/* Reset */}
           <button
-            onClick={onReset}
-            className="w-full px-2 py-1 bg-ax-bg border border-ax-border text-ax-text font-mono text-[10px] hover:border-ax-cyan hover:text-ax-cyan transition-all"
+            type="button"
+            onClick={(e) => {
+              e.preventDefault()
+              e.stopPropagation()
+              onReset()
+            }}
+            className="w-full px-2 py-1 bg-ax-bg border border-ax-border text-ax-text font-mono text-[10px] hover:border-ax-cyan hover:text-ax-cyan transition-all cursor-pointer pointer-events-auto"
           >
             RESET
           </button>

@@ -128,6 +128,13 @@ function FloatingWindow({
     const newPosition = { x: data.x, y: data.y }
     setPosition(newPosition)
     onDragStop(newPosition)
+    // Prevent click event after drag
+    e.preventDefault()
+  }
+  
+  const handleStart = (e: any) => {
+    // Mark that we're dragging to prevent click
+    e.preventDefault()
   }
 
   const comp = component.component
@@ -137,10 +144,12 @@ function FloatingWindow({
     <Draggable
       position={position}
       handle=".window-handle"
+      onStart={handleStart}
       onStop={handleStop}
       defaultClassName="dragging"
       defaultClassNameDragging="dragging-active"
       grid={[10, 10]}
+      cancel="button, .no-drag"
     >
       <motion.div
         initial={{ scale: 0.95, opacity: 0, y: 20 }}
@@ -163,8 +172,13 @@ function FloatingWindow({
           rotate: 1,
           transition: { duration: 0.1 }
         }}
-        onClick={onSelect}
-        className={`absolute card cursor-pointer transition-all duration-200 ${
+        onClick={(e) => {
+          // Only select if not dragging
+          if (!e.defaultPrevented) {
+            onSelect()
+          }
+        }}
+        className={`absolute card transition-all duration-200 ${
           selected 
             ? 'ring-2 ring-ax-primary ring-offset-2 ring-offset-ax-bg shadow-lg shadow-ax-primary/30' 
             : 'hover:ring-1 hover:ring-ax-border'
@@ -174,7 +188,13 @@ function FloatingWindow({
         }}
       >
         {/* Window header */}
-        <div className="window-handle px-4 py-3 border-b border-ax-border flex items-center justify-between cursor-move">
+        <div 
+          className="window-handle px-4 py-3 border-b border-ax-border flex items-center justify-between cursor-move"
+          onMouseDown={(e) => {
+            // Prevent click event when starting drag
+            e.stopPropagation()
+          }}
+        >
           <div>
             <div className="font-sans text-xs text-ax-text-tertiary uppercase tracking-wide mb-1">
               {comp.type || 'Component'}
@@ -184,11 +204,13 @@ function FloatingWindow({
             </div>
           </div>
           <button
+            type="button"
             onClick={(e) => {
               e.stopPropagation()
+              e.preventDefault()
               onRemove()
             }}
-            className="w-5 h-5 rounded-full bg-ax-error/20 hover:bg-ax-error/30 flex items-center justify-center transition-colors"
+            className="no-drag w-5 h-5 rounded-full bg-ax-error/20 hover:bg-ax-error/30 flex items-center justify-center transition-colors cursor-pointer relative z-10 pointer-events-auto"
           >
             <span className="text-ax-error text-xs">×</span>
           </button>
