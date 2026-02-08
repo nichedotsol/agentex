@@ -2,6 +2,19 @@
 
 Ready-to-install skill configurations and SDKs for popular agent frameworks.
 
+## Quick Install (Recommended)
+
+Install the AgentEX skill with a single npm command:
+
+```bash
+npm install -g @agentex/skill
+agentex-install
+```
+
+This will guide you through installing the skill for Claude, GPT, or OpenClaw.
+
+See [@agentex/skill README](agentex-skill/README.md) for details.
+
 ## Available Packages
 
 ### 1. Claude Skill Configuration

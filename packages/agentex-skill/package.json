@@ -5,10 +5,9 @@
   "main": "index.js",
   "types": "index.d.ts",
   "scripts": {
-    "install-claude": "node scripts/install-claude.js",
-    "install-gpt": "node scripts/install-gpt.js",
-    "install-openclaw": "node scripts/install-openclaw.js",
-    "postinstall": "node scripts/postinstall.js"
+    "postinstall": "node scripts/postinstall.js",
+    "verify": "node scripts/verify.js",
+    "prepublishOnly": "npm run verify"
   },
   "bin": {
     "agentex-install": "./bin/install.js"
