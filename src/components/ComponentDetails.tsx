@@ -64,27 +64,14 @@ export default function ComponentDetails({ component, onClose }: ComponentDetail
         )}
 
         {/* Resources */}
-        <div>
-          <div className="font-mono text-[10px] text-ax-cyan uppercase mb-2">RESOURCES</div>
-          <div className="font-mono text-[10px] text-ax-text-dim space-y-1">
-            {component.resources.token_cost && (
-              <div>COST: {component.resources.token_cost}</div>
-            )}
-            {component.resources.context_window && (
-              <div>CONTEXT: {component.resources.context_window.toLocaleString()} tokens</div>
-            )}
-            {component.resources.rate_limits && (
-              <div>
-                RATE: {Object.entries(component.resources.rate_limits)
-                  .map(([key, value]) => `${key}: ${value}`)
-                  .join(', ')}
-              </div>
-            )}
-            {component.resources.pricing && (
-              <div>PRICING: {component.resources.pricing}</div>
-            )}
+        {component.resources?.context_window && (
+          <div>
+            <div className="font-sans text-xs text-ax-text-secondary mb-2">Context Window</div>
+            <div className="font-sans text-sm text-ax-text">
+              {(component.resources.context_window / 1000).toFixed(0)}K tokens
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Capabilities */}
         {component.interface?.capabilities && (

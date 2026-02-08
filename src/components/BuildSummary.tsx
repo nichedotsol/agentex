@@ -6,7 +6,6 @@ import { motion } from 'framer-motion'
 export default function BuildSummary() {
   const { brain, tools, runtime, settings, validation } = useBuildStore()
 
-  const estimatedCost = (brain ? 0.03 : 0) + (tools.length * 0.01) + (runtime ? 0.02 : 0)
 
   return (
     <div className="bg-ax-bg/50 border border-ax-border p-4 space-y-4">
@@ -85,24 +84,14 @@ export default function BuildSummary() {
       {/* Settings */}
       <div className="pt-3 border-t border-ax-border space-y-2">
         <div className="flex justify-between items-center">
-          <span className="font-mono text-[10px] text-ax-text-dim">Token Budget</span>
-          <span className="font-mono text-xs text-ax-text">{settings.token_budget}</span>
+          <span className="font-sans text-xs text-ax-text-secondary">Build Name</span>
+          <span className="font-sans text-sm text-ax-text font-medium">{settings.name}</span>
         </div>
-        <div className="flex justify-between items-center">
-          <span className="font-mono text-[10px] text-ax-text-dim">Est. Cost/Run</span>
-          <motion.span 
-            className="font-mono text-xs text-ax-cyan"
-            animate={{ 
-              textShadow: '0 0 10px rgba(0,255,159,0.5)' 
-            }}
-          >
-            ${estimatedCost.toFixed(3)}
-          </motion.span>
-        </div>
-        <div className="flex justify-between items-center">
-          <span className="font-mono text-[10px] text-ax-text-dim">Build Name</span>
-          <span className="font-mono text-xs text-ax-text">{settings.name}</span>
-        </div>
+        {settings.description && (
+          <div className="pt-2">
+            <span className="font-sans text-xs text-ax-text-secondary">{settings.description}</span>
+          </div>
+        )}
       </div>
     </div>
   )

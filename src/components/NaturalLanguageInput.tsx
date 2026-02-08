@@ -173,7 +173,7 @@ export default function NaturalLanguageInput() {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2 }}
         >
-          Use natural language to add components. Try: "Add Claude brain with web search"
+          Describe what you want to build. We'll add the right components for you.
         </motion.p>
       </div>
       
@@ -254,7 +254,7 @@ export default function NaturalLanguageInput() {
             className="mt-4 pt-4 border-t border-ax-border"
           >
             <p className="font-sans text-xs text-ax-text-tertiary">
-              💡 Tip: Be specific about components. Example: "Add Claude brain with temperature 0.7" or "Add web search tool and email tool"
+              💡 Try: "Create a research assistant" or "Build a customer support bot"
             </p>
           </motion.div>
         )}

@@ -110,13 +110,6 @@ export default function BrainConfig({ component, onUpdate }: BrainConfigProps) {
         </label>
       </div>
 
-      {component.resources?.token_cost && (
-        <div className="pt-2 border-t border-ax-border">
-          <div className="font-mono text-[9px] text-ax-text-dim">
-            COST: {component.resources.token_cost}
-          </div>
-        </div>
-      )}
     </div>
   )
 }

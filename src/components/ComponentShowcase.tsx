@@ -121,8 +121,8 @@ export default function ComponentShowcase() {
         {searchQuery ? (
           // Search results
           <div>
-            <div className="font-mono text-[10px] text-ax-cyan uppercase tracking-[2px] mb-4">
-              SEARCH RESULTS ({filteredComponents.length})
+            <div className="font-sans text-xs text-ax-text-secondary mb-4">
+              Found {filteredComponents.length} {filteredComponents.length === 1 ? 'component' : 'components'}
             </div>
             <motion.div 
               className="grid grid-cols-2 gap-3"
@@ -214,9 +214,8 @@ function ShowcaseSection({
 
   return (
     <div className="mb-8">
-      <div className="font-mono text-[10px] text-ax-cyan uppercase tracking-[2px] mb-4 flex items-center gap-2">
-        <span>&gt;</span>
-        {title} ({items.length})
+      <div className="font-sans text-sm font-semibold text-ax-text mb-4">
+        {title} <span className="text-ax-text-tertiary font-normal">({items.length})</span>
       </div>
       
       <div className="grid grid-cols-2 gap-3">
@@ -245,28 +244,23 @@ function ComponentCard({
   const getMetaInfo = () => {
     if (component.type === 'brain') {
       return {
-        meta: component.resources.token_cost || 'N/A',
-        ctx: component.resources.context_window ? `${(component.resources.context_window / 1000).toFixed(0)}K` : undefined
+        meta: component.metadata.description || component.provider
       }
     }
     if (component.type === 'tool') {
       return {
-        meta: component.provider,
-        rate: component.resources.rate_limits 
-          ? Object.entries(component.resources.rate_limits)[0]?.[1] || ''
-          : undefined
+        meta: component.metadata.description || component.provider
       }
     }
     if (component.type === 'runtime') {
       return {
-        meta: component.config.platform || component.provider,
-        rate: component.config.framework || ''
+        meta: component.metadata.description || component.provider
       }
     }
-    return { meta: component.provider }
+    return { meta: component.metadata.description || component.provider }
   }
 
-  const { meta, ctx, rate } = getMetaInfo()
+  const { meta } = getMetaInfo()
 
   return (
     <motion.div
@@ -307,23 +301,14 @@ function ComponentCard({
       {/* Component info */}
       <div className="relative z-10">
         <motion.div 
-          className="font-sans text-xs text-ax-text-tertiary mb-1.5 uppercase tracking-wide"
-          initial={{ opacity: 0.6 }}
-          whileHover={{ opacity: 1 }}
-        >
-          {component.type}
-        </motion.div>
-        <motion.div 
-          className="font-sans text-sm font-semibold text-ax-text mb-2"
+          className="font-sans text-base font-semibold text-ax-text mb-2"
           whileHover={{ x: 2 }}
           transition={{ type: "spring", stiffness: 400 }}
         >
           {component.name.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
         </motion.div>
-        <div className="font-sans text-xs text-ax-text-secondary leading-relaxed">
+        <div className="font-sans text-xs text-ax-text-secondary leading-relaxed line-clamp-2">
           {meta}
-          {ctx && ` · ${ctx}`}
-          {rate && ` · ${rate}`}
         </div>
         {component.metadata.tags && component.metadata.tags.length > 0 && (
           <motion.div 

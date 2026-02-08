@@ -52,39 +52,12 @@ export default function PropertiesPanel() {
 
       <div className="mb-8">
         <div className="font-sans text-sm font-semibold text-ax-text mb-4">
-          Cost Analysis
-        </div>
-        <div className="card">
-          <div className="font-sans text-xs text-ax-text-secondary mb-2">
-            Estimated cost per run
-          </div>
-          <motion.div 
-            className="font-sans text-2xl font-bold text-ax-primary mb-4"
-            animate={{ opacity: hasComponents ? 1 : 0.5 }}
-          >
-            ${(componentCount * 0.03).toFixed(2)}
-          </motion.div>
-          <div className="h-1.5 bg-ax-bg rounded-full relative overflow-hidden">
-            <motion.div 
-              className="h-full bg-ax-primary rounded-full"
-              initial={{ width: 0 }}
-              animate={{ width: `${Math.min(componentCount * 15, 100)}%` }}
-              transition={{ duration: 0.5 }}
-            />
-          </div>
-        </div>
-      </div>
-
-      <div className="mb-8">
-        <div className="font-sans text-sm font-semibold text-ax-text mb-4">
           System Metrics
         </div>
         <div className="card space-y-3">
           <MetricLine label="Components" value={componentCount.toString()} highlight={hasComponents} />
-          <MetricLine label="Connections" value={Math.max(0, componentCount - 1).toString()} />
-          <MetricLine label="Avg Latency" value={hasComponents ? '~2.5s' : '--'} />
-          <MetricLine label="Token Budget" value="1000" />
-          <MetricLine label="Rate Limit" value="Unlimited" />
+          <MetricLine label="Status" value={hasComponents ? 'Ready' : 'Empty'} />
+          <MetricLine label="Validation" value={validation?.valid ? '✓ Valid' : '⚠ Needs setup'} />
         </div>
       </div>
 

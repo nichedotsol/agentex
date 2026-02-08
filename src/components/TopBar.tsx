@@ -30,11 +30,7 @@ export default function TopBar({ onExportClick, onTemplateClick, onTestClick, on
       </div>
       
       <div className="flex items-center gap-6 text-sm text-ax-text-secondary font-sans">
-        <span className="flex items-center gap-2">
-          <div className="w-2 h-2 rounded-full bg-ax-success animate-pulse-subtle" />
-          <span>Live</span>
-        </span>
-        <span className="text-ax-text-tertiary">{settings.name}</span>
+        <span className="text-ax-text-tertiary">{settings.name || 'Untitled Agent'}</span>
       </div>
       
       <div className="flex gap-2 relative z-30">

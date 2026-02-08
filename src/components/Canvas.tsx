@@ -201,32 +201,13 @@ function FloatingWindow({
               {comp.metadata.description.substring(0, 80)}...
             </div>
           )}
-          <div className="space-y-2">
-            {comp.resources?.token_cost && (
-              <div className="flex justify-between items-center">
-                <span className="font-sans text-xs text-ax-text-tertiary">Cost</span>
-                <span className="font-sans text-xs text-ax-text">{comp.resources.token_cost.split(' per')[0]}</span>
+          {comp.metadata?.description && (
+            <div className="pt-2 border-t border-ax-border">
+              <div className="font-sans text-xs text-ax-text-secondary leading-relaxed">
+                {comp.metadata.description}
               </div>
-            )}
-            {comp.resources?.context_window && (
-              <div className="flex justify-between items-center">
-                <span className="font-sans text-xs text-ax-text-tertiary">Context</span>
-                <span className="font-sans text-xs text-ax-text">{(comp.resources.context_window / 1000).toFixed(0)}K</span>
-              </div>
-            )}
-            {comp.config?.platform && (
-              <div className="flex justify-between items-center">
-                <span className="font-sans text-xs text-ax-text-tertiary">Platform</span>
-                <span className="font-sans text-xs text-ax-text">{comp.config.platform}</span>
-              </div>
-            )}
-            {comp.provider && (
-              <div className="flex justify-between items-center">
-                <span className="font-sans text-xs text-ax-text-tertiary">Provider</span>
-                <span className="font-sans text-xs text-ax-text">{comp.provider}</span>
-              </div>
-            )}
-          </div>
+            </div>
+          )}
         </div>
       </motion.div>
     </Draggable>
