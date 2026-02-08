@@ -8,9 +8,10 @@ interface TopBarProps {
   onTestClick?: () => void
   onVersionClick?: () => void
   onMarketplaceClick?: () => void
+  onCollaborationClick?: () => void
 }
 
-export default function TopBar({ onExportClick, onTemplateClick, onTestClick, onVersionClick, onMarketplaceClick }: TopBarProps) {
+export default function TopBar({ onExportClick, onTemplateClick, onTestClick, onVersionClick, onMarketplaceClick, onCollaborationClick }: TopBarProps) {
   const { settings } = useBuildStore()
 
   return (
@@ -34,6 +35,14 @@ export default function TopBar({ onExportClick, onTemplateClick, onTestClick, on
       </div>
       
       <div className="flex gap-2">
+        {onCollaborationClick && (
+          <button 
+            onClick={onCollaborationClick}
+            className="px-4 py-2 bg-transparent border border-ax-border text-ax-text-secondary rounded-lg font-sans text-sm hover:bg-ax-bg-hover hover:border-ax-border-hover hover:text-ax-text transition-all duration-200 micro-lift"
+          >
+            Collaborate
+          </button>
+        )}
         {onMarketplaceClick && (
           <button 
             onClick={onMarketplaceClick}
