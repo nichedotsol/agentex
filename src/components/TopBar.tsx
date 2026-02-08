@@ -37,74 +37,119 @@ export default function TopBar({ onExportClick, onTemplateClick, onTestClick, on
         <span className="text-ax-text-tertiary">{settings.name}</span>
       </div>
       
-      <div className="flex gap-2">
+      <div className="flex gap-2 relative z-30">
         {onAnalyticsClick && (
           <button 
-            onClick={onAnalyticsClick}
-            className="px-4 py-2 bg-transparent border border-ax-border text-ax-text-secondary rounded-lg font-sans text-sm hover:bg-ax-bg-hover hover:border-ax-border-hover hover:text-ax-text transition-all duration-200 micro-lift"
+            type="button"
+            onClick={(e) => {
+              e.preventDefault()
+              e.stopPropagation()
+              onAnalyticsClick()
+            }}
+            className="px-4 py-2 bg-transparent border border-ax-border text-ax-text-secondary rounded-lg font-sans text-sm hover:bg-ax-bg-hover hover:border-ax-border-hover hover:text-ax-text transition-all duration-200 micro-lift relative z-30 pointer-events-auto cursor-pointer"
           >
             Analytics
           </button>
         )}
         {onMemoryClick && (
           <button 
-            onClick={onMemoryClick}
-            className="px-4 py-2 bg-transparent border border-ax-border text-ax-text-secondary rounded-lg font-sans text-sm hover:bg-ax-bg-hover hover:border-ax-border-hover hover:text-ax-text transition-all duration-200 micro-lift"
+            type="button"
+            onClick={(e) => {
+              e.preventDefault()
+              e.stopPropagation()
+              onMemoryClick()
+            }}
+            className="px-4 py-2 bg-transparent border border-ax-border text-ax-text-secondary rounded-lg font-sans text-sm hover:bg-ax-bg-hover hover:border-ax-border-hover hover:text-ax-text transition-all duration-200 micro-lift relative z-30 pointer-events-auto cursor-pointer"
           >
             Memory
           </button>
         )}
         {onChainingClick && (
           <button 
-            onClick={onChainingClick}
-            className="px-4 py-2 bg-transparent border border-ax-border text-ax-text-secondary rounded-lg font-sans text-sm hover:bg-ax-bg-hover hover:border-ax-border-hover hover:text-ax-text transition-all duration-200 micro-lift"
+            type="button"
+            onClick={(e) => {
+              e.preventDefault()
+              e.stopPropagation()
+              onChainingClick()
+            }}
+            className="px-4 py-2 bg-transparent border border-ax-border text-ax-text-secondary rounded-lg font-sans text-sm hover:bg-ax-bg-hover hover:border-ax-border-hover hover:text-ax-text transition-all duration-200 micro-lift relative z-30 pointer-events-auto cursor-pointer"
           >
             Chains
           </button>
         )}
         {onCollaborationClick && (
           <button 
-            onClick={onCollaborationClick}
-            className="px-4 py-2 bg-transparent border border-ax-border text-ax-text-secondary rounded-lg font-sans text-sm hover:bg-ax-bg-hover hover:border-ax-border-hover hover:text-ax-text transition-all duration-200 micro-lift"
+            type="button"
+            onClick={(e) => {
+              e.preventDefault()
+              e.stopPropagation()
+              onCollaborationClick()
+            }}
+            className="px-4 py-2 bg-transparent border border-ax-border text-ax-text-secondary rounded-lg font-sans text-sm hover:bg-ax-bg-hover hover:border-ax-border-hover hover:text-ax-text transition-all duration-200 micro-lift relative z-30 pointer-events-auto cursor-pointer"
           >
             Collaborate
           </button>
         )}
         {onMarketplaceClick && (
           <button 
-            onClick={onMarketplaceClick}
-            className="px-4 py-2 bg-transparent border border-ax-border text-ax-text-secondary rounded-lg font-sans text-sm hover:bg-ax-bg-hover hover:border-ax-border-hover hover:text-ax-text transition-all duration-200 micro-lift"
+            type="button"
+            onClick={(e) => {
+              e.preventDefault()
+              e.stopPropagation()
+              onMarketplaceClick()
+            }}
+            className="px-4 py-2 bg-transparent border border-ax-border text-ax-text-secondary rounded-lg font-sans text-sm hover:bg-ax-bg-hover hover:border-ax-border-hover hover:text-ax-text transition-all duration-200 micro-lift relative z-30 pointer-events-auto cursor-pointer"
           >
             Marketplace
           </button>
         )}
         {onVersionClick && (
           <button 
-            onClick={onVersionClick}
-            className="px-4 py-2 bg-transparent border border-ax-border text-ax-text-secondary rounded-lg font-sans text-sm hover:bg-ax-bg-hover hover:border-ax-border-hover hover:text-ax-text transition-all duration-200 micro-lift"
+            type="button"
+            onClick={(e) => {
+              e.preventDefault()
+              e.stopPropagation()
+              onVersionClick()
+            }}
+            className="px-4 py-2 bg-transparent border border-ax-border text-ax-text-secondary rounded-lg font-sans text-sm hover:bg-ax-bg-hover hover:border-ax-border-hover hover:text-ax-text transition-all duration-200 micro-lift relative z-30 pointer-events-auto cursor-pointer"
           >
             Versions
           </button>
         )}
         {onTemplateClick && (
           <button 
-            onClick={onTemplateClick}
-            className="px-4 py-2 bg-transparent border border-ax-border text-ax-text-secondary rounded-lg font-sans text-sm hover:bg-ax-bg-hover hover:border-ax-border-hover hover:text-ax-text transition-all duration-200 micro-lift"
+            type="button"
+            onClick={(e) => {
+              e.preventDefault()
+              e.stopPropagation()
+              onTemplateClick()
+            }}
+            className="px-4 py-2 bg-transparent border border-ax-border text-ax-text-secondary rounded-lg font-sans text-sm hover:bg-ax-bg-hover hover:border-ax-border-hover hover:text-ax-text transition-all duration-200 micro-lift relative z-30 pointer-events-auto cursor-pointer"
           >
             Templates
           </button>
         )}
         {onTestClick && (
           <button 
-            onClick={onTestClick}
-            className="px-4 py-2 bg-transparent border border-ax-border text-ax-text-secondary rounded-lg font-sans text-sm hover:bg-ax-bg-hover hover:border-ax-border-hover hover:text-ax-text transition-all duration-200 micro-lift"
+            type="button"
+            onClick={(e) => {
+              e.preventDefault()
+              e.stopPropagation()
+              onTestClick()
+            }}
+            className="px-4 py-2 bg-transparent border border-ax-border text-ax-text-secondary rounded-lg font-sans text-sm hover:bg-ax-bg-hover hover:border-ax-border-hover hover:text-ax-text transition-all duration-200 micro-lift relative z-30 pointer-events-auto cursor-pointer"
           >
             Test
           </button>
         )}
         <button 
-          onClick={onExportClick}
-          className="px-4 py-2 bg-ax-primary text-white rounded-lg font-sans text-sm font-medium hover:bg-ax-primary-hover transition-all duration-200 shadow-lg shadow-ax-primary/20 micro-bounce"
+          type="button"
+          onClick={(e) => {
+            e.preventDefault()
+            e.stopPropagation()
+            onExportClick()
+          }}
+          className="px-4 py-2 bg-ax-primary text-white rounded-lg font-sans text-sm font-medium hover:bg-ax-primary-hover transition-all duration-200 shadow-lg shadow-ax-primary/20 micro-bounce relative z-30 pointer-events-auto cursor-pointer"
         >
           Export
         </button>
