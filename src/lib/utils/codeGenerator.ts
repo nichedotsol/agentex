@@ -345,17 +345,9 @@ function generatePythonCode(
   config: any
 ): string {
   const provider = buildState.brain?.component.provider || 'anthropic'
-  const baseUrl = buildState.brain?.config?.base_url || buildState.brain?.component.config?.base_url
   
-  // Generate provider-specific code
-  if (provider === 'openclaw') {
-    return generateOpenClawPythonCode(buildId, timestamp, config, baseUrl)
-  } else if (provider === 'openai') {
-    return generateOpenAIPythonCode(buildId, timestamp, config)
-  } else {
-    // Default to Anthropic
-    return generateAnthropicPythonCode(buildId, timestamp, config)
-  }
+  // Use proxy API - no API keys required
+  return generateProxyPythonCode(buildId, timestamp, config, provider)
 }
 
 function generateAnthropicPythonCode(buildId: string, timestamp: string, config: any): string {
@@ -511,15 +503,7 @@ function generatePackageJson(buildState: BuildState): string {
     'react-dom': '^18.0.0'
   }
   
-  // Add provider-specific dependencies
-  if (provider === 'openclaw') {
-    // OpenClaw uses fetch API, no additional SDK needed
-  } else if (provider === 'openai') {
-    dependencies['openai'] = '^4.0.0'
-  } else {
-    // Default to Anthropic
-    dependencies['@anthropic-ai/sdk'] = '^0.24.0'
-  }
+  // No provider-specific dependencies needed - using proxy API
   
   return JSON.stringify({
     name: buildState.settings.name.toLowerCase().replace(/\s+/g, '-'),
