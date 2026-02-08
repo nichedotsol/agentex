@@ -1,0 +1,104 @@
+{
+  "name": "agentex_builder",
+  "description": "Build and deploy AI agents programmatically using the AgentEX standard. Validate requirements before building, generate production-ready code, track build status, discover available tools, and deploy to hosting platforms. Always validate before generating to catch issues early.",
+  "input_schema": {
+    "type": "object",
+    "properties": {
+      "action": {
+        "type": "string",
+        "enum": ["validate", "generate", "status", "deploy", "search_tools", "get_tool"],
+        "description": "Action to perform: 'validate' (check if agent requirements are valid before building), 'generate' (create agent code after validation passes), 'status' (check build progress), 'deploy' (publish to hosting platform), 'search_tools' (discover available tools by category/capability), 'get_tool' (get detailed info about specific tool)"
+      },
+      "name": {
+        "type": "string",
+        "description": "Agent name (required for validate/generate actions)"
+      },
+      "description": {
+        "type": "string",
+        "description": "What the agent should do, in plain English (required for validate/generate actions)"
+      },
+      "brain": {
+        "type": "string",
+        "description": "AI model to power the agent. Options: 'claude-3-5-sonnet' (recommended), 'gpt-4', 'gpt-4-turbo', 'llama-3-70b' (required for validate/generate actions)"
+      },
+      "tools": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "List of tool IDs to include in the agent. Use search_tools action first to discover available tools. Example: ['helius-rpc', 'resend-email', 'web-search'] (required for validate/generate actions)"
+      },
+      "runtime": {
+        "type": "string",
+        "description": "Target deployment runtime. Options: 'vercel' (serverless, free tier), 'railway' (always-on, $5/mo), 'render' (always-on, free tier available), 'fly' (edge deployment). Leave empty and validation will recommend the best option based on your requirements (optional for validate, required for generate)"
+      },
+      "config": {
+        "type": "object",
+        "description": "Optional configuration for the agent (only for generate action)",
+        "properties": {
+          "temperature": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 2,
+            "description": "Model temperature for responses. 0 = deterministic, 2 = creative. Default: 0.7"
+          },
+          "maxTokens": {
+            "type": "number",
+            "description": "Maximum tokens per response. Default: 4096"
+          },
+          "cronSchedule": {
+            "type": "string",
+            "description": "Cron schedule for periodic execution. Example: '0 * * * *' runs hourly, '0 0 * * *' runs daily. Only use if agent needs scheduled tasks."
+          },
+          "timeout": {
+            "type": "number",
+            "description": "Maximum execution time in seconds. Default: 30. Use higher values for long-running tasks."
+          }
+        }
+      },
+      "buildId": {
+        "type": "string",
+        "description": "Build ID returned from generate action (required for status/deploy actions)"
+      },
+      "platform": {
+        "type": "string",
+        "enum": ["vercel", "github", "railway"],
+        "description": "Deployment platform (required for deploy action). 'vercel' = one-click Vercel deployment, 'github' = create GitHub repository, 'railway' = deploy to Railway"
+      },
+      "credentials": {
+        "type": "object",
+        "description": "Platform credentials for deployment (required for deploy action)",
+        "properties": {
+          "apiKey": {
+            "type": "string",
+            "description": "API key for the deployment platform. Get from: Vercel (vercel.com/account/tokens), Railway (railway.app/account/tokens), GitHub (github.com/settings/tokens)"
+          },
+          "projectName": {
+            "type": "string",
+            "description": "Name for the deployed project/repository"
+          }
+        }
+      },
+      "query": {
+        "type": "string",
+        "description": "Text search query to find tools (for search_tools action). Example: 'solana blockchain', 'send email', 'web scraping'"
+      },
+      "category": {
+        "type": "string",
+        "description": "Filter tools by category (for search_tools action). Options: 'blockchain', 'communication', 'data', 'ai', 'utility'"
+      },
+      "capabilities": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "Filter tools by required capabilities (for search_tools action). Example: ['getBalance', 'sendTransaction'] for blockchain tools"
+      },
+      "toolId": {
+        "type": "string",
+        "description": "Specific tool ID to get detailed information about (for get_tool action). Example: 'helius-rpc', 'resend-email'"
+      }
+    },
+    "required": ["action"]
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "name": "@agentex/skill",
+  "version": "1.0.0",
+  "description": "AgentEX skill package - Install AgentEX as a skill for Claude, GPT, OpenClaw, and other AI agents",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "scripts": {
+    "install-claude": "node scripts/install-claude.js",
+    "install-gpt": "node scripts/install-gpt.js",
+    "install-openclaw": "node scripts/install-openclaw.js",
+    "postinstall": "node scripts/postinstall.js"
+  },
+  "bin": {
+    "agentex-install": "./bin/install.js"
+  },
+  "files": [
+    "claude-skill.json",
+    "gpt-function.json",
+    "openclaw-skill.json",
+    "scripts/",
+    "bin/",
+    "README.md"
+  ],
+  "keywords": [
+    "agentex",
+    "ai",
+    "agents",
+    "claude",
+    "gpt",
+    "openclaw",
+    "skill",
+    "function"
+  ],
+  "author": "AgentEX",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nichedotsol/agentex.git",
+    "directory": "packages/agentex-skill"
+  },
+  "homepage": "https://agentexs.vercel.app/skill",
+  "bugs": {
+    "url": "https://github.com/nichedotsol/agentex/issues"
+  }
+}

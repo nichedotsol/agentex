@@ -131,7 +131,17 @@ function ClaudeInstructions() {
       <h2 className="text-2xl font-bold text-ax-text mb-4">Install in Claude</h2>
       <div className="space-y-6">
         <div>
-          <h3 className="text-lg font-semibold text-ax-text mb-2">Method 1: Direct Import</h3>
+          <h3 className="text-lg font-semibold text-ax-text mb-2">Method 1: npm Install (Recommended)</h3>
+          <code className="block bg-ax-bg-secondary p-4 rounded-lg text-ax-text font-mono text-sm mb-4">
+            npm install -g @agentex/skill<br />
+            agentex-install
+          </code>
+          <p className="text-ax-text-secondary mb-4">
+            Select option 1 when prompted to install for Claude.
+          </p>
+        </div>
+        <div>
+          <h3 className="text-lg font-semibold text-ax-text mb-2">Method 2: Direct Import</h3>
           <ol className="list-decimal list-inside space-y-2 text-ax-text-secondary">
             <li>Download the skill file: <code className="text-ax-primary">packages/claude-skill.json</code></li>
             <li>Open Claude Desktop or Claude.ai</li>
@@ -167,7 +177,17 @@ function GPTInstructions() {
       <h2 className="text-2xl font-bold text-ax-text mb-4">Install in GPT Assistant</h2>
       <div className="space-y-6">
         <div>
-          <h3 className="text-lg font-semibold text-ax-text mb-2">Method 1: Function Definition</h3>
+          <h3 className="text-lg font-semibold text-ax-text mb-2">Method 1: npm Install (Recommended)</h3>
+          <code className="block bg-ax-bg-secondary p-4 rounded-lg text-ax-text font-mono text-sm mb-4">
+            npm install -g @agentex/skill<br />
+            agentex-install
+          </code>
+          <p className="text-ax-text-secondary mb-4">
+            Select option 2 when prompted to see GPT installation instructions.
+          </p>
+        </div>
+        <div>
+          <h3 className="text-lg font-semibold text-ax-text mb-2">Method 2: Function Definition</h3>
           <ol className="list-decimal list-inside space-y-2 text-ax-text-secondary">
             <li>Download the function file: <code className="text-ax-primary">packages/gpt-function.json</code></li>
             <li>Open OpenAI Platform → Assistants</li>
@@ -204,7 +224,17 @@ function OpenClawInstructions() {
       <h2 className="text-2xl font-bold text-ax-text mb-4">Install in OpenClaw</h2>
       <div className="space-y-6">
         <div>
-          <h3 className="text-lg font-semibold text-ax-text mb-2">Method 1: JSON File Import</h3>
+          <h3 className="text-lg font-semibold text-ax-text mb-2">Method 1: npm Install (Recommended)</h3>
+          <code className="block bg-ax-bg-secondary p-4 rounded-lg text-ax-text font-mono text-sm mb-4">
+            npm install -g @agentex/skill<br />
+            agentex-install
+          </code>
+          <p className="text-ax-text-secondary mb-4">
+            Select option 3 when prompted to install for OpenClaw.
+          </p>
+        </div>
+        <div>
+          <h3 className="text-lg font-semibold text-ax-text mb-2">Method 2: JSON File Import</h3>
           <ol className="list-decimal list-inside space-y-2 text-ax-text-secondary">
             <li>Copy the skill file to your OpenClaw skills directory:</li>
             <code className="block bg-ax-bg-secondary p-3 rounded-lg text-ax-text font-mono text-sm my-2">
