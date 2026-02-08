@@ -176,8 +176,13 @@ export default function SkillTestPage() {
             <input
               type="text"
               value={baseUrl}
-              onChange={(e) => setBaseUrl(e.target.value)}
-              className="w-full px-4 py-2 bg-ax-bg-secondary border border-ax-border rounded-lg text-ax-text font-mono text-sm outline-none focus:border-ax-primary focus:ring-2 focus:ring-ax-primary/20"
+              onChange={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                setBaseUrl(e.target.value);
+              }}
+              onClick={(e) => e.stopPropagation()}
+              className="w-full px-4 py-2 bg-ax-bg-secondary border border-ax-border rounded-lg text-ax-text font-mono text-sm outline-none focus:border-ax-primary focus:ring-2 focus:ring-ax-primary/20 cursor-text relative z-10 pointer-events-auto"
               placeholder="http://localhost:3000"
               disabled={isRunning}
             />
@@ -185,9 +190,14 @@ export default function SkillTestPage() {
 
           {/* Run Button */}
           <button
-            onClick={runAllTests}
+            type="button"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              runAllTests();
+            }}
             disabled={isRunning}
-            className="px-8 py-4 bg-ax-primary text-white rounded-xl font-sans text-lg font-medium hover:bg-ax-primary-hover transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-ax-primary/30"
+            className="px-8 py-4 bg-ax-primary text-white rounded-xl font-sans text-lg font-medium hover:bg-ax-primary-hover transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-ax-primary/30 cursor-pointer relative z-10 pointer-events-auto"
           >
             {isRunning ? 'Running Tests...' : 'Run All Tests'}
           </button>
@@ -266,7 +276,10 @@ export default function SkillTestPage() {
 
               {result.response && (
                 <details className="mt-3">
-                  <summary className="cursor-pointer text-sm text-ax-primary hover:text-ax-primary-hover">
+                  <summary 
+                    onClick={(e) => e.stopPropagation()}
+                    className="cursor-pointer text-sm text-ax-primary hover:text-ax-primary-hover relative z-10 pointer-events-auto"
+                  >
                     View Response
                   </summary>
                   <pre className="mt-2 p-4 bg-ax-bg-secondary rounded-lg text-xs text-ax-text overflow-x-auto max-h-64 overflow-y-auto">
