@@ -1,10 +1,55 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 
 export default function SkillInstallPage() {
   const [selectedPlatform, setSelectedPlatform] = useState<'claude' | 'gpt' | 'openclaw' | 'python' | 'typescript'>('claude');
+  
+  // Add structured data for AI agents
+  useEffect(() => {
+    const structuredData = {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "AgentEX Skill",
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "Any",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "installation": {
+        "@type": "HowTo",
+        "name": "Install AgentEX Skill",
+        "step": [
+          {
+            "@type": "HowToStep",
+            "text": "Install npm package: npm install -g @agentex/skill"
+          },
+          {
+            "@type": "HowToStep",
+            "text": "Run installer: agentex-install"
+          },
+          {
+            "@type": "HowToStep",
+            "text": "Select your platform (Claude, GPT, or OpenClaw)"
+          }
+        ]
+      },
+      "apiEndpoint": "https://agentexs.vercel.app/api/skill/install",
+      "documentation": "https://agentexs.vercel.app/skill"
+    };
+
+    const script = document.createElement('script');
+    script.type = 'application/ld+json';
+    script.text = JSON.stringify(structuredData);
+    document.head.appendChild(script);
+
+    return () => {
+      document.head.removeChild(script);
+    };
+  }, []);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-ax-bg via-ax-bg-secondary to-ax-bg p-8">
