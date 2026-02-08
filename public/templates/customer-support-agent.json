@@ -15,7 +15,8 @@
     "description": "Handles customer inquiries via email and manages calendar appointments",
     "author": "AgentEX",
     "token_budget": 4096,
-    "version": "0.1.0"
+    "timeout": 30,
+    "retry_policy": "none"
   },
   "config": {
     "temperature": 0.5,

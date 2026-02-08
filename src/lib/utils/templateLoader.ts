@@ -18,7 +18,8 @@ export interface AgentTemplate {
     description: string
     author: string
     token_budget: number
-    version: string
+    timeout?: number
+    retry_policy?: string
   }
   config?: {
     temperature?: number
@@ -75,7 +76,11 @@ export function applyTemplateToBuild(
   }
 
   return {
-    settings: template.settings,
+    settings: {
+      ...template.settings,
+      timeout: template.settings.timeout || 30,
+      retry_policy: template.settings.retry_policy || 'none'
+    },
     brain: brain ? {
       id: `brain_${Date.now()}`,
       component: brain,
@@ -94,7 +99,6 @@ export function applyTemplateToBuild(
       position: { x: 400, y: 600 },
       config: {}
     } : null,
-    connections: [],
-    validation: { isValid: true, errors: [] }
+    validation: { valid: true, errors: [], warnings: [] }
   }
 }

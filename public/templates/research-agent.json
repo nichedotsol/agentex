@@ -15,7 +15,8 @@
     "description": "An intelligent research assistant that can search the web and analyze information",
     "author": "AgentEX",
     "token_budget": 8192,
-    "version": "0.1.0"
+    "timeout": 30,
+    "retry_policy": "none"
   },
   "config": {
     "temperature": 0.7,

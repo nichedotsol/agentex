@@ -64,7 +64,7 @@ export default function AgentTester({ onClose }: AgentTesterProps) {
     }
   }
 
-  const canTest = buildState.brain !== null && buildState.validation?.isValid
+  const canTest = buildState.brain !== null && buildState.validation?.valid
 
   return (
     <AnimatePresence>

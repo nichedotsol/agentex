@@ -12,8 +12,10 @@ import ExportModal from '@/components/ExportModal'
 import NaturalLanguageInput from '@/components/NaturalLanguageInput'
 import TemplateSelector from '@/components/TemplateSelector'
 import AgentTester from '@/components/AgentTester'
+import VersionControl from '@/components/VersionControl'
 import AutoSaveIndicator from '@/components/AutoSaveIndicator'
 import { useBuildStore } from '@/lib/stores/buildStore'
+import type { BuildVersion } from '@/lib/utils/versionControl'
 import { useUIStore } from '@/lib/stores/uiStore'
 import { useRegistryStore } from '@/lib/stores/registryStore'
 
@@ -53,6 +55,13 @@ export default function BuilderPage() {
   const [exportModalOpen, setExportModalOpen] = useState(false)
   const [templateModalOpen, setTemplateModalOpen] = useState(false)
   const [testerModalOpen, setTesterModalOpen] = useState(false)
+  const [versionControlOpen, setVersionControlOpen] = useState(false)
+  
+  const { setBuildState } = useBuildStore()
+
+  const handleLoadVersion = (version: BuildVersion) => {
+    setBuildState(version.buildState)
+  }
 
   return (
     <main className="h-screen flex flex-col relative overflow-hidden">
@@ -62,6 +71,7 @@ export default function BuilderPage() {
             onExportClick={() => setExportModalOpen(true)}
             onTemplateClick={() => setTemplateModalOpen(true)}
             onTestClick={() => setTesterModalOpen(true)}
+            onVersionClick={() => setVersionControlOpen(true)}
           />
       
       <div className="flex-1 flex flex-col overflow-hidden relative z-10">
@@ -94,6 +104,14 @@ export default function BuilderPage() {
       {/* Agent Tester */}
       {testerModalOpen && (
         <AgentTester onClose={() => setTesterModalOpen(false)} />
+      )}
+
+      {/* Version Control */}
+      {versionControlOpen && (
+        <VersionControl 
+          onClose={() => setVersionControlOpen(false)}
+          onLoadVersion={handleLoadVersion}
+        />
       )}
 
       {/* Auto-save Indicator */}
