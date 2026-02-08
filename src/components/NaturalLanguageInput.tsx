@@ -4,6 +4,8 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useBuildStore } from '@/lib/stores/buildStore'
 import { useRegistryStore } from '@/lib/stores/registryStore'
+import { parseNaturalLanguage } from '@/lib/utils/naturalLanguageParser'
+import { calculateComponentPosition } from '@/hooks/useWorkspace'
 
 export default function NaturalLanguageInput() {
   const [input, setInput] = useState('')
@@ -17,53 +19,60 @@ export default function NaturalLanguageInput() {
 
     setIsProcessing(true)
     
-    // TODO: Implement LLM-based natural language parsing
-    // For now, simple keyword matching
-    const query = input.toLowerCase()
-    
-    // Find matching components
-    let matchedComponent = null
-    
-    // Brain matching
-    if (query.includes('claude') || query.includes('anthropic')) {
-      matchedComponent = components.brains.find(c => c.id.includes('claude'))
-    } else if (query.includes('gpt') || query.includes('openai')) {
-      matchedComponent = components.brains.find(c => c.id.includes('gpt'))
-    } else if (query.includes('llama')) {
-      matchedComponent = components.brains.find(c => c.id.includes('llama'))
-    } else if (query.includes('openclaw')) {
-      matchedComponent = components.brains.find(c => c.id.includes('openclaw'))
-    }
-    
-    // Tool matching
-    if (query.includes('search') || query.includes('web')) {
-      matchedComponent = components.tools.find(c => c.id.includes('web-search'))
-    } else if (query.includes('code') || query.includes('execute')) {
-      matchedComponent = components.tools.find(c => c.id.includes('code-execution'))
-    } else if (query.includes('blockchain') || query.includes('crypto')) {
-      matchedComponent = components.tools.find(c => c.id.includes('blockchain'))
-    } else if (query.includes('price') || query.includes('token')) {
-      matchedComponent = components.tools.find(c => c.id.includes('token-price'))
-    } else if (query.includes('twitter') || query.includes('social')) {
-      matchedComponent = components.tools.find(c => c.id.includes('twitter'))
-    }
-    
-    // Runtime matching
-    if (query.includes('vercel') || query.includes('serverless')) {
-      matchedComponent = components.runtimes.find(c => c.id.includes('vercel'))
-    } else if (query.includes('docker') || query.includes('local')) {
-      matchedComponent = components.runtimes.find(c => c.id.includes('docker'))
-    }
+    try {
+      // Parse natural language input
+      const intent = parseNaturalLanguage(input, components)
+      
+      if (!intent) {
+        // If parsing fails, try LLM-based parsing (future enhancement)
+        console.warn('Could not parse input:', input)
+        setIsProcessing(false)
+        return
+      }
 
-    if (matchedComponent) {
-      // Add component to build
-      const timestamp = Date.now()
-      const newComponentId = `${matchedComponent.type}_${timestamp}`
-      addComponent(matchedComponent, { x: 100, y: 100 })
-      setInput('')
+      if (intent.action === 'add' && intent.componentName) {
+        // Find the component
+        const allComponents = [
+          ...components.brains,
+          ...components.tools,
+          ...components.runtimes,
+        ]
+        const matchedComponent = allComponents.find(c => c.id === intent.componentName)
+
+        if (matchedComponent) {
+          // Get current build components for positioning
+          const buildComponents = useBuildStore.getState().getAllComponents()
+          
+          // Calculate position
+          const position = calculateComponentPosition(
+            matchedComponent.type,
+            buildComponents,
+            buildComponents.length
+          )
+
+          // Add component with optional config
+          const timestamp = Date.now()
+          const newComponentId = `${matchedComponent.type}_${timestamp}`
+          
+          addComponent(matchedComponent, position)
+          
+          // Apply configuration if provided
+          if (intent.config && Object.keys(intent.config).length > 0) {
+            // TODO: Apply config to component
+            // updateComponentConfig(newComponentId, intent.config)
+          }
+          
+          setInput('')
+        }
+      } else if (intent.action === 'deploy') {
+        // TODO: Trigger deployment flow
+        console.log('Deploy action:', intent)
+      }
+    } catch (error) {
+      console.error('Error processing natural language input:', error)
+    } finally {
+      setIsProcessing(false)
     }
-    
-    setIsProcessing(false)
   }
 
   return (
