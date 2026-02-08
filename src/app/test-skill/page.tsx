@@ -79,8 +79,11 @@ export default function SkillTestPage() {
   };
 
   const runAllTests = async () => {
+    console.log('runAllTests called');
     setIsRunning(true);
     setResults([]);
+    
+    try {
 
     // 1. Installation API Tests
     await testEndpoint('Install API - All platforms', 'GET', SKILL_INSTALL_API);
@@ -150,6 +153,15 @@ export default function SkillTestPage() {
     await testEndpoint('Get Tool - Invalid', 'GET', `${API_BASE}/tools/invalid-tool-id`, undefined, 404);
 
     setIsRunning(false);
+    } catch (error) {
+      console.error('Test suite error:', error);
+      setIsRunning(false);
+      updateResult('Test Suite', {
+        status: 'fail',
+        message: `Test suite failed: ${error instanceof Error ? error.message : 'Unknown error'}`,
+        error: error instanceof Error ? error.message : String(error),
+      });
+    }
   };
 
   const passed = results.filter(r => r.status === 'pass').length;
@@ -194,10 +206,14 @@ export default function SkillTestPage() {
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
-              runAllTests();
+              console.log('Button clicked, calling runAllTests');
+              runAllTests().catch(err => {
+                console.error('Error running tests:', err);
+              });
             }}
             disabled={isRunning}
             className="px-8 py-4 bg-ax-primary text-white rounded-xl font-sans text-lg font-medium hover:bg-ax-primary-hover transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-ax-primary/30 cursor-pointer relative z-10 pointer-events-auto"
+            style={{ position: 'relative', zIndex: 10 }}
           >
             {isRunning ? 'Running Tests...' : 'Run All Tests'}
           </button>
