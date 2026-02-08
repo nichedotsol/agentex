@@ -4,28 +4,24 @@ import { motion } from 'framer-motion'
 
 const features = [
   {
-    title: 'LIGHTWEIGHT',
-    description: 'Zero infrastructure burden',
+    title: 'Lightweight',
+    description: 'Zero infrastructure burden. Build and deploy without managing servers.',
     icon: '⚡',
-    color: 'ax-cyan'
   },
   {
-    title: 'SIMPLE',
-    description: 'Drag-and-drop interface',
+    title: 'Intuitive',
+    description: 'Drag-and-drop interface that feels natural. No coding required.',
     icon: '🎯',
-    color: 'ax-blue'
   },
   {
-    title: 'UNIVERSAL',
-    description: 'Works with any LLM',
+    title: 'Universal',
+    description: 'Works with any LLM provider. Claude, GPT, Llama, and more.',
     icon: '🌐',
-    color: 'ax-cyan'
   },
   {
-    title: 'PORTABLE',
-    description: 'Export to code anytime',
+    title: 'Portable',
+    description: 'Export to real, deployable code. No vendor lock-in.',
     icon: '📦',
-    color: 'ax-blue'
   },
 ]
 
@@ -38,10 +34,20 @@ export default function Features() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="font-mono text-3xl md:text-4xl text-ax-cyan text-center mb-16 chrome-aberration"
+          className="font-sans text-4xl md:text-5xl font-bold text-ax-text text-center mb-4"
         >
-          WHY AGENTEX?
+          Why AgentEX?
         </motion.h2>
+        
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+          className="text-center text-ax-text-secondary text-lg mb-16 max-w-2xl mx-auto"
+        >
+          Everything you need to build production-ready AI agents
+        </motion.p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {features.map((feature, i) => (
@@ -51,15 +57,15 @@ export default function Features() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: i * 0.1 }}
-              className="bg-ax-bg-elevated/80 backdrop-blur-md border border-ax-border p-6 hover:border-ax-cyan transition-all group"
+              className="card-hover group"
             >
-              <div className="text-4xl mb-4 group-hover:animate-float">
+              <div className="text-3xl mb-4">
                 {feature.icon}
               </div>
-              <h3 className="font-mono text-lg text-ax-cyan mb-2 group-hover:chrome-aberration transition-all">
+              <h3 className="font-sans text-xl font-semibold text-ax-text mb-2">
                 {feature.title}
               </h3>
-              <p className="font-sans text-sm text-ax-text-dim">
+              <p className="font-sans text-sm text-ax-text-secondary leading-relaxed">
                 {feature.description}
               </p>
             </motion.div>

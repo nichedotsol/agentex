@@ -1,21 +1,23 @@
 import type { Metadata } from 'next'
-import { Inter, JetBrains_Mono, VT323 } from 'next/font/google'
+import { Inter, Geist, Geist_Mono } from 'next/font/google'
 import './globals.css'
 
 const inter = Inter({ 
   subsets: ['latin'],
   variable: '--font-inter',
+  display: 'swap',
 })
 
-const jetbrains = JetBrains_Mono({ 
+const geist = Geist({
   subsets: ['latin'],
-  variable: '--font-jetbrains',
+  variable: '--font-geist',
+  display: 'swap',
 })
 
-const vt323 = VT323({
-  weight: '400',
+const geistMono = Geist_Mono({
   subsets: ['latin'],
-  variable: '--font-vt323',
+  variable: '--font-geist-mono',
+  display: 'swap',
 })
 
 export const metadata: Metadata = {
@@ -29,8 +31,8 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={`${inter.variable} ${jetbrains.variable} ${vt323.variable}`}>
-      <body className="bg-black text-white antialiased">{children}</body>
+    <html lang="en" className={`${inter.variable} ${geist.variable} ${geistMono.variable}`}>
+      <body className="bg-[#0a0a0a] text-[#fafafa] antialiased">{children}</body>
     </html>
   )
 }

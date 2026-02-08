@@ -20,6 +20,7 @@ const components: {
     { name: 'CLAUDE_SONNET_4', icon: '🧠', meta: '$3/$15 per M', ctx: '200K' },
     { name: 'GPT_4', icon: '🤖', meta: '$10/$30 per M', ctx: '128K' },
     { name: 'LLAMA_3.3_70B', icon: '🦙', meta: '$0.35/$0.40 per M', ctx: 'OSS' },
+    { name: 'OPENCLAW_V1', icon: '🦅', meta: '$2.50/$10 per M', ctx: '128K' },
   ],
   tools: [
     { name: 'WEB_SEARCH', icon: '🔍', meta: 'brave', rate: '60/min' },
@@ -45,24 +46,34 @@ export default function ComponentShowcaseSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="font-mono text-3xl md:text-4xl text-ax-cyan text-center mb-8 chrome-aberration"
+          className="font-sans text-4xl md:text-5xl font-bold text-ax-text text-center mb-4"
         >
-          COMPONENT LIBRARY
+          Component Library
         </motion.h2>
+        
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+          className="text-center text-ax-text-secondary text-lg mb-12 max-w-2xl mx-auto"
+        >
+          Choose from a growing library of brains, tools, and runtimes
+        </motion.p>
 
         {/* Tabs */}
-        <div className="flex justify-center gap-4 mb-12">
+        <div className="flex justify-center gap-3 mb-12">
           {(['brain', 'tools', 'runtime'] as const).map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className={`px-6 py-2 font-mono text-sm border transition-all ${
+              className={`px-6 py-2.5 font-sans text-sm rounded-lg transition-all ${
                 activeTab === tab
-                  ? 'border-ax-cyan text-ax-cyan shadow-[0_0_15px_rgba(0,255,159,0.3)]'
-                  : 'border-ax-border text-ax-text-dim hover:border-ax-cyan/50'
+                  ? 'bg-ax-primary text-white'
+                  : 'bg-ax-bg-elevated border border-ax-border text-ax-text-secondary hover:bg-ax-bg-hover hover:text-ax-text'
               }`}
             >
-              {tab.toUpperCase()} ({components[tab].length})
+              {tab.charAt(0).toUpperCase() + tab.slice(1)} ({components[tab].length})
             </button>
           ))}
         </div>
@@ -73,26 +84,26 @@ export default function ComponentShowcaseSection() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4 }}
-          className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
+          className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
         >
           {components[activeTab].map((comp, i) => (
             <motion.div
               key={comp.name}
-              initial={{ opacity: 0, scale: 0.9 }}
+              initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.3, delay: i * 0.05 }}
-              className="bg-ax-bg-elevated/80 backdrop-blur-md border border-ax-border p-4 hover:border-ax-cyan transition-all group cursor-pointer"
+              className="card-hover group cursor-pointer"
             >
-              <div className="text-3xl mb-3 group-hover:animate-float">
+              <div className="text-4xl mb-4">
                 {comp.icon}
               </div>
-              <div className="font-mono text-xs text-ax-cyan mb-1">
-                {activeTab.toUpperCase()}
+              <div className="font-sans text-xs text-ax-text-tertiary mb-2 uppercase tracking-wide">
+                {activeTab}
               </div>
-              <div className="font-mono text-sm text-ax-text mb-2 group-hover:chrome-aberration transition-all">
-                {comp.name}
+              <div className="font-sans text-base font-semibold text-ax-text mb-2">
+                {comp.name.replace(/_/g, ' ')}
               </div>
-              <div className="font-mono text-[10px] text-ax-text-dim">
+              <div className="font-sans text-xs text-ax-text-secondary">
                 {comp.meta}
                 {comp.ctx && ` · ${comp.ctx}`}
                 {comp.rate && ` · ${comp.rate}`}

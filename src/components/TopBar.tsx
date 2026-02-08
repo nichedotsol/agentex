@@ -10,32 +10,37 @@ export default function TopBar({ onExportClick }: TopBarProps) {
   const { settings } = useBuildStore()
 
   return (
-    <div className="h-12 px-5 bg-ax-bg-elevated/90 backdrop-blur-sm border-b border-ax-border flex items-center justify-between font-mono relative z-20">
-      <div className="text-[13px] font-semibold text-ax-cyan tracking-[2px] chrome-aberration-strong">
-        AGENTEX/BUILDER
+    <div className="h-14 px-6 glass-panel border-b border-ax-border flex items-center justify-between relative z-20">
+      <div className="flex items-center gap-3">
+        <div className="text-base font-semibold text-ax-text font-sans">
+          AgentEX
+        </div>
+        <div className="h-4 w-px bg-ax-border" />
+        <div className="text-sm text-ax-text-secondary font-sans">
+          Builder
+        </div>
       </div>
       
-      <div className="flex items-center gap-5 text-[11px] text-ax-text-dim">
+      <div className="flex items-center gap-6 text-sm text-ax-text-secondary font-sans">
         <span className="flex items-center gap-2">
-          <div className="w-1.5 h-1.5 rounded-full bg-ax-cyan animate-pulse-slow shadow-[0_0_8px_rgba(0,255,159,0.8)]" />
-          LIVE
+          <div className="w-2 h-2 rounded-full bg-ax-success animate-pulse-subtle" />
+          <span>Live</span>
         </span>
-        <span>{settings.name}</span>
-        <span>MODIFIED: 2M AGO</span>
+        <span className="text-ax-text-tertiary">{settings.name}</span>
       </div>
       
       <div className="flex gap-2">
-        <button className="px-3 py-1.5 bg-transparent border border-ax-border text-ax-text font-mono text-[11px] hover:border-ax-cyan hover:text-ax-cyan hover:shadow-[0_0_10px_rgba(0,255,159,0.3)] transition-all">
-          SAVE
+        <button className="px-4 py-2 bg-transparent border border-ax-border text-ax-text-secondary rounded-lg font-sans text-sm hover:bg-ax-bg-hover hover:border-ax-border-hover hover:text-ax-text transition-all duration-200">
+          Save
         </button>
-        <button className="px-3 py-1.5 bg-transparent border border-ax-border text-ax-text font-mono text-[11px] hover:border-ax-cyan hover:text-ax-cyan hover:shadow-[0_0_10px_rgba(0,255,159,0.3)] transition-all">
-          TEST
+        <button className="px-4 py-2 bg-transparent border border-ax-border text-ax-text-secondary rounded-lg font-sans text-sm hover:bg-ax-bg-hover hover:border-ax-border-hover hover:text-ax-text transition-all duration-200">
+          Test
         </button>
         <button 
           onClick={onExportClick}
-          className="px-3 py-1.5 bg-ax-cyan text-ax-bg border border-ax-cyan font-mono text-[11px] font-semibold hover:shadow-[0_0_20px_rgba(0,255,159,0.6)] transition-all"
+          className="px-4 py-2 bg-ax-primary text-white rounded-lg font-sans text-sm font-medium hover:bg-ax-primary-hover transition-all duration-200 shadow-lg shadow-ax-primary/20"
         >
-          EXPORT
+          Export
         </button>
       </div>
     </div>

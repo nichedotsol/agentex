@@ -53,24 +53,24 @@ export default function ComponentShowcase() {
 
   if (loading) {
     return (
-      <div className="bg-ax-bg-elevated/80 backdrop-blur-md border-r border-ax-border flex items-center justify-center p-8">
-        <div className="font-mono text-xs text-ax-text-dim">LOADING...</div>
+      <div className="glass-panel border-r border-ax-border flex items-center justify-center p-8">
+        <div className="font-sans text-sm text-ax-text-secondary">Loading components...</div>
       </div>
     )
   }
 
   return (
-    <div className="bg-ax-bg-elevated/80 backdrop-blur-md border-r border-ax-border flex flex-col overflow-hidden">
-      <div className="p-4 border-b border-ax-border">
-        <div className="font-mono text-[11px] text-ax-text-dim uppercase tracking-[2px] mb-2">
-          Component Showcase
+    <div className="glass-panel border-r border-ax-border flex flex-col overflow-hidden">
+      <div className="p-5 border-b border-ax-border">
+        <div className="font-sans text-sm font-semibold text-ax-text mb-3">
+          Components
         </div>
         <input
           type="text"
-          placeholder="search..."
+          placeholder="Search components..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full px-2.5 py-2 bg-ax-bg/50 border border-ax-border text-ax-text font-mono text-xs outline-none focus:border-ax-cyan focus:shadow-[0_0_10px_rgba(0,255,159,0.2)] transition-all placeholder:text-ax-text-dim"
+          className="w-full px-3 py-2.5 bg-ax-bg border border-ax-border rounded-lg text-ax-text font-sans text-sm outline-none focus:border-ax-primary focus:ring-1 focus:ring-ax-primary transition-all placeholder:text-ax-text-tertiary"
         />
       </div>
 
@@ -227,8 +227,7 @@ function ComponentCard({
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.05 }}
       onClick={onAdd}
-      className="group relative bg-ax-bg border border-ax-border p-3 cursor-pointer hover:border-ax-cyan transition-all overflow-hidden"
-      style={{ borderColor: component.metadata.color ? `${component.metadata.color}40` : undefined }}
+      className="group relative card-hover p-4 cursor-pointer overflow-hidden"
     >
       {/* Hover glow effect */}
       <div 
@@ -239,29 +238,29 @@ function ComponentCard({
       />
       
       {/* Preview icon */}
-      <div className="text-3xl mb-2 group-hover:animate-float relative z-10">
+      <div className="text-4xl mb-3 relative z-10">
         {component.metadata.icon}
       </div>
       
       {/* Component info */}
       <div className="relative z-10">
-        <div className="font-mono text-[10px] text-ax-cyan mb-1">
-          {component.type.toUpperCase()}
+        <div className="font-sans text-xs text-ax-text-tertiary mb-1.5 uppercase tracking-wide">
+          {component.type}
         </div>
-        <div className="font-mono text-xs text-ax-text mb-2 group-hover:chrome-aberration transition-all">
-          {component.name.replace(/-/g, '_').toUpperCase()}
+        <div className="font-sans text-sm font-semibold text-ax-text mb-2">
+          {component.name.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
         </div>
-        <div className="font-mono text-[9px] text-ax-text-dim leading-tight">
+        <div className="font-sans text-xs text-ax-text-secondary leading-relaxed">
           {meta}
           {ctx && ` · ${ctx}`}
           {rate && ` · ${rate}`}
         </div>
         {component.metadata.tags && component.metadata.tags.length > 0 && (
-          <div className="mt-2 flex flex-wrap gap-1">
+          <div className="mt-3 flex flex-wrap gap-1.5">
             {component.metadata.tags.slice(0, 2).map((tag) => (
               <span
                 key={tag}
-                className="font-mono text-[8px] px-1.5 py-0.5 bg-ax-bg-elevated border border-ax-border text-ax-text-dim"
+                className="font-sans text-[10px] px-2 py-0.5 bg-ax-bg border border-ax-border rounded text-ax-text-secondary"
               >
                 {tag}
               </span>
@@ -271,8 +270,8 @@ function ComponentCard({
       </div>
 
       {/* Add indicator */}
-      <div className="absolute top-2 right-2 w-4 h-4 border border-ax-cyan rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-        <span className="text-[10px] text-ax-cyan">+</span>
+      <div className="absolute top-3 right-3 w-6 h-6 bg-ax-primary rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity shadow-lg">
+        <span className="text-white text-xs font-bold">+</span>
       </div>
     </motion.div>
   )

@@ -75,18 +75,18 @@ export default function Canvas() {
         {isEmpty ? (
           <div className="h-full flex items-center justify-center">
             <motion.div 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="text-center font-mono"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-center"
             >
-              <div className="text-5xl text-ax-text-dim opacity-30 mb-4 font-pixel">
+              <div className="text-6xl text-ax-text-tertiary opacity-20 mb-6 font-sans font-light">
                 [ ]
               </div>
-              <div className="text-xs text-ax-text-dim mb-1">
-                CLICK COMPONENTS TO ADD
+              <div className="text-base text-ax-text-secondary mb-2 font-sans">
+                Click components to add
               </div>
-              <div className="text-[10px] text-ax-text-dim opacity-50">
-                start with brain component
+              <div className="text-sm text-ax-text-tertiary font-sans">
+                Start with a brain component
               </div>
             </motion.div>
           </div>
@@ -131,9 +131,8 @@ function FloatingWindow({
   }
 
   const comp = component.component
-  const componentColor = comp.metadata?.color || '#00ff9f'
   const componentIcon = comp.metadata?.icon || '⚙️'
-  const componentName = comp.name?.replace(/-/g, '_').toUpperCase() || component.id
+  const componentName = comp.name?.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()) || component.id
 
   return (
     <Draggable
@@ -142,67 +141,72 @@ function FloatingWindow({
       onStop={handleStop}
     >
       <motion.div
-        initial={{ scale: 0, opacity: 0 }}
+        initial={{ scale: 0.95, opacity: 0 }}
         animate={{ 
-          scale: selected ? 1.05 : 1, 
+          scale: selected ? 1.02 : 1, 
           opacity: 1,
-          boxShadow: selected 
-            ? `0 0 30px ${componentColor}80` 
-            : '0 0 40px rgba(0, 255, 159, 0.15)'
         }}
         onClick={onSelect}
-        className="absolute window-glass window-shadow cursor-pointer"
+        className={`absolute card cursor-pointer ${selected ? 'ring-2 ring-ax-primary' : ''}`}
         style={{ 
-          width: 280,
-          borderColor: selected ? componentColor : 'rgba(0, 255, 159, 0.2)'
+          width: 300,
         }}
       >
-        {/* Window title bar */}
-        <div className="window-handle px-3 py-2 border-b border-ax-border/50 flex items-center justify-between cursor-move">
-          <div className="flex items-center gap-2">
-            <div className="flex gap-1">
-              <div 
-                className="w-2 h-2 rounded-full bg-ax-red/60 hover:bg-ax-red cursor-pointer" 
-                onClick={(e) => {
-                  e.stopPropagation()
-                  onRemove()
-                }} 
-              />
-              <div className="w-2 h-2 rounded-full bg-ax-text-dim/30" />
-              <div className="w-2 h-2 rounded-full bg-ax-cyan/30" />
+        {/* Window header */}
+        <div className="window-handle px-4 py-3 border-b border-ax-border flex items-center justify-between cursor-move">
+          <div className="flex items-center gap-3">
+            <div className="text-xl">{componentIcon}</div>
+            <div>
+              <div className="font-sans text-xs text-ax-text-tertiary uppercase tracking-wide">
+                {comp.type || 'Component'}
+              </div>
+              <div className="font-sans text-sm font-semibold text-ax-text">
+                {componentName}
+              </div>
             </div>
-            <span className="font-mono text-[10px] text-ax-text-dim ml-2">
-              {comp.type?.toUpperCase() || 'COMPONENT'}
-            </span>
           </div>
-          <div className="font-mono text-[9px] text-ax-text-dim">
-            {component.id.split('_').pop()?.slice(-6)}
-          </div>
+          <button
+            onClick={(e) => {
+              e.stopPropagation()
+              onRemove()
+            }}
+            className="w-5 h-5 rounded-full bg-ax-error/20 hover:bg-ax-error/30 flex items-center justify-center transition-colors"
+          >
+            <span className="text-ax-error text-xs">×</span>
+          </button>
         </div>
 
         {/* Window content */}
         <div className="p-4">
-          <div className="text-2xl mb-3">{componentIcon}</div>
-          <div className="font-mono text-sm text-ax-cyan mb-2">
-            {componentName}
-          </div>
-          <div className="font-mono text-[10px] text-ax-text-dim space-y-1">
-            {comp.metadata?.description && (
-              <div className="text-[9px] mb-2 opacity-70">
-                {comp.metadata.description.substring(0, 60)}...
+          {comp.metadata?.description && (
+            <div className="font-sans text-xs text-ax-text-secondary mb-3 leading-relaxed">
+              {comp.metadata.description.substring(0, 80)}...
+            </div>
+          )}
+          <div className="space-y-2">
+            {comp.resources?.token_cost && (
+              <div className="flex justify-between items-center">
+                <span className="font-sans text-xs text-ax-text-tertiary">Cost</span>
+                <span className="font-sans text-xs text-ax-text">{comp.resources.token_cost.split(' per')[0]}</span>
               </div>
             )}
-            {comp.resources?.token_cost && (
-              <div>COST: {comp.resources.token_cost.split(' per')[0]}</div>
-            )}
             {comp.resources?.context_window && (
-              <div>CTX: {(comp.resources.context_window / 1000).toFixed(0)}K</div>
+              <div className="flex justify-between items-center">
+                <span className="font-sans text-xs text-ax-text-tertiary">Context</span>
+                <span className="font-sans text-xs text-ax-text">{(comp.resources.context_window / 1000).toFixed(0)}K</span>
+              </div>
             )}
             {comp.config?.platform && (
-              <div>PLATFORM: {comp.config.platform}</div>
+              <div className="flex justify-between items-center">
+                <span className="font-sans text-xs text-ax-text-tertiary">Platform</span>
+                <span className="font-sans text-xs text-ax-text">{comp.config.platform}</span>
+              </div>
             )}
             {comp.provider && (
-              <div>PROVIDER: {comp.provider}</div>
+              <div className="flex justify-between items-center">
+                <span className="font-sans text-xs text-ax-text-tertiary">Provider</span>
+                <span className="font-sans text-xs text-ax-text">{comp.provider}</span>
+              </div>
             )}
           </div>
         </div>

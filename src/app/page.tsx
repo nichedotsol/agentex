@@ -12,7 +12,7 @@ import BackgroundLayers from '@/components/BackgroundLayers'
 export default function LandingPage() {
   return (
     <ErrorBoundary>
-      <main className="relative min-h-screen bg-black text-white">
+          <main className="relative min-h-screen bg-ax-bg text-ax-text">
         <BackgroundLayers />
         
         <div className="relative z-10">

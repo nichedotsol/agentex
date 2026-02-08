@@ -32,10 +32,20 @@ export default function HowItWorks() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="font-mono text-3xl md:text-4xl text-ax-cyan text-center mb-16 chrome-aberration"
+          className="font-sans text-4xl md:text-5xl font-bold text-ax-text text-center mb-4"
         >
-          HOW IT WORKS
+          How It Works
         </motion.h2>
+        
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+          className="text-center text-ax-text-secondary text-lg mb-16 max-w-2xl mx-auto"
+        >
+          Build production-ready AI agents in three simple steps
+        </motion.p>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {steps.map((step, i) => (
@@ -50,19 +60,19 @@ export default function HowItWorks() {
               {/* Connection line */}
               {i < steps.length - 1 && (
                 <div className="hidden md:block absolute top-12 left-full w-full h-0.5 bg-ax-border -z-10" style={{ width: 'calc(100% - 2rem)' }}>
-                  <div className="absolute right-0 top-1/2 transform -translate-y-1/2 w-2 h-2 bg-ax-cyan rounded-full" />
+                  <div className="absolute right-0 top-1/2 transform -translate-y-1/2 w-2 h-2 bg-ax-primary rounded-full" />
                 </div>
               )}
 
-              <div className="bg-ax-bg-elevated/80 backdrop-blur-md border border-ax-border p-8 hover:border-ax-cyan transition-all">
-                <div className="text-5xl mb-4">{step.icon}</div>
-                <div className="font-mono text-2xl text-ax-cyan mb-2 chrome-aberration">
+              <div className="card-hover">
+                <div className="text-5xl mb-5">{step.icon}</div>
+                <div className="font-sans text-3xl font-bold text-ax-primary mb-3">
                   {step.number}
                 </div>
-                <h3 className="font-mono text-lg text-ax-text mb-3">
+                <h3 className="font-sans text-lg font-semibold text-ax-text mb-3">
                   {step.title}
                 </h3>
-                <p className="font-sans text-sm text-ax-text-dim">
+                <p className="font-sans text-sm text-ax-text-secondary leading-relaxed">
                   {step.description}
                 </p>
               </div>
