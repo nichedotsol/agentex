@@ -79,16 +79,66 @@ export async function exportToGitHub(
   repoName: string,
   onProgress?: (progress: ExportProgress) => void
 ): Promise<string> {
-  // This would require GitHub API integration
-  // For now, return a placeholder
-  onProgress?.({
-    step: 'GitHub Export',
-    progress: 0,
-    status: 'processing',
-    message: 'GitHub export requires API integration'
-  })
-  
-  throw new Error('GitHub export not yet implemented. Use local export instead.')
+  try {
+    onProgress?.({
+      step: 'Generating code',
+      progress: 10,
+      status: 'processing',
+      message: 'Generating code files...'
+    })
+
+    const files = generateCode(buildState, {
+      format,
+      includeDependencies: true,
+      includeReadme: true
+    })
+
+    onProgress?.({
+      step: 'Creating repository',
+      progress: 50,
+      status: 'processing',
+      message: 'Creating GitHub repository...'
+    })
+
+    const response = await fetch('/api/github/export', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        githubToken,
+        repoName,
+        files: files.map(f => ({
+          path: f.path,
+          content: f.content
+        }))
+      })
+    })
+
+    if (!response.ok) {
+      const error = await response.json()
+      throw new Error(error.error || 'Failed to export to GitHub')
+    }
+
+    const result = await response.json()
+
+    onProgress?.({
+      step: 'Complete',
+      progress: 100,
+      status: 'success',
+      message: `Repository created: ${result.repoUrl}`
+    })
+
+    return result.repoUrl
+  } catch (error) {
+    onProgress?.({
+      step: 'Error',
+      progress: 0,
+      status: 'error',
+      error: error instanceof Error ? error.message : 'Unknown error occurred'
+    })
+    throw error
+  }
 }
 
 export async function exportToVercel(

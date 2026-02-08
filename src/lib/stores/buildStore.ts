@@ -44,6 +44,7 @@ export interface BuildState {
   loadBuild: (config: any) => void
   resetBuild: () => void
   getAllComponents: () => BuildComponent[]
+  setBuildState: (state: Partial<BuildState>) => void
 }
 
 const defaultSettings: BuildSettings = {
@@ -251,6 +252,18 @@ export const useBuildStore = create<BuildState>()(
         components.push(...state.tools)
         if (state.runtime) components.push(state.runtime)
         return components
+      },
+
+      setBuildState: (newState) => {
+        set((state) => {
+          const mergedState = { ...state, ...newState }
+          const buildConfig = getBuildConfig(mergedState as BuildState)
+          const validation = validateBuild(buildConfig)
+          return {
+            ...mergedState,
+            validation
+          } as BuildState
+        })
       }
     }),
     {

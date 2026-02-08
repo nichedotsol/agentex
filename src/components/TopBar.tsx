@@ -4,9 +4,11 @@ import { useBuildStore } from '@/lib/stores/buildStore'
 
 interface TopBarProps {
   onExportClick: () => void
+  onTemplateClick?: () => void
+  onTestClick?: () => void
 }
 
-export default function TopBar({ onExportClick }: TopBarProps) {
+export default function TopBar({ onExportClick, onTemplateClick, onTestClick }: TopBarProps) {
   const { settings } = useBuildStore()
 
   return (
@@ -30,15 +32,25 @@ export default function TopBar({ onExportClick }: TopBarProps) {
       </div>
       
       <div className="flex gap-2">
-        <button className="px-4 py-2 bg-transparent border border-ax-border text-ax-text-secondary rounded-lg font-sans text-sm hover:bg-ax-bg-hover hover:border-ax-border-hover hover:text-ax-text transition-all duration-200">
-          Save
-        </button>
-        <button className="px-4 py-2 bg-transparent border border-ax-border text-ax-text-secondary rounded-lg font-sans text-sm hover:bg-ax-bg-hover hover:border-ax-border-hover hover:text-ax-text transition-all duration-200">
-          Test
-        </button>
+        {onTemplateClick && (
+          <button 
+            onClick={onTemplateClick}
+            className="px-4 py-2 bg-transparent border border-ax-border text-ax-text-secondary rounded-lg font-sans text-sm hover:bg-ax-bg-hover hover:border-ax-border-hover hover:text-ax-text transition-all duration-200 micro-lift"
+          >
+            Templates
+          </button>
+        )}
+        {onTestClick && (
+          <button 
+            onClick={onTestClick}
+            className="px-4 py-2 bg-transparent border border-ax-border text-ax-text-secondary rounded-lg font-sans text-sm hover:bg-ax-bg-hover hover:border-ax-border-hover hover:text-ax-text transition-all duration-200 micro-lift"
+          >
+            Test
+          </button>
+        )}
         <button 
           onClick={onExportClick}
-          className="px-4 py-2 bg-ax-primary text-white rounded-lg font-sans text-sm font-medium hover:bg-ax-primary-hover transition-all duration-200 shadow-lg shadow-ax-primary/20"
+          className="px-4 py-2 bg-ax-primary text-white rounded-lg font-sans text-sm font-medium hover:bg-ax-primary-hover transition-all duration-200 shadow-lg shadow-ax-primary/20 micro-bounce"
         >
           Export
         </button>

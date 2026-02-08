@@ -1,0 +1,25 @@
+{
+  "id": "content-creator-agent",
+  "name": "Content Creator Agent",
+  "description": "Creates content and posts to social media",
+  "category": "marketing",
+  "author": "AgentEX",
+  "version": "1.0.0",
+  "components": {
+    "brain": "brain-claude-sonnet-4",
+    "tools": ["tool-image-generation", "tool-twitter-post", "tool-web-search"],
+    "runtime": "runtime-vercel"
+  },
+  "settings": {
+    "name": "Content Creator Agent",
+    "description": "Generates images, creates content, and posts to social media",
+    "author": "AgentEX",
+    "token_budget": 8192,
+    "version": "0.1.0"
+  },
+  "config": {
+    "temperature": 0.8,
+    "max_tokens": 4096,
+    "system_prompt": "You are a creative content creator. Generate engaging content and visuals for social media."
+  }
+}

@@ -10,6 +10,9 @@ import BackgroundLayers from '@/components/BackgroundLayers'
 import ConfigPanel from '@/components/ConfigPanel'
 import ExportModal from '@/components/ExportModal'
 import NaturalLanguageInput from '@/components/NaturalLanguageInput'
+import TemplateSelector from '@/components/TemplateSelector'
+import AgentTester from '@/components/AgentTester'
+import AutoSaveIndicator from '@/components/AutoSaveIndicator'
 import { useBuildStore } from '@/lib/stores/buildStore'
 import { useUIStore } from '@/lib/stores/uiStore'
 import { useRegistryStore } from '@/lib/stores/registryStore'
@@ -48,12 +51,18 @@ export default function BuilderPage() {
   }
 
   const [exportModalOpen, setExportModalOpen] = useState(false)
+  const [templateModalOpen, setTemplateModalOpen] = useState(false)
+  const [testerModalOpen, setTesterModalOpen] = useState(false)
 
   return (
     <main className="h-screen flex flex-col relative overflow-hidden">
       <BackgroundLayers />
       
-      <TopBar onExportClick={() => setExportModalOpen(true)} />
+          <TopBar 
+            onExportClick={() => setExportModalOpen(true)}
+            onTemplateClick={() => setTemplateModalOpen(true)}
+            onTestClick={() => setTesterModalOpen(true)}
+          />
       
       <div className="flex-1 flex flex-col overflow-hidden relative z-10">
         <div className="p-6 border-b border-ax-border">
@@ -76,6 +85,19 @@ export default function BuilderPage() {
         isOpen={exportModalOpen} 
         onClose={() => setExportModalOpen(false)} 
       />
+
+      {/* Template Selector */}
+      {templateModalOpen && (
+        <TemplateSelector onClose={() => setTemplateModalOpen(false)} />
+      )}
+
+      {/* Agent Tester */}
+      {testerModalOpen && (
+        <AgentTester onClose={() => setTesterModalOpen(false)} />
+      )}
+
+      {/* Auto-save Indicator */}
+      <AutoSaveIndicator />
     </main>
   )
 }

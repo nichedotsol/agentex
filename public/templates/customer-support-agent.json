@@ -1,0 +1,25 @@
+{
+  "id": "customer-support-agent",
+  "name": "Customer Support Agent",
+  "description": "A customer support agent with email and calendar integration",
+  "category": "business",
+  "author": "AgentEX",
+  "version": "1.0.0",
+  "components": {
+    "brain": "brain-gpt-4",
+    "tools": ["tool-email", "tool-calendar", "tool-database-query"],
+    "runtime": "runtime-vercel"
+  },
+  "settings": {
+    "name": "Customer Support Agent",
+    "description": "Handles customer inquiries via email and manages calendar appointments",
+    "author": "AgentEX",
+    "token_budget": 4096,
+    "version": "0.1.0"
+  },
+  "config": {
+    "temperature": 0.5,
+    "max_tokens": 2048,
+    "system_prompt": "You are a helpful customer support agent. Be professional, empathetic, and solution-oriented."
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "version": "1.0.0",
+  "last_updated": "2026-02-08",
+  "templates": [
+    "research-agent.json",
+    "customer-support-agent.json",
+    "content-creator-agent.json"
+  ],
+  "categories": {
+    "productivity": {
+      "name": "Productivity",
+      "description": "Agents that help with work and productivity",
+      "color": "#6366f1"
+    },
+    "business": {
+      "name": "Business",
+      "description": "Agents for business operations",
+      "color": "#10b981"
+    },
+    "marketing": {
+      "name": "Marketing",
+      "description": "Agents for marketing and content creation",
+      "color": "#f59e0b"
+    }
+  }
+}
