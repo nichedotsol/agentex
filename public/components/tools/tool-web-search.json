@@ -1,0 +1,66 @@
+{
+  "id": "tool-web-search",
+  "type": "tool",
+  "name": "Web Search",
+  "version": "1.0.0",
+  "provider": "brave",
+  "config": {
+    "endpoint": "https://api.search.brave.com/res/v1/web/search",
+    "auth_type": "api_key",
+    "method": "GET",
+    "parameters": {
+      "required": ["q"],
+      "optional": ["count", "offset", "safesearch", "freshness"]
+    }
+  },
+  "interface": {
+    "inputs": ["q", "count", "offset"],
+    "outputs": ["results", "query"],
+    "capabilities": [
+      "webSearch",
+      "imageSearch",
+      "newsSearch",
+      "videoSearch"
+    ]
+  },
+  "resources": {
+    "rate_limits": {
+      "requests_per_minute": 60
+    }
+  },
+  "metadata": {
+    "author": "AgentEX",
+    "description": "Search the web using Brave Search API",
+    "tags": ["search", "web", "information", "data"],
+    "icon": "🔍",
+    "color": "#FF9500"
+  },
+  "category": "data",
+  "requiredEnv": [
+    {
+      "key": "BRAVE_API_KEY",
+      "purpose": "Authenticate with Brave Search API",
+      "getFrom": "https://brave.com/search/api",
+      "required": true,
+      "example": "BSA_xxxxxxxxxxxxxxxxxxxx",
+      "description": "Get your free API key from Brave Search"
+    }
+  ],
+  "implementation": {
+    "npm": ["axios"],
+    "template": "templates/tools/web-search.ts"
+  },
+  "cost": {
+    "tier": "freemium",
+    "estimate": "Free tier: 2,000 queries/month, paid from $3/1K queries",
+    "freeTier": {
+      "limit": "2,000 queries per month",
+      "description": "Free tier includes 2,000 queries/month"
+    },
+    "paidTier": {
+      "startingAt": "$3 per 1,000 queries",
+      "description": "Higher rate limits, more features"
+    }
+  },
+  "documentation": "https://brave.com/search/api/docs"
+}

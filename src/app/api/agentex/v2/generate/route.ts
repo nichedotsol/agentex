@@ -5,7 +5,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { createBuild, updateBuildStatus } from '@/lib/utils/build-store';
-import { loadTool } from '@/lib/utils/tool-loader';
+import { loadToolServer } from '@/lib/tools/server-loader';
 import { generateCode } from '@/lib/utils/codeGenerator';
 import { generateTests, generateVitestConfig, generateTestUtils, mergePackageJson } from '@/lib/generators/test-generator';
 import { generateSetupDocs } from '@/lib/generators/setup-generator';
@@ -94,7 +94,22 @@ async function queueGenerationJob(buildId: string, config: GenerateRequest) {
     // Load tools
     updateBuildStatus(buildId, { progress: 10 });
     const toolSpecs = await Promise.all(
-      config.tools.map(toolId => loadTool(toolId))
+      config.tools.map(async (toolId: string) => {
+        try {
+          return await loadToolServer(toolId);
+        } catch {
+          // Try with tool- prefix
+          try {
+            return await loadToolServer(`tool-${toolId}`);
+          } catch {
+            // Try without tool- prefix if toolId has it
+            if (toolId.startsWith('tool-')) {
+              return await loadToolServer(toolId.replace('tool-', ''));
+            }
+            throw new Error(`Tool "${toolId}" not found`);
+          }
+        }
+      })
     );
 
     // Build agent configuration

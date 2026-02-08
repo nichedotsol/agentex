@@ -1,0 +1,71 @@
+{
+  "id": "tool-redis-cache",
+  "type": "tool",
+  "name": "Redis Cache",
+  "version": "1.0.0",
+  "provider": "redis",
+  "config": {
+    "endpoint": "redis://",
+    "auth_type": "password",
+    "method": "COMMAND",
+    "parameters": {
+      "required": ["command"],
+      "optional": ["key", "value", "ttl"]
+    }
+  },
+  "interface": {
+    "inputs": ["command", "key", "value", "ttl"],
+    "outputs": ["result"],
+    "capabilities": [
+      "get",
+      "set",
+      "delete",
+      "exists",
+      "expire",
+      "increment",
+      "decrement",
+      "publish",
+      "subscribe"
+    ]
+  },
+  "resources": {
+    "rate_limits": {
+      "operations_per_second": 1000
+    }
+  },
+  "metadata": {
+    "author": "AgentEX",
+    "description": "Redis caching and key-value storage",
+    "tags": ["cache", "redis", "storage", "key-value"],
+    "icon": "⚡",
+    "color": "#DC382D"
+  },
+  "category": "storage",
+  "requiredEnv": [
+    {
+      "key": "REDIS_URL",
+      "purpose": "Redis connection string",
+      "getFrom": "Your Redis provider (Upstash, Redis Cloud, etc.)",
+      "required": true,
+      "example": "redis://:password@host:6379",
+      "description": "Full Redis connection URL"
+    }
+  ],
+  "implementation": {
+    "npm": ["redis", "@types/redis"],
+    "template": "templates/tools/redis-cache.ts"
+  },
+  "cost": {
+    "tier": "freemium",
+    "estimate": "Free tier available (Upstash), paid from $10/month",
+    "freeTier": {
+      "limit": "10,000 commands/day",
+      "description": "Free tier available on Upstash"
+    },
+    "paidTier": {
+      "startingAt": "$10/month",
+      "description": "Higher limits, better performance"
+    }
+  },
+  "documentation": "https://redis.io/docs"
+}

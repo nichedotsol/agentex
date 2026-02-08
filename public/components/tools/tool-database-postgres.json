@@ -1,0 +1,68 @@
+{
+  "id": "tool-database-postgres",
+  "type": "tool",
+  "name": "PostgreSQL Database",
+  "version": "1.0.0",
+  "provider": "postgres",
+  "config": {
+    "endpoint": "postgresql://",
+    "auth_type": "none",
+    "method": "QUERY",
+    "parameters": {
+      "required": ["query"],
+      "optional": ["params", "transaction"]
+    }
+  },
+  "interface": {
+    "inputs": ["query", "params"],
+    "outputs": ["rows", "rowCount"],
+    "capabilities": [
+      "executeQuery",
+      "executeTransaction",
+      "createTable",
+      "insertData",
+      "updateData",
+      "deleteData"
+    ]
+  },
+  "resources": {
+    "rate_limits": {
+      "queries_per_second": 100
+    }
+  },
+  "metadata": {
+    "author": "AgentEX",
+    "description": "PostgreSQL database operations and queries",
+    "tags": ["database", "sql", "postgres", "storage"],
+    "icon": "🐘",
+    "color": "#336791"
+  },
+  "category": "storage",
+  "requiredEnv": [
+    {
+      "key": "POSTGRES_URL",
+      "purpose": "PostgreSQL connection string",
+      "getFrom": "Your database provider (Supabase, Neon, Railway, etc.)",
+      "required": true,
+      "example": "postgresql://user:pass@host:5432/dbname",
+      "description": "Full PostgreSQL connection URL"
+    }
+  ],
+  "implementation": {
+    "npm": ["pg", "@types/pg"],
+    "template": "templates/tools/database-postgres.ts"
+  },
+  "cost": {
+    "tier": "freemium",
+    "estimate": "Free tier available (Supabase, Neon), paid from $5/month",
+    "freeTier": {
+      "limit": "500MB storage, 2GB bandwidth",
+      "description": "Free tier available on Supabase, Neon, Railway"
+    },
+    "paidTier": {
+      "startingAt": "$5/month",
+      "description": "More storage, better performance"
+    }
+  },
+  "documentation": "https://www.postgresql.org/docs"
+}

@@ -1,156 +1,102 @@
 {
   "name": "agentex_builder",
-  "description": "Build and deploy AI agents programmatically using the AgentEX standard. Validate requirements, generate code, deploy to hosting platforms, and discover tools.",
+  "description": "Build and deploy AI agents programmatically using the AgentEX standard. Validate requirements before building, generate production-ready code, track build status, discover available tools, and deploy to hosting platforms. Always validate before generating to catch issues early.",
   "input_schema": {
     "type": "object",
     "properties": {
       "action": {
         "type": "string",
         "enum": ["validate", "generate", "status", "deploy", "search_tools", "get_tool"],
-        "description": "The action to perform"
+        "description": "Action to perform: 'validate' (check if agent requirements are valid before building), 'generate' (create agent code after validation passes), 'status' (check build progress), 'deploy' (publish to hosting platform), 'search_tools' (discover available tools by category/capability), 'get_tool' (get detailed info about specific tool)"
       },
-      "validate": {
+      "name": {
+        "type": "string",
+        "description": "Agent name (required for validate/generate actions)"
+      },
+      "description": {
+        "type": "string",
+        "description": "What the agent should do, in plain English (required for validate/generate actions)"
+      },
+      "brain": {
+        "type": "string",
+        "description": "AI model to power the agent. Options: 'claude-3-5-sonnet' (recommended), 'gpt-4', 'gpt-4-turbo', 'llama-3-70b' (required for validate/generate actions)"
+      },
+      "tools": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "List of tool IDs to include in the agent. Use search_tools action first to discover available tools. Example: ['helius-rpc', 'resend-email', 'web-search'] (required for validate/generate actions)"
+      },
+      "runtime": {
+        "type": "string",
+        "description": "Target deployment runtime. Options: 'vercel' (serverless, free tier), 'railway' (always-on, $5/mo), 'render' (always-on, free tier available), 'fly' (edge deployment). Leave empty and validation will recommend the best option based on your requirements (optional for validate, required for generate)"
+      },
+      "config": {
         "type": "object",
-        "description": "Parameters for validating agent requirements",
+        "description": "Optional configuration for the agent (only for generate action)",
         "properties": {
-          "name": {
-            "type": "string",
-            "description": "Agent name"
+          "temperature": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 2,
+            "description": "Model temperature for responses. 0 = deterministic, 2 = creative. Default: 0.7"
           },
-          "description": {
-            "type": "string",
-            "description": "Agent description"
+          "maxTokens": {
+            "type": "number",
+            "description": "Maximum tokens per response. Default: 4096"
           },
-          "brain": {
+          "cronSchedule": {
             "type": "string",
-            "description": "Brain provider (e.g., 'openai', 'anthropic', 'openclaw')"
+            "description": "Cron schedule for periodic execution. Example: '0 * * * *' runs hourly, '0 0 * * *' runs daily. Only use if agent needs scheduled tasks."
           },
-          "tools": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "description": "List of tool IDs to use"
-          },
-          "runtime": {
-            "type": "string",
-            "description": "Preferred runtime (optional)"
+          "timeout": {
+            "type": "number",
+            "description": "Maximum execution time in seconds. Default: 30. Use higher values for long-running tasks."
           }
         }
       },
-      "generate": {
+      "buildId": {
+        "type": "string",
+        "description": "Build ID returned from generate action (required for status/deploy actions)"
+      },
+      "platform": {
+        "type": "string",
+        "enum": ["vercel", "github", "railway"],
+        "description": "Deployment platform (required for deploy action). 'vercel' = one-click Vercel deployment, 'github' = create GitHub repository, 'railway' = deploy to Railway"
+      },
+      "credentials": {
         "type": "object",
-        "description": "Parameters for generating agent code",
+        "description": "Platform credentials for deployment (required for deploy action)",
         "properties": {
-          "name": {
+          "apiKey": {
             "type": "string",
-            "description": "Agent name"
+            "description": "API key for the deployment platform. Get from: Vercel (vercel.com/account/tokens), Railway (railway.app/account/tokens), GitHub (github.com/settings/tokens)"
           },
-          "description": {
+          "projectName": {
             "type": "string",
-            "description": "Agent description"
-          },
-          "brain": {
-            "type": "string",
-            "description": "Brain provider"
-          },
-          "tools": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "description": "List of tool IDs"
-          },
-          "runtime": {
-            "type": "string",
-            "description": "Target runtime"
-          },
-          "config": {
-            "type": "object",
-            "properties": {
-              "temperature": {
-                "type": "number",
-                "minimum": 0,
-                "maximum": 2
-              },
-              "maxTokens": {
-                "type": "number"
-              },
-              "cronSchedule": {
-                "type": "string"
-              }
-            }
+            "description": "Name for the deployed project/repository"
           }
         }
       },
-      "status": {
-        "type": "object",
-        "description": "Parameters for checking build status",
-        "properties": {
-          "buildId": {
-            "type": "string",
-            "description": "Build ID from generate action"
-          }
-        }
+      "query": {
+        "type": "string",
+        "description": "Text search query to find tools (for search_tools action). Example: 'solana blockchain', 'send email', 'web scraping'"
       },
-      "deploy": {
-        "type": "object",
-        "description": "Parameters for deploying agent",
-        "properties": {
-          "buildId": {
-            "type": "string",
-            "description": "Build ID from generate action"
-          },
-          "platform": {
-            "type": "string",
-            "enum": ["vercel", "github", "railway"],
-            "description": "Target deployment platform"
-          },
-          "credentials": {
-            "type": "object",
-            "properties": {
-              "apiKey": {
-                "type": "string",
-                "description": "Platform API key"
-              },
-              "projectName": {
-                "type": "string",
-                "description": "Project/repository name"
-              }
-            }
-          }
-        }
+      "category": {
+        "type": "string",
+        "description": "Filter tools by category (for search_tools action). Options: 'blockchain', 'communication', 'data', 'ai', 'utility'"
       },
-      "search_tools": {
-        "type": "object",
-        "description": "Parameters for searching tools",
-        "properties": {
-          "query": {
-            "type": "string",
-            "description": "Search query"
-          },
-          "category": {
-            "type": "string",
-            "description": "Tool category"
-          },
-          "capabilities": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "description": "Required capabilities"
-          }
-        }
+      "capabilities": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "Filter tools by required capabilities (for search_tools action). Example: ['getBalance', 'sendTransaction'] for blockchain tools"
       },
-      "get_tool": {
-        "type": "object",
-        "description": "Parameters for getting tool details",
-        "properties": {
-          "toolId": {
-            "type": "string",
-            "description": "Tool ID"
-          }
-        }
+      "toolId": {
+        "type": "string",
+        "description": "Specific tool ID to get detailed information about (for get_tool action). Example: 'helius-rpc', 'resend-email'"
       }
     },
     "required": ["action"]

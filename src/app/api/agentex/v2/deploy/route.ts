@@ -8,14 +8,15 @@ import { getBuildStatus, updateBuildStatus } from '@/lib/utils/build-store';
 import { exportToVercel, exportToGitHub } from '@/lib/utils/exportUtils';
 
 export interface DeployRequest {
+  action?: 'deploy';
   buildId: string;
   platform: 'vercel' | 'railway' | 'render' | 'fly' | 'github';
   credentials: {
     apiKey: string; // Platform API key
+    projectName?: string;
     [key: string]: any;
   };
-  environment: Record<string, string>; // User's API keys for agent
-  projectName?: string;
+  environment?: Record<string, string>; // User's API keys for agent
 }
 
 export interface DeployResponse {
@@ -28,7 +29,8 @@ export interface DeployResponse {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json() as DeployRequest;
-    const { buildId, platform, credentials, environment, projectName } = body;
+    const { buildId, platform, credentials } = body;
+    const projectName = credentials.projectName;
 
     if (!buildId || !platform || !credentials?.apiKey) {
       return NextResponse.json(
@@ -57,7 +59,7 @@ export async function POST(request: NextRequest) {
     const deployId = `deploy_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
 
     // Queue deployment (async)
-    queueDeploymentJob(deployId, buildId, platform, credentials, environment, projectName).catch(error => {
+    queueDeploymentJob(deployId, buildId, platform, credentials, body.environment || {}, projectName).catch(error => {
       console.error('Deployment job failed:', error);
     });
 

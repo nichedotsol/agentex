@@ -1,0 +1,67 @@
+{
+  "id": "tool-web-scraper",
+  "type": "tool",
+  "name": "Web Scraper",
+  "version": "1.0.0",
+  "provider": "agentex",
+  "config": {
+    "endpoint": "https://api.agentex.dev/scrape",
+    "auth_type": "api_key",
+    "method": "POST",
+    "parameters": {
+      "required": ["url"],
+      "optional": ["selector", "waitFor", "headers"]
+    }
+  },
+  "interface": {
+    "inputs": ["url", "selector", "waitFor"],
+    "outputs": ["html", "text", "data"],
+    "capabilities": [
+      "scrapeHTML",
+      "scrapeText",
+      "scrapeJSON",
+      "extractLinks",
+      "extractImages"
+    ]
+  },
+  "resources": {
+    "rate_limits": {
+      "requests_per_minute": 30
+    }
+  },
+  "metadata": {
+    "author": "AgentEX",
+    "description": "Scrape and extract data from websites",
+    "tags": ["scraping", "web", "data", "extraction"],
+    "icon": "🕷️",
+    "color": "#8B5CF6"
+  },
+  "category": "data",
+  "requiredEnv": [
+    {
+      "key": "AGENTEX_API_KEY",
+      "purpose": "Authenticate with AgentEX scraping service",
+      "getFrom": "https://agentex.dev/api-keys",
+      "required": false,
+      "example": "ax_xxxxxxxxxxxxxxxxxxxx",
+      "description": "Optional API key for higher rate limits"
+    }
+  ],
+  "implementation": {
+    "npm": ["cheerio", "puppeteer"],
+    "template": "templates/tools/web-scraper.ts"
+  },
+  "cost": {
+    "tier": "freemium",
+    "estimate": "Free tier: 100 requests/day, paid from $10/month",
+    "freeTier": {
+      "limit": "100 requests per day",
+      "description": "Free tier includes basic scraping"
+    },
+    "paidTier": {
+      "startingAt": "$10/month",
+      "description": "Unlimited requests, JavaScript rendering"
+    }
+  },
+  "documentation": "https://docs.agentex.dev/tools/web-scraper"
+}

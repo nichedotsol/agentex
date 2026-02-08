@@ -4,7 +4,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { loadAllTools } from '@/lib/utils/tool-loader';
+import { loadAllToolsServer } from '@/lib/tools/server-loader';
 import { ToolSpec, ToolCategory } from '@/lib/types/tool-spec';
 
 export interface ToolSearchRequest {
@@ -24,7 +24,7 @@ export async function POST(request: NextRequest) {
     const { query, category, capabilities } = body;
 
     // Load all tools
-    let tools = await loadAllTools();
+    let tools = await loadAllToolsServer();
 
     // Filter by category
     if (category) {

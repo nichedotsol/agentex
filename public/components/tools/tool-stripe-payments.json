@@ -1,0 +1,72 @@
+{
+  "id": "tool-stripe-payments",
+  "type": "tool",
+  "name": "Stripe Payments",
+  "version": "1.0.0",
+  "provider": "stripe",
+  "config": {
+    "endpoint": "https://api.stripe.com/v1",
+    "auth_type": "bearer",
+    "method": "POST",
+    "parameters": {
+      "required": ["action"],
+      "optional": ["amount", "currency", "customer", "payment_method"]
+    }
+  },
+  "interface": {
+    "inputs": ["action", "amount", "currency", "customer"],
+    "outputs": ["payment_intent", "status", "transaction_id"],
+    "capabilities": [
+      "createPaymentIntent",
+      "confirmPayment",
+      "refundPayment",
+      "getCustomer",
+      "createCustomer",
+      "listCharges"
+    ]
+  },
+  "resources": {
+    "rate_limits": {
+      "requests_per_second": 100
+    }
+  },
+  "metadata": {
+    "author": "AgentEX",
+    "description": "Accept payments via Stripe API",
+    "tags": ["payment", "stripe", "finance", "ecommerce"],
+    "icon": "💳",
+    "color": "#635BFF"
+  },
+  "category": "utility",
+  "requiredEnv": [
+    {
+      "key": "STRIPE_SECRET_KEY",
+      "purpose": "Authenticate with Stripe API",
+      "getFrom": "https://dashboard.stripe.com/apikeys",
+      "required": true,
+      "example": "sk_test_xxxxxxxxxxxxxxxxxxxx",
+      "description": "Get your secret key from Stripe dashboard"
+    },
+    {
+      "key": "STRIPE_PUBLISHABLE_KEY",
+      "purpose": "Client-side Stripe integration",
+      "getFrom": "https://dashboard.stripe.com/apikeys",
+      "required": false,
+      "example": "pk_test_xxxxxxxxxxxxxxxxxxxx",
+      "description": "Optional publishable key for frontend"
+    }
+  ],
+  "implementation": {
+    "npm": ["stripe"],
+    "template": "templates/tools/stripe-payments.ts"
+  },
+  "cost": {
+    "tier": "paid",
+    "estimate": "2.9% + $0.30 per transaction",
+    "paidTier": {
+      "startingAt": "2.9% + $0.30 per transaction",
+      "description": "Standard Stripe processing fees"
+    }
+  },
+  "documentation": "https://stripe.com/docs/api"
+}

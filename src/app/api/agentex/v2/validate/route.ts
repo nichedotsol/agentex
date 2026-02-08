@@ -4,13 +4,17 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { loadTool, validateTools, findSimilarTool, loadAllTools } from '@/lib/utils/tool-loader';
+import { loadToolServer, loadAllToolsServer } from '@/lib/tools/server-loader';
+import { ToolSpec } from '@/lib/types/tool-spec';
 import { ToolSpec } from '@/lib/types/tool-spec';
 import { analyzeRequirements, recommendRuntime, checkRuntimeCompatibility, getRuntimeCost } from '@/lib/utils/runtime-selector';
 
 export interface ValidateRequest {
-  description: string;
-  tools: string[];
+  action: 'validate';
+  name?: string;
+  description?: string;
+  brain?: string;
+  tools?: string[];
   runtime?: string;
 }
 
@@ -63,59 +67,86 @@ export interface ValidateResponse {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json() as ValidateRequest;
-    const { description, tools, runtime } = body;
+    const { name, description, brain, tools, runtime } = body;
 
-    if (!description || !tools || !Array.isArray(tools)) {
+    // Validate required fields for validate action
+    if (!name || !description || !brain || !tools || !Array.isArray(tools)) {
       return NextResponse.json(
-        { error: 'Invalid request: description and tools array required' },
+        { 
+          valid: false,
+          issues: [{
+            type: 'missing_required_fields' as any,
+            severity: 'error' as const,
+            message: 'Missing required fields: name, description, brain, and tools are required',
+            suggestion: 'Provide all required fields',
+            autoFixable: false
+          }]
+        },
         { status: 400 }
       );
     }
 
     const issues: Issue[] = [];
 
-    // 1. Validate all tools exist
-    const toolValidation = await validateTools(tools);
-    
-    for (const missing of toolValidation.missingTools) {
-      const similar = await findSimilarTool(missing);
-      issues.push({
-        type: 'missing_tool',
-        severity: 'error',
-        tool: missing,
-        message: `Tool "${missing}" not found`,
-        suggestion: similar ? `Use "${similar.id}" instead` : 'Remove this tool',
-        autoFixable: !!similar
-      });
-    }
-
-    // 2. Load valid tools
+    // 1. Validate all tools exist and load them
     const validTools: ToolSpec[] = [];
+    const allTools = await loadAllToolsServer();
+    const toolMap = new Map(allTools.map(t => [t.id, t]));
+    
     for (const toolId of tools) {
-      if (!toolValidation.missingTools.includes(toolId)) {
-        try {
-          const tool = await loadTool(toolId);
-          validTools.push(tool);
-        } catch (error) {
-          issues.push({
-            type: 'missing_tool',
-            severity: 'error',
-            tool: toolId,
-            message: `Failed to load tool "${toolId}"`,
-            suggestion: 'Check tool ID spelling',
-            autoFixable: false
-          });
-        }
+      // Try exact match first
+      let tool = toolMap.get(toolId);
+      
+      // Try with tool- prefix
+      if (!tool) {
+        tool = toolMap.get(`tool-${toolId}`);
+      }
+      
+      // Try without tool- prefix if toolId has it
+      if (!tool && toolId.startsWith('tool-')) {
+        tool = toolMap.get(toolId.replace('tool-', ''));
+      }
+      
+      if (tool) {
+        validTools.push(tool);
+      } else {
+        // Find similar tool
+        const similar = allTools.find(t => 
+          t.id.includes(toolId) || 
+          toolId.includes(t.id) ||
+          t.name.toLowerCase().includes(toolId.toLowerCase())
+        );
+        
+        issues.push({
+          type: 'missing_tool',
+          severity: 'error',
+          tool: toolId,
+          message: `Tool "${toolId}" not found in registry`,
+          suggestion: similar ? `Use "${similar.id}" instead` : 'Remove this tool or check tool ID spelling',
+          autoFixable: !!similar
+        });
       }
     }
 
-    // 3. Analyze runtime requirements
+    // 3. Validate brain
+    const validBrains = ['claude-3-5-sonnet', 'gpt-4', 'gpt-4-turbo', 'llama-3-70b', 'openai', 'anthropic', 'openclaw'];
+    if (!validBrains.some(b => brain.toLowerCase().includes(b.toLowerCase()))) {
+      issues.push({
+        type: 'config_error',
+        severity: 'error',
+        message: `Invalid brain "${brain}". Must be one of: ${validBrains.join(', ')}`,
+        suggestion: 'Use claude-3-5-sonnet (recommended)',
+        autoFixable: true
+      });
+    }
+
+    // 4. Analyze runtime requirements
     const requirements = analyzeRequirements(
-      { description, config: { expectedTraffic: 'low' } },
+      { name, description, config: { expectedTraffic: 'low' } },
       validTools
     );
 
-    // 4. Runtime recommendation
+    // 5. Runtime recommendation
     let runtimeRec: RuntimeRecommendation | undefined;
     if (!runtime || runtime === 'auto') {
       runtimeRec = recommendRuntime(requirements);
@@ -144,13 +175,21 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // 5. Calculate costs
+    // 6. Calculate costs
     const selectedRuntime = (runtime || runtimeRec?.primary || 'vercel') as any;
     const runtimeCost = getRuntimeCost(selectedRuntime, requirements);
     const costEstimate = calculateCosts(validTools, selectedRuntime, runtimeCost);
 
-    // 7. Collect required env vars
-    const requiredEnv = validTools.flatMap(t => t.requiredEnv);
+    // 7. Collect required env vars (deduplicate)
+    const envMap = new Map<string, { key: string; purpose: string; getFrom: string; required: boolean; example?: string }>();
+    for (const tool of validTools) {
+      for (const env of tool.requiredEnv) {
+        if (!envMap.has(env.key)) {
+          envMap.set(env.key, env);
+        }
+      }
+    }
+    const requiredEnvVars = Array.from(envMap.values());
 
     // 8. Tool substitutions
     const toolSubstitutions = issues
@@ -164,7 +203,7 @@ export async function POST(request: NextRequest) {
       valid: issues.filter(i => i.severity === 'error').length === 0,
       issues,
       estimatedCost: costEstimate,
-      requiredEnv,
+      requiredEnv: requiredEnvVars,
       recommendations: {
         runtime: runtimeRec,
         toolSubstitutions: toolSubstitutions.length > 0 ? toolSubstitutions : undefined
