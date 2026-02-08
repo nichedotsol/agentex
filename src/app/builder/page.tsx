@@ -15,6 +15,7 @@ import AgentTester from '@/components/AgentTester'
 import VersionControl from '@/components/VersionControl'
 import Marketplace from '@/components/Marketplace'
 import CollaborationDashboard from '@/components/CollaborationDashboard'
+import AgentChaining from '@/components/AgentChaining'
 import AutoSaveIndicator from '@/components/AutoSaveIndicator'
 import { useBuildStore } from '@/lib/stores/buildStore'
 import type { BuildVersion } from '@/lib/utils/versionControl'
@@ -62,6 +63,7 @@ export default function BuilderPage() {
   const [versionControlOpen, setVersionControlOpen] = useState(false)
   const [marketplaceOpen, setMarketplaceOpen] = useState(false)
   const [collaborationOpen, setCollaborationOpen] = useState(false)
+  const [chainingOpen, setChainingOpen] = useState(false)
   
   const { setBuildState } = useBuildStore()
 
@@ -88,6 +90,7 @@ export default function BuilderPage() {
             onVersionClick={() => setVersionControlOpen(true)}
             onMarketplaceClick={() => setMarketplaceOpen(true)}
             onCollaborationClick={() => setCollaborationOpen(true)}
+            onChainingClick={() => setChainingOpen(true)}
           />
       
       <div className="flex-1 flex flex-col overflow-hidden relative z-10">
@@ -143,6 +146,13 @@ export default function BuilderPage() {
         <CollaborationDashboard 
           onClose={() => setCollaborationOpen(false)}
           onLoadBuild={handleLoadSharedBuild}
+        />
+      )}
+
+      {/* Agent Chaining */}
+      {chainingOpen && (
+        <AgentChaining 
+          onClose={() => setChainingOpen(false)}
         />
       )}
 

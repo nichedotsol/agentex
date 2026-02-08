@@ -9,9 +9,10 @@ interface TopBarProps {
   onVersionClick?: () => void
   onMarketplaceClick?: () => void
   onCollaborationClick?: () => void
+  onChainingClick?: () => void
 }
 
-export default function TopBar({ onExportClick, onTemplateClick, onTestClick, onVersionClick, onMarketplaceClick, onCollaborationClick }: TopBarProps) {
+export default function TopBar({ onExportClick, onTemplateClick, onTestClick, onVersionClick, onMarketplaceClick, onCollaborationClick, onChainingClick }: TopBarProps) {
   const { settings } = useBuildStore()
 
   return (
@@ -35,6 +36,14 @@ export default function TopBar({ onExportClick, onTemplateClick, onTestClick, on
       </div>
       
       <div className="flex gap-2">
+        {onChainingClick && (
+          <button 
+            onClick={onChainingClick}
+            className="px-4 py-2 bg-transparent border border-ax-border text-ax-text-secondary rounded-lg font-sans text-sm hover:bg-ax-bg-hover hover:border-ax-border-hover hover:text-ax-text transition-all duration-200 micro-lift"
+          >
+            Chains
+          </button>
+        )}
         {onCollaborationClick && (
           <button 
             onClick={onCollaborationClick}
