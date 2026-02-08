@@ -147,15 +147,74 @@ export async function exportToVercel(
   projectName: string,
   onProgress?: (progress: ExportProgress) => void
 ): Promise<string> {
-  // This would require Vercel API integration
-  onProgress?.({
-    step: 'Vercel Export',
-    progress: 0,
-    status: 'processing',
-    message: 'Vercel export requires API integration'
-  })
-  
-  throw new Error('Vercel export not yet implemented. Use local export instead.')
+  try {
+    onProgress?.({
+      step: 'Generating code',
+      progress: 10,
+      status: 'processing',
+      message: 'Generating code files...'
+    })
+
+    const files = generateCode(buildState, {
+      format: 'typescript',
+      includeDependencies: true,
+      includeReadme: true
+    })
+
+    onProgress?.({
+      step: 'Creating Vercel project',
+      progress: 40,
+      status: 'processing',
+      message: 'Creating Vercel project...'
+    })
+
+    const response = await fetch('/api/vercel/deploy', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        vercelToken,
+        projectName: projectName || buildState.settings.name.toLowerCase().replace(/\s+/g, '-'),
+        files: files.map(f => ({
+          path: f.path,
+          content: f.content
+        }))
+      })
+    })
+
+    if (!response.ok) {
+      const error = await response.json()
+      throw new Error(error.error || 'Failed to deploy to Vercel')
+    }
+
+    const result = await response.json()
+
+    onProgress?.({
+      step: 'Deployment initiated',
+      progress: 80,
+      status: 'processing',
+      message: 'Deployment is being processed...'
+    })
+
+    // Poll for deployment status (simplified - in production, use webhooks)
+    onProgress?.({
+      step: 'Complete',
+      progress: 100,
+      status: 'success',
+      message: `Deployment initiated! Visit ${result.deploymentUrl} (may take a few minutes)`
+    })
+
+    return result.deploymentUrl
+  } catch (error) {
+    onProgress?.({
+      step: 'Error',
+      progress: 0,
+      status: 'error',
+      error: error instanceof Error ? error.message : 'Unknown error occurred'
+    })
+    throw error
+  }
 }
 
 export function exportToCursor(buildState: BuildState): string {
