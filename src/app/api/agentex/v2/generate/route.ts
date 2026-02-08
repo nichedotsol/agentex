@@ -7,6 +7,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createBuild, updateBuildStatus } from '@/lib/utils/build-store';
 import { loadTool } from '@/lib/utils/tool-loader';
 import { generateCode } from '@/lib/utils/codeGenerator';
+import { generateTests, generateVitestConfig, generateTestUtils, mergePackageJson } from '@/lib/generators/test-generator';
 
 export interface GenerateRequest {
   name: string;
@@ -187,9 +188,42 @@ async function queueGenerationJob(buildId: string, config: GenerateRequest) {
     // Generate setup documentation
     updateBuildStatus(buildId, { progress: 60 });
     const setupDocs = generateSetupDocs(agentConfig, toolSpecs);
+    
+    // Generate test suite
+    updateBuildStatus(buildId, { progress: 65 });
+    const testSuite = generateTests({
+      name: config.name,
+      description: config.description,
+      config: config.config
+    }, toolSpecs);
+    const vitestConfig = generateVitestConfig();
+    const testUtils = generateTestUtils();
 
     // Package everything
     updateBuildStatus(buildId, { progress: 80 });
+    
+    // Add test files to generated code
+    const testFiles = [
+      { path: 'tests/integration.test.ts', content: testSuite.integrationTests },
+      { path: 'vitest.config.ts', content: vitestConfig },
+      { path: 'tests/utils/test-helpers.ts', content: testUtils },
+      { path: 'test.sh', content: testSuite.testScript },
+      { path: 'scripts/check-env.js', content: testSuite.envCheckScript }
+    ];
+    
+    // Update package.json with test config
+    const packageJsonFile = generatedCode.find((f: any) => f.path === 'package.json');
+    if (packageJsonFile) {
+      packageJsonFile.content = mergePackageJson(packageJsonFile.content, testSuite.packageJsonTestConfig);
+    } else {
+      generatedCode.push({
+        path: 'package.json',
+        content: mergePackageJson('{}', testSuite.packageJsonTestConfig)
+      });
+    }
+    
+    // Add all test files
+    generatedCode.push(...testFiles);
     
     // In production, upload to storage and create download URL
     // For now, we'll store the code in the build status
