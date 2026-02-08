@@ -8,6 +8,7 @@ import { createBuild, updateBuildStatus } from '@/lib/utils/build-store';
 import { loadTool } from '@/lib/utils/tool-loader';
 import { generateCode } from '@/lib/utils/codeGenerator';
 import { generateTests, generateVitestConfig, generateTestUtils, mergePackageJson } from '@/lib/generators/test-generator';
+import { generateSetupDocs } from '@/lib/generators/setup-generator';
 
 export interface GenerateRequest {
   name: string;
@@ -187,7 +188,11 @@ async function queueGenerationJob(buildId: string, config: GenerateRequest) {
 
     // Generate setup documentation
     updateBuildStatus(buildId, { progress: 60 });
-    const setupDocs = generateSetupDocs(agentConfig, toolSpecs);
+    const setupDocs = generateSetupDocs({
+      name: config.name,
+      description: config.description,
+      runtime: config.runtime as any
+    }, toolSpecs, config.runtime as any);
     
     // Generate test suite
     updateBuildStatus(buildId, { progress: 65 });
@@ -259,57 +264,4 @@ async function queueGenerationJob(buildId: string, config: GenerateRequest) {
   }
 }
 
-/**
- * Generate setup documentation
- */
-function generateSetupDocs(agentConfig: any, tools: any[]) {
-  const envVars = tools.flatMap((t: any) => t.requiredEnv || []);
-  
-  return {
-    setupMd: `# Setup Instructions for ${agentConfig.name}
-
-## Required Environment Variables
-
-Create a \`.env.local\` file with the following:
-
-\`\`\`bash
-${envVars.map((v: any) => `# ${v.purpose}
-# Get from: ${v.getFrom}
-${v.key}=${v.example || 'your-key-here'}`).join('\n\n')}
-\`\`\`
-
-## Quick Start
-
-1. **Copy environment template:**
-   \`\`\`bash
-   cp .env.example .env.local
-   \`\`\`
-
-2. **Install dependencies:**
-   \`\`\`bash
-   npm install
-   \`\`\`
-
-3. **Fill in your API keys** in \`.env.local\`
-
-4. **Run development server:**
-   \`\`\`bash
-   npm run dev
-   \`\`\`
-
-5. **Test at:** http://localhost:3000
-
-## Troubleshooting
-
-**"Missing API key" error?**
-→ Check that all keys in \`.env.local\` are filled in
-
-**"Module not found" error?**  
-→ Run \`npm install\` again
-
-**Still having issues?**  
-→ Check our Discord: discord.gg/agentex
-`,
-    envExample: envVars.map((v: any) => `${v.key}=`).join('\n')
-  };
-}
+// Setup documentation generation is now handled by generateSetupDocs from setup-generator.ts

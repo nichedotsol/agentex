@@ -4,13 +4,15 @@
  */
 
 import { ToolSpec } from '@/lib/types/tool-spec';
+import { generateDeploymentGuide } from './deployment-guide';
+import { Runtime } from '@/lib/utils/runtime-selector';
 
 export interface AgentConfig {
   name: string;
-  description: string;
-  brain: string;
-  tools: string[];
-  runtime: string;
+  description?: string;
+  brain?: string;
+  tools?: string[];
+  runtime?: string;
   config?: {
     temperature?: number;
     maxTokens?: number;
@@ -22,6 +24,7 @@ export interface AgentConfig {
 export interface SetupDocumentation {
   setupMd: string;
   envExample: string;
+  deploymentGuides: Record<string, string>;
   checklist: {
     setup: string[];
     testing: string[];
@@ -44,11 +47,26 @@ export interface TotalCost {
  */
 export function generateSetupDocs(
   agentConfig: AgentConfig,
-  tools: ToolSpec[]
+  tools: ToolSpec[],
+  runtime?: Runtime
 ): SetupDocumentation {
   
   const envVars = tools.flatMap(t => t.requiredEnv);
-  const totalCost = calculateMonthlyCost(tools, agentConfig.runtime);
+  const selectedRuntime = agentConfig.runtime || runtime || 'vercel';
+  const totalCost = calculateMonthlyCost(tools, selectedRuntime);
+  
+  // Generate deployment guides for all major platforms
+  const deploymentGuides: Record<string, string> = {};
+  const platforms: Runtime[] = ['vercel', 'railway', 'render', 'fly.io', 'netlify', 'cloudflare-pages', 'docker'];
+  
+  for (const platform of platforms) {
+    const guide = generateDeploymentGuide(platform, {
+      name: agentConfig.name,
+      description: agentConfig.description,
+      runtime: platform
+    }, envVars);
+    deploymentGuides[platform] = guide.markdown;
+  }
   
   const setupMd = `# Setup Instructions for ${agentConfig.name}
 
@@ -57,9 +75,9 @@ export function generateSetupDocs(
 ${agentConfig.description}
 
 This agent uses:
-- **Brain:** ${agentConfig.brain}
+- **Brain:** ${agentConfig.brain || 'Not specified'}
 - **Tools:** ${tools.map(t => t.name).join(', ')}
-- **Runtime:** ${agentConfig.runtime}
+- **Runtime:** ${selectedRuntime}
 
 ## Required Environment Variables
 
@@ -135,7 +153,7 @@ ${totalCost.breakdown.length > 0
 
 1. ✅ Complete setup checklist below
 2. ✅ Run integration tests: \`npm test\`
-3. ✅ Deploy to production (see deployment guide)
+3. ✅ Deploy to production (see DEPLOYMENT.md)
 4. ✅ Monitor usage and costs
 
 ---
@@ -155,6 +173,7 @@ ${generateChecklist('deployment', envVars)}
   return {
     setupMd,
     envExample: envVars.map(v => `${v.key}=`).join('\n'),
+    deploymentGuides,
     checklist: {
       setup: [
         'Created .env.local file',
