@@ -1,0 +1,33 @@
+{
+  "id": "tool-token-price",
+  "type": "tool",
+  "name": "Token Price Feed",
+  "version": "1.0.0",
+  "provider": "coingecko",
+  "config": {
+    "endpoint": "https://api.coingecko.com/api/v3",
+    "auth_type": "api_key",
+    "method": "GET",
+    "parameters": {
+      "required": ["ids"],
+      "optional": ["vs_currencies", "include_24hr_change"]
+    }
+  },
+  "interface": {
+    "inputs": ["token_ids", "currencies"],
+    "outputs": ["prices", "market_data"],
+    "capabilities": ["price_data", "market_cap", "volume", "price_change"]
+  },
+  "resources": {
+    "rate_limits": {
+      "requests_per_minute": 50
+    }
+  },
+  "metadata": {
+    "author": "AgentEX",
+    "description": "Real-time cryptocurrency price data",
+    "tags": ["crypto", "prices", "market-data"],
+    "icon": "💰",
+    "color": "#8DC647"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "id": "brain-claude-sonnet-4",
+  "type": "brain",
+  "name": "Claude Sonnet 4",
+  "version": "1.0.0",
+  "provider": "anthropic",
+  "config": {
+    "model": "claude-sonnet-4-20250514",
+    "temperature": 0.7,
+    "max_tokens": 4096,
+    "system_prompt": "",
+    "streaming": true
+  },
+  "interface": {
+    "inputs": ["messages", "context"],
+    "outputs": ["text", "tool_calls"],
+    "capabilities": ["text_generation", "tool_use", "vision", "extended_thinking"]
+  },
+  "resources": {
+    "token_cost": "$3.00 per million input tokens, $15.00 per million output tokens",
+    "context_window": 200000,
+    "cache_enabled": true,
+    "latency": "~2-5s average"
+  },
+  "metadata": {
+    "author": "Anthropic",
+    "description": "Smart, efficient model for everyday use with extended thinking capabilities",
+    "tags": ["production", "balanced", "recommended"],
+    "icon": "🧠",
+    "color": "#D4A574"
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "version": "0.1.0",
+  "last_updated": "2026-02-08",
+  "components": {
+    "brains": [
+      "brain-claude-sonnet-4.json",
+      "brain-gpt-4.json",
+      "brain-llama-3-70b.json"
+    ],
+    "tools": [
+      "tool-web-search.json",
+      "tool-code-execution.json",
+      "tool-blockchain-query.json",
+      "tool-token-price.json",
+      "tool-twitter-post.json"
+    ],
+    "runtimes": [
+      "runtime-vercel.json",
+      "runtime-local-docker.json"
+    ]
+  },
+  "categories": {
+    "brains": {
+      "name": "Brains",
+      "description": "LLM providers that power your agent's reasoning",
+      "icon": "🧠",
+      "color": "#D4A574"
+    },
+    "tools": {
+      "name": "Tools",
+      "description": "External capabilities your agent can use",
+      "icon": "🛠️",
+      "color": "#3B82F6"
+    },
+    "runtimes": {
+      "name": "Runtimes",
+      "description": "Where your agent runs",
+      "icon": "🚀",
+      "color": "#10B981"
+    }
+  }
+}

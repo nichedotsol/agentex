@@ -1,0 +1,33 @@
+{
+  "id": "tool-twitter-post",
+  "type": "tool",
+  "name": "Twitter Post",
+  "version": "1.0.0",
+  "provider": "twitter",
+  "config": {
+    "endpoint": "https://api.twitter.com/2/tweets",
+    "auth_type": "bearer",
+    "method": "POST",
+    "parameters": {
+      "required": ["text"],
+      "optional": ["media_ids", "reply_settings"]
+    }
+  },
+  "interface": {
+    "inputs": ["text", "media"],
+    "outputs": ["tweet_id", "url"],
+    "capabilities": ["post_tweet", "reply_to_tweet", "attach_media"]
+  },
+  "resources": {
+    "rate_limits": {
+      "requests_per_15min": 50
+    }
+  },
+  "metadata": {
+    "author": "AgentEX",
+    "description": "Post tweets and manage Twitter presence",
+    "tags": ["social", "twitter", "posting"],
+    "icon": "🐦",
+    "color": "#1DA1F2"
+  }
+}

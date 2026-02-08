@@ -1,0 +1,32 @@
+{
+  "id": "brain-gpt-4",
+  "type": "brain",
+  "name": "GPT-4.0",
+  "version": "1.0.0",
+  "provider": "openai",
+  "config": {
+    "model": "gpt-4-turbo",
+    "temperature": 0.7,
+    "max_tokens": 4096,
+    "system_prompt": "",
+    "streaming": true
+  },
+  "interface": {
+    "inputs": ["messages", "context"],
+    "outputs": ["text", "tool_calls"],
+    "capabilities": ["text_generation", "tool_use", "vision"]
+  },
+  "resources": {
+    "token_cost": "$10.00 per million input tokens, $30.00 per million output tokens",
+    "context_window": 128000,
+    "cache_enabled": false,
+    "latency": "~3-6s average"
+  },
+  "metadata": {
+    "author": "OpenAI",
+    "description": "Powerful general-purpose language model",
+    "tags": ["production", "popular"],
+    "icon": "🤖",
+    "color": "#10A37F"
+  }
+}

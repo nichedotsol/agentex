@@ -1,0 +1,32 @@
+{
+  "id": "brain-llama-3-70b",
+  "type": "brain",
+  "name": "Llama 3.3 70B",
+  "version": "1.0.0",
+  "provider": "replicate",
+  "config": {
+    "model": "meta/llama-3.3-70b-instruct",
+    "temperature": 0.7,
+    "max_tokens": 4096,
+    "system_prompt": "",
+    "streaming": true
+  },
+  "interface": {
+    "inputs": ["messages", "context"],
+    "outputs": ["text"],
+    "capabilities": ["text_generation"]
+  },
+  "resources": {
+    "token_cost": "$0.35 per million input tokens, $0.40 per million output tokens",
+    "context_window": 128000,
+    "cache_enabled": false,
+    "latency": "~4-8s average"
+  },
+  "metadata": {
+    "author": "Meta (via Replicate)",
+    "description": "Open-source model with strong performance at low cost",
+    "tags": ["open-source", "cost-effective"],
+    "icon": "🦙",
+    "color": "#0668E1"
+  }
+}

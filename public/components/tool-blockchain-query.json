@@ -1,0 +1,33 @@
+{
+  "id": "tool-blockchain-query",
+  "type": "tool",
+  "name": "Blockchain Query",
+  "version": "1.0.0",
+  "provider": "alchemy",
+  "config": {
+    "endpoint": "https://api.alchemy.com/v2",
+    "auth_type": "api_key",
+    "method": "POST",
+    "parameters": {
+      "required": ["method", "params"],
+      "optional": ["network"]
+    }
+  },
+  "interface": {
+    "inputs": ["method", "params", "network"],
+    "outputs": ["result"],
+    "capabilities": ["eth_balance", "token_balances", "transaction_history", "nft_metadata"]
+  },
+  "resources": {
+    "rate_limits": {
+      "requests_per_second": 25
+    }
+  },
+  "metadata": {
+    "author": "AgentEX",
+    "description": "Query Ethereum and Solana blockchain data",
+    "tags": ["blockchain", "crypto", "ethereum", "solana"],
+    "icon": "⛓️",
+    "color": "#627EEA"
+  }
+}

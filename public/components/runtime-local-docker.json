@@ -1,0 +1,33 @@
+{
+  "id": "runtime-local-docker",
+  "type": "runtime",
+  "name": "Local Docker",
+  "version": "1.0.0",
+  "provider": "docker",
+  "config": {
+    "platform": "local",
+    "framework": "fastapi",
+    "language": "python",
+    "environment": {
+      "required_env_vars": ["ANTHROPIC_API_KEY"],
+      "optional_env_vars": ["OPENAI_API_KEY", "BRAVE_API_KEY"]
+    }
+  },
+  "interface": {
+    "inputs": ["agent_config"],
+    "outputs": ["local_url", "logs"],
+    "capabilities": ["docker_container", "hot_reload", "local_development"]
+  },
+  "resources": {
+    "pricing": "Free (runs on your machine)",
+    "startup_time": "~2-5s",
+    "requirements": "Docker Desktop installed"
+  },
+  "metadata": {
+    "author": "AgentEX",
+    "description": "Run your agent locally in a Docker container",
+    "tags": ["local", "development", "docker"],
+    "icon": "🐳",
+    "color": "#2496ED"
+  }
+}

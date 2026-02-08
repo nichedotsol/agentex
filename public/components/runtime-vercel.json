@@ -1,0 +1,33 @@
+{
+  "id": "runtime-vercel",
+  "type": "runtime",
+  "name": "Vercel Serverless",
+  "version": "1.0.0",
+  "provider": "vercel",
+  "config": {
+    "platform": "vercel",
+    "framework": "nextjs",
+    "language": "typescript",
+    "environment": {
+      "required_env_vars": ["ANTHROPIC_API_KEY"],
+      "optional_env_vars": ["OPENAI_API_KEY", "BRAVE_API_KEY"]
+    }
+  },
+  "interface": {
+    "inputs": ["agent_config"],
+    "outputs": ["deployed_url", "logs", "analytics"],
+    "capabilities": ["serverless", "streaming", "edge_runtime", "auto_scaling"]
+  },
+  "resources": {
+    "pricing": "Free tier: 100GB bandwidth, Pro: $20/mo",
+    "cold_start": "~50-200ms",
+    "execution_timeout": "10s (hobby), 60s (pro)"
+  },
+  "metadata": {
+    "author": "AgentEX",
+    "description": "Deploy to Vercel's edge network with one click",
+    "tags": ["serverless", "edge", "production", "recommended"],
+    "icon": "▲",
+    "color": "#000000"
+  }
+}
