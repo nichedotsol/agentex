@@ -1,0 +1,67 @@
+{
+  "name": "agentex_build_agent",
+  "version": "1.0.0",
+  "description": "Build new AI agents using AgentEX. Describe what you want the agent to do, and AgentEX will create it with all necessary components and code.",
+  "type": "function",
+  "function": {
+    "name": "agentex_build_agent",
+    "description": "Build a new AI agent using AgentEX. You can specify the agent's purpose, brain/LLM, tools, and deployment target. The agent will be created with all necessary code and configuration.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string",
+          "description": "Natural language description of what the agent should do. Be specific about the agent's purpose, capabilities, and use case. Example: 'A customer support agent that answers questions about products, uses web search to find current information, and can post updates to Twitter'"
+        },
+        "name": {
+          "type": "string",
+          "description": "A descriptive name for the new agent. Use PascalCase or descriptive names like 'CustomerSupportAgent', 'ResearchAssistant', 'TradingBot'"
+        },
+        "brain": {
+          "type": "string",
+          "description": "The LLM/brain to power the agent",
+          "enum": ["claude", "gpt-4", "llama", "openclaw"],
+          "default": "claude"
+        },
+        "tools": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["web-search", "code-execution", "blockchain-query", "token-price", "twitter-post", "agent-builder"]
+          },
+          "description": "List of tools/capabilities the agent should have. Options: web-search (search the web), code-execution (run Python code), blockchain-query (query blockchain data), token-price (get crypto prices), twitter-post (post to Twitter), agent-builder (build other agents - enables recursive agent creation)"
+        },
+        "runtime": {
+          "type": "string",
+          "description": "Where the agent should be deployed",
+          "enum": ["vercel", "docker"],
+          "default": "vercel"
+        }
+      },
+      "required": ["description", "name"]
+    }
+  },
+  "endpoint": "https://agentexs.vercel.app/api/agentex/build",
+  "installation": {
+    "method": "function_calling",
+    "instructions": "Add this function to your agent's tool list. The agent can then call agentex_build_agent() to create new agents."
+  },
+  "examples": [
+    {
+      "input": {
+        "description": "A research assistant that uses Claude Sonnet 4, web search, and deploys to Vercel",
+        "name": "ResearchAssistant",
+        "brain": "claude",
+        "tools": ["web-search"],
+        "runtime": "vercel"
+      },
+      "output": {
+        "success": true,
+        "build_id": "build_1234567890",
+        "agent_config": { ... },
+        "code": { ... },
+        "deployment_url": "https://github.com/agentex/research-assistant"
+      }
+    }
+  ]
+}
