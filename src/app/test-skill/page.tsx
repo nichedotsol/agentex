@@ -201,22 +201,21 @@ export default function SkillTestPage() {
           </div>
 
           {/* Run Button */}
-          <button
-            type="button"
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              console.log('Button clicked, calling runAllTests');
-              runAllTests().catch(err => {
-                console.error('Error running tests:', err);
-              });
-            }}
-            disabled={isRunning}
-            className="px-8 py-4 bg-ax-primary text-white rounded-xl font-sans text-lg font-medium hover:bg-ax-primary-hover transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-ax-primary/30 cursor-pointer relative z-10 pointer-events-auto"
-            style={{ position: 'relative', zIndex: 10 }}
-          >
-            {isRunning ? 'Running Tests...' : 'Run All Tests'}
-          </button>
+          <div className="relative z-50 pointer-events-auto">
+            <button
+              type="button"
+              onClick={() => {
+                console.log('Button clicked, calling runAllTests');
+                runAllTests().catch(err => {
+                  console.error('Error running tests:', err);
+                });
+              }}
+              disabled={isRunning}
+              className="px-8 py-4 bg-ax-primary text-white rounded-xl font-sans text-lg font-medium hover:bg-ax-primary-hover transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-ax-primary/30 cursor-pointer"
+            >
+              {isRunning ? 'Running Tests...' : 'Run All Tests'}
+            </button>
+          </div>
         </div>
 
         {/* Results Summary */}
