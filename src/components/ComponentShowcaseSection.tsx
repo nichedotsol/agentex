@@ -3,7 +3,19 @@
 import { motion } from 'framer-motion'
 import { useState } from 'react'
 
-const components = {
+type ComponentInfo = {
+  name: string
+  icon: string
+  meta: string
+  ctx?: string
+  rate?: string
+}
+
+const components: {
+  brain: ComponentInfo[]
+  tools: ComponentInfo[]
+  runtime: ComponentInfo[]
+} = {
   brain: [
     { name: 'CLAUDE_SONNET_4', icon: '🧠', meta: '$3/$15 per M', ctx: '200K' },
     { name: 'GPT_4', icon: '🤖', meta: '$10/$30 per M', ctx: '128K' },
