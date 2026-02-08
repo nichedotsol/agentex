@@ -225,8 +225,13 @@ export default function Marketplace({ onClose, onLoadAgent }: MarketplaceProps) 
                   No agents found
                 </p>
                 <button
-                  onClick={() => setShowShareDialog(true)}
-                  className="px-4 py-2 bg-ax-primary text-white rounded-lg font-sans text-sm font-medium hover:bg-ax-primary-hover transition-all"
+                  type="button"
+                  onClick={(e) => {
+                    e.preventDefault()
+                    e.stopPropagation()
+                    setShowShareDialog(true)
+                  }}
+                  className="px-4 py-2 bg-ax-primary text-white rounded-lg font-sans text-sm font-medium hover:bg-ax-primary-hover transition-all cursor-pointer relative z-10 pointer-events-auto"
                 >
                   Share Your First Agent
                 </button>
