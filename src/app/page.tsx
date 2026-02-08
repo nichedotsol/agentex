@@ -1,14 +1,16 @@
 'use client'
 
-import { Suspense } from 'react'
+import dynamic from 'next/dynamic'
 import { ErrorBoundary } from '@/components/ErrorBoundary'
-import Hero from '@/components/Hero'
-import Features from '@/components/Features'
-import ComponentShowcaseSection from '@/components/ComponentShowcaseSection'
-import HowItWorks from '@/components/HowItWorks'
-import ExportTargets from '@/components/ExportTargets'
-import Footer from '@/components/Footer'
-import BackgroundLayers from '@/components/BackgroundLayers'
+
+// Dynamically import components to avoid SSR issues
+const BackgroundLayers = dynamic(() => import('@/components/BackgroundLayers'), { ssr: false })
+const Hero = dynamic(() => import('@/components/Hero'), { ssr: true })
+const Features = dynamic(() => import('@/components/Features'), { ssr: true })
+const ComponentShowcaseSection = dynamic(() => import('@/components/ComponentShowcaseSection'), { ssr: true })
+const HowItWorks = dynamic(() => import('@/components/HowItWorks'), { ssr: true })
+const ExportTargets = dynamic(() => import('@/components/ExportTargets'), { ssr: true })
+const Footer = dynamic(() => import('@/components/Footer'), { ssr: true })
 
 function LoadingFallback() {
   return (
@@ -22,18 +24,16 @@ export default function LandingPage() {
   return (
     <ErrorBoundary>
       <main className="relative min-h-screen bg-black text-white">
-        <Suspense fallback={<LoadingFallback />}>
-          <BackgroundLayers />
-          
-          <div className="relative z-10">
-            <Hero />
-            <Features />
-            <ComponentShowcaseSection />
-            <HowItWorks />
-            <ExportTargets />
-            <Footer />
-          </div>
-        </Suspense>
+        <BackgroundLayers />
+        
+        <div className="relative z-10">
+          <Hero />
+          <Features />
+          <ComponentShowcaseSection />
+          <HowItWorks />
+          <ExportTargets />
+          <Footer />
+        </div>
       </main>
     </ErrorBoundary>
   )
