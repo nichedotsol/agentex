@@ -345,11 +345,13 @@ export default function AgentChaining({ onClose }: AgentChainingProps) {
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: i * 0.05 }}
-                            onClick={() => {
+                            onClick={(e) => {
+                              e.preventDefault()
+                              e.stopPropagation()
                               setSelectedChain(chain)
                               setView('editor')
                             }}
-                            className="card-hover p-5 cursor-pointer"
+                            className="card-hover p-5 cursor-pointer pointer-events-auto relative z-10"
                           >
                             <h4 className="font-sans text-base font-semibold text-ax-text mb-2">
                               {chain.name}
