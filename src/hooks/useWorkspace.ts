@@ -56,7 +56,7 @@ export function calculateComponentPosition(
       // Brain goes in center
       return { x: 400, y: 300 }
     
-    case 'tool':
+    case 'tool': {
       // Tools surround the brain in a circle
       const brainPos = brainComponents[0]?.position || { x: 400, y: 300 }
       const toolIndex = toolComponents.length
@@ -66,12 +66,13 @@ export function calculateComponentPosition(
         x: brainPos.x + Math.cos(angle) * radius,
         y: brainPos.y + Math.sin(angle) * radius
       }
+    }
     
     case 'runtime':
       // Runtime goes at bottom
       return { x: 400, y: 600 }
     
-    case 'memory':
+    case 'memory': {
       // Memory components go to the left of the brain
       const brainPos = brainComponents[0]?.position || { x: 400, y: 300 }
       const memoryIndex = existingComponents.filter(c => c.type === 'memory').length
@@ -79,6 +80,7 @@ export function calculateComponentPosition(
         x: brainPos.x - 250,
         y: brainPos.y + (memoryIndex * 120)
       }
+    }
     
     default:
       return { x: 100 + (index * 20), y: 100 + (index * 20) }
