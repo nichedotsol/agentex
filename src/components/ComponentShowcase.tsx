@@ -119,16 +119,34 @@ export default function ComponentShowcase() {
             <div className="font-mono text-[10px] text-ax-cyan uppercase tracking-[2px] mb-4">
               SEARCH RESULTS ({filteredComponents.length})
             </div>
-            <div className="grid grid-cols-2 gap-3">
+            <motion.div 
+              className="grid grid-cols-2 gap-3"
+              initial="hidden"
+              animate="visible"
+              variants={{
+                visible: {
+                  transition: {
+                    staggerChildren: 0.05
+                  }
+                }
+              }}
+            >
               {filteredComponents.map((comp, i) => (
-                <ComponentCard
+                <motion.div
                   key={comp.id}
-                  component={comp}
-                  index={i}
-                  onAdd={() => handleAddComponent(comp)}
-                />
+                  variants={{
+                    hidden: { opacity: 0, y: 20, scale: 0.95 },
+                    visible: { opacity: 1, y: 0, scale: 1 }
+                  }}
+                >
+                  <ComponentCard
+                    component={comp}
+                    index={i}
+                    onAdd={() => handleAddComponent(comp)}
+                  />
+                </motion.div>
               ))}
-            </div>
+            </motion.div>
           </div>
         ) : (
           // Category sections
