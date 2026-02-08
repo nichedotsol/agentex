@@ -7,7 +7,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test:skill": "node scripts/test-skill.js || bash scripts/test-skill.sh",
+    "test:skill:ps1": "powershell -ExecutionPolicy Bypass -File scripts/test-skill.ps1"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.30.0",
