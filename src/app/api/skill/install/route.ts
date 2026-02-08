@@ -94,7 +94,14 @@ export async function GET(request: Request) {
     // OpenClaw instructions
     if (!platform || platform === 'openclaw') {
       const openClawSkillPath = path.join(process.cwd(), 'packages', 'agentex-skill', 'openclaw-skill.json');
-      const openClawSkillContent = await fs.readFile(openClawSkillPath, 'utf-8');
+      let openClawSkillContent = '';
+      try {
+        openClawSkillContent = await fs.readFile(openClawSkillPath, 'utf-8');
+      } catch {
+        // Fallback to root packages directory
+        const altPath = path.join(process.cwd(), 'packages', 'openclaw-skill.json');
+        openClawSkillContent = await fs.readFile(altPath, 'utf-8');
+      }
 
       instructions.push({
         platform: 'openclaw',
@@ -103,12 +110,17 @@ export async function GET(request: Request) {
           'Install globally: npm install -g @agentex/skill',
           'Run installer: agentex-install',
           'Select option 3 (OpenClaw)',
+          'The installer will copy the skill file to ~/.openclaw/skills/agentex_builder.json',
           'Restart OpenClaw',
-          'The skill will be available as "agentex_builder"'
+          'The skill will be available as "agentex_builder"',
+          'Verify installation by checking if the skill appears in OpenClaw settings'
         ],
         commands: [
           'npm install -g @agentex/skill',
-          'agentex-install'
+          'agentex-install',
+          '# Or manually:',
+          'mkdir -p ~/.openclaw/skills',
+          'cp node_modules/@agentex/skill/openclaw-skill.json ~/.openclaw/skills/agentex_builder.json'
         ],
         files: [{
           name: 'openclaw-skill.json',
@@ -117,7 +129,10 @@ export async function GET(request: Request) {
         }],
         verification: [
           'Check that ~/.openclaw/skills/agentex_builder.json exists',
-          'Restart OpenClaw and verify skill is available'
+          'Verify file contains valid JSON with "name": "agentex_builder"',
+          'Restart OpenClaw',
+          'Check OpenClaw settings → Skills to see if agentex_builder is listed',
+          'Test by calling: agentex_builder.validate(...) in OpenClaw'
         ]
       });
     }

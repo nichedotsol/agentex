@@ -337,19 +337,39 @@ function OpenClawInstructions() {
             agentex-install
           </code>
           <p className="text-ax-text-secondary mb-4">
-            Select option 3 when prompted to install for OpenClaw.
+            Select option 3 when prompted to install for OpenClaw. The installer will automatically:
           </p>
+          <ul className="list-disc list-inside space-y-1 text-ax-text-secondary mb-4">
+            <li>Create ~/.openclaw/skills directory if it doesn't exist</li>
+            <li>Copy the skill file to ~/.openclaw/skills/agentex_builder.json</li>
+            <li>Verify the installation</li>
+          </ul>
         </div>
         <div>
-          <h3 className="text-lg font-semibold text-ax-text mb-2">Method 2: JSON File Import</h3>
+          <h3 className="text-lg font-semibold text-ax-text mb-2">Method 2: Manual Installation</h3>
           <ol className="list-decimal list-inside space-y-2 text-ax-text-secondary">
+            <li>Create the skills directory (if it doesn't exist):</li>
+            <code className="block bg-ax-bg-secondary p-3 rounded-lg text-ax-text font-mono text-sm my-2">
+              mkdir -p ~/.openclaw/skills
+            </code>
             <li>Copy the skill file to your OpenClaw skills directory:</li>
             <code className="block bg-ax-bg-secondary p-3 rounded-lg text-ax-text font-mono text-sm my-2">
               cp packages/openclaw-skill.json ~/.openclaw/skills/agentex_builder.json
             </code>
-            <li>Or import via OpenClaw UI: Settings → Skills → Import</li>
-            <li>Select <code className="text-ax-primary">packages/openclaw-skill.json</code></li>
+            <li>Or download from: <Link href="/packages/openclaw-skill.json" className="text-ax-primary hover:underline" target="_blank">openclaw-skill.json</Link></li>
+            <li>Restart OpenClaw</li>
             <li>The skill will be available as <code className="text-ax-primary">agentex_builder</code></li>
+          </ol>
+        </div>
+        <div>
+          <h3 className="text-lg font-semibold text-ax-text mb-2">Method 3: Via OpenClaw UI</h3>
+          <ol className="list-decimal list-inside space-y-2 text-ax-text-secondary">
+            <li>Open OpenClaw</li>
+            <li>Go to Settings → Skills</li>
+            <li>Click "Import Skill" or "Add Skill"</li>
+            <li>Select <code className="text-ax-primary">packages/openclaw-skill.json</code></li>
+            <li>Or paste the JSON content directly</li>
+            <li>Save and restart OpenClaw</li>
           </ol>
         </div>
         <div>

@@ -74,23 +74,47 @@ async function installOpenClaw() {
   const targetFile = path.join(openClawSkillsDir, 'agentex_builder.json');
 
   try {
+    // Check if source file exists
+    if (!fs.existsSync(sourceFile)) {
+      throw new Error(`Source file not found: ${sourceFile}`);
+    }
+
     // Create directory if it doesn't exist
     if (!fs.existsSync(openClawSkillsDir)) {
       fs.mkdirSync(openClawSkillsDir, { recursive: true });
+      console.log(`   Created directory: ${openClawSkillsDir}`);
     }
 
     // Copy skill file
     fs.copyFileSync(sourceFile, targetFile);
+    
+    // Verify the file was copied correctly
+    if (!fs.existsSync(targetFile)) {
+      throw new Error('File copy failed - target file does not exist');
+    }
+
+    // Verify JSON is valid
+    try {
+      const content = fs.readFileSync(targetFile, 'utf-8');
+      JSON.parse(content);
+    } catch (jsonError) {
+      throw new Error(`Invalid JSON in skill file: ${jsonError.message}`);
+    }
+
     console.log('✅ OpenClaw skill installed successfully!');
     console.log(`   Location: ${targetFile}`);
     console.log('\n   Next steps:');
     console.log('   1. Restart OpenClaw');
     console.log('   2. The skill will be available as "agentex_builder"');
+    console.log('   3. Verify in OpenClaw: Settings → Skills');
+    console.log('   4. Test by calling: agentex_builder.validate(...)');
   } catch (error) {
     console.error('❌ Failed to install OpenClaw skill:', error.message);
     console.log('\n   Manual installation:');
-    console.log(`   1. Copy ${sourceFile}`);
-    console.log(`   2. Paste to ${openClawSkillsDir}/agentex_builder.json`);
+    console.log(`   1. Create directory: mkdir -p ${openClawSkillsDir}`);
+    console.log(`   2. Copy ${sourceFile}`);
+    console.log(`   3. Paste to ${openClawSkillsDir}/agentex_builder.json`);
+    console.log(`   4. Verify JSON is valid: cat ${openClawSkillsDir}/agentex_builder.json | jq .`);
   }
 }
 
