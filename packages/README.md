@@ -26,6 +26,39 @@ I want to build an agent that helps with research. Use the agentex_builder skill
 
 Add this function to your GPT assistant to enable agent building.
 
+### 3. OpenClaw Skill Configuration
+
+**File:** `openclaw-skill.json`
+
+Install this skill in OpenClaw to enable agent building capabilities.
+
+**Installation:**
+1. Copy `openclaw-skill.json` to your OpenClaw skills directory
+2. Or import via OpenClaw UI (Settings → Skills → Import)
+3. The skill will be available as `agentex_builder`
+
+**Usage:**
+```python
+# Validate agent requirements
+validation = agentex_builder.validate(
+    name="My Agent",
+    description="Does something cool",
+    brain="openclaw",
+    tools=["tool-openai-api"]
+)
+
+# Generate agent code
+result = agentex_builder.generate(
+    name="My Agent",
+    description="Does something cool",
+    brain="openclaw",
+    tools=["tool-openai-api"],
+    runtime="vercel"
+)
+```
+
+See [openclaw-install.md](openclaw-install.md) for complete installation and usage guide.
+
 **Installation:**
 1. Copy `gpt-function.json`
 2. Add to your GPT assistant's function definitions
@@ -36,7 +69,7 @@ Add this function to your GPT assistant to enable agent building.
 Build me an agent that sends emails. Use the agentex_builder function with action="generate".
 ```
 
-### 3. Python SDK
+### 4. Python SDK
 
 **Directory:** `python/`
 
@@ -63,7 +96,7 @@ validation = client.validate(ValidateRequest(
 
 See [python/README.md](python/README.md) for full documentation.
 
-### 4. TypeScript SDK
+### 5. TypeScript SDK
 
 **Directory:** `typescript/`
 

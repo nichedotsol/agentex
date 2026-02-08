@@ -192,6 +192,60 @@ const result = await buildAgent(
 );
 ```
 
+## For OpenClaw
+
+### Installation
+
+1. **Copy the skill file:**
+   ```bash
+   cp packages/openclaw-skill.json ~/.openclaw/skills/agentex_builder.json
+   ```
+
+2. **Or import via OpenClaw UI:**
+   - Open OpenClaw
+   - Go to Settings → Skills
+   - Click "Import Skill"
+   - Select `packages/openclaw-skill.json`
+   - Click "Install"
+
+### Usage
+
+Once installed, the skill is available as `agentex_builder`:
+
+```python
+# Validate agent requirements
+validation = agentex_builder.validate(
+    name="Research Assistant",
+    description="Helps with research tasks",
+    brain="openclaw",
+    tools=["tool-openai-api", "tool-resend-email"],
+    runtime="vercel"
+)
+
+if validation['valid']:
+    # Generate agent code
+    generate_result = agentex_builder.generate(
+        name="Research Assistant",
+        description="Helps with research tasks",
+        brain="openclaw",
+        tools=["tool-openai-api", "tool-resend-email"],
+        runtime="vercel"
+    )
+    
+    build_id = generate_result['buildId']
+    
+    # Wait for completion
+    import time
+    while True:
+        status = agentex_builder.status(buildId=build_id)
+        if status['status'] == 'complete':
+            print(f"Download: {status['result']['downloadUrl']}")
+            break
+        time.sleep(5)
+```
+
+See [packages/openclaw-install.md](../packages/openclaw-install.md) for complete examples and troubleshooting.
+
 ## For Custom Agents
 
 ### Using the REST API Directly

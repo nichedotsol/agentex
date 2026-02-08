@@ -1,0 +1,248 @@
+{
+  "name": "agentex_builder",
+  "display_name": "AgentEX Builder",
+  "description": "Build and deploy AI agents programmatically using the AgentEX standard. Validate requirements, generate code, deploy to hosting platforms, and discover tools.",
+  "version": "1.0.0",
+  "author": "AgentEX",
+  "category": "development",
+  "tags": ["agents", "deployment", "code-generation", "automation"],
+  "capabilities": [
+    "validate_agent_requirements",
+    "generate_agent_code",
+    "check_build_status",
+    "deploy_agents",
+    "search_tools",
+    "get_tool_details"
+  ],
+  "functions": [
+    {
+      "name": "validate",
+      "description": "Validate agent requirements and get recommendations",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Agent name"
+          },
+          "description": {
+            "type": "string",
+            "description": "Agent description"
+          },
+          "brain": {
+            "type": "string",
+            "description": "Brain provider (e.g., 'openai', 'anthropic', 'openclaw')",
+            "enum": ["openai", "anthropic", "openclaw"]
+          },
+          "tools": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "List of tool IDs to use"
+          },
+          "runtime": {
+            "type": "string",
+            "description": "Preferred runtime (optional)",
+            "enum": ["vercel", "railway", "render", "fly.io", "netlify", "cloudflare-pages", "docker"]
+          },
+          "config": {
+            "type": "object",
+            "properties": {
+              "temperature": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 2,
+                "description": "Model temperature"
+              },
+              "maxTokens": {
+                "type": "number",
+                "description": "Maximum tokens"
+              },
+              "cronSchedule": {
+                "type": "string",
+                "description": "Cron schedule for scheduled tasks"
+              },
+              "timeout": {
+                "type": "number",
+                "description": "Request timeout in seconds"
+              }
+            }
+          }
+        },
+        "required": ["name", "description", "brain", "tools"]
+      }
+    },
+    {
+      "name": "generate",
+      "description": "Generate agent code asynchronously",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Agent name"
+          },
+          "description": {
+            "type": "string",
+            "description": "Agent description"
+          },
+          "brain": {
+            "type": "string",
+            "description": "Brain provider",
+            "enum": ["openai", "anthropic", "openclaw"]
+          },
+          "tools": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "List of tool IDs"
+          },
+          "runtime": {
+            "type": "string",
+            "description": "Target runtime",
+            "enum": ["vercel", "railway", "render", "fly.io", "netlify", "cloudflare-pages", "docker"]
+          },
+          "config": {
+            "type": "object",
+            "properties": {
+              "temperature": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 2
+              },
+              "maxTokens": {
+                "type": "number"
+              },
+              "cronSchedule": {
+                "type": "string"
+              },
+              "timeout": {
+                "type": "number"
+              }
+            }
+          }
+        },
+        "required": ["name", "description", "brain", "tools", "runtime"]
+      }
+    },
+    {
+      "name": "status",
+      "description": "Check the status of an agent build",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "buildId": {
+            "type": "string",
+            "description": "Build ID from generate function"
+          }
+        },
+        "required": ["buildId"]
+      }
+    },
+    {
+      "name": "deploy",
+      "description": "Deploy a completed agent build to a hosting platform",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "buildId": {
+            "type": "string",
+            "description": "Build ID from generate function"
+          },
+          "platform": {
+            "type": "string",
+            "enum": ["vercel", "github", "railway"],
+            "description": "Target deployment platform"
+          },
+          "credentials": {
+            "type": "object",
+            "properties": {
+              "apiKey": {
+                "type": "string",
+                "description": "Platform API key or token"
+              },
+              "projectName": {
+                "type": "string",
+                "description": "Project or repository name"
+              }
+            },
+            "required": ["apiKey", "projectName"]
+          }
+        },
+        "required": ["buildId", "platform", "credentials"]
+      }
+    },
+    {
+      "name": "search_tools",
+      "description": "Search available tools by query, category, or capabilities",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Search query"
+          },
+          "category": {
+            "type": "string",
+            "enum": ["blockchain", "communication", "data", "ai", "utility", "finance", "developer", "social"],
+            "description": "Filter by category"
+          },
+          "capabilities": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Filter by required capabilities"
+          }
+        }
+      }
+    },
+    {
+      "name": "get_tool",
+      "description": "Get detailed information about a specific tool",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "toolId": {
+            "type": "string",
+            "description": "Tool ID"
+          }
+        },
+        "required": ["toolId"]
+      }
+    }
+  ],
+  "api_endpoint": "https://agentexs.vercel.app/api/agentex/v2",
+  "authentication": {
+    "type": "none",
+    "note": "Currently open API, authentication may be added in future"
+  },
+  "usage_examples": [
+    {
+      "description": "Validate agent requirements",
+      "code": "agentex_builder.validate(name='Research Assistant', description='Helps with research', brain='openclaw', tools=['tool-openai-api'])"
+    },
+    {
+      "description": "Generate agent code",
+      "code": "agentex_builder.generate(name='Research Assistant', description='Helps with research', brain='openclaw', tools=['tool-openai-api'], runtime='vercel')"
+    },
+    {
+      "description": "Check build status",
+      "code": "agentex_builder.status(buildId='build_abc123')"
+    },
+    {
+      "description": "Deploy agent",
+      "code": "agentex_builder.deploy(buildId='build_abc123', platform='vercel', credentials={'apiKey': 'token', 'projectName': 'my-agent'})"
+    },
+    {
+      "description": "Search tools",
+      "code": "agentex_builder.search_tools(query='email', category='communication')"
+    }
+  ],
+  "installation": {
+    "method": "json_file",
+    "instructions": "Copy this JSON file to your OpenClaw skills directory or import via the OpenClaw interface"
+  }
+}
