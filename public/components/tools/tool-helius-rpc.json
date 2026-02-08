@@ -1,0 +1,68 @@
+{
+  "id": "tool-helius-rpc",
+  "type": "tool",
+  "name": "Helius Solana RPC",
+  "version": "1.0.0",
+  "provider": "helius",
+  "config": {
+    "endpoint": "https://rpc.helius.xyz",
+    "auth_type": "api_key",
+    "method": "POST",
+    "parameters": {
+      "required": ["method", "params"],
+      "optional": ["network"]
+    }
+  },
+  "interface": {
+    "inputs": ["method", "params", "network"],
+    "outputs": ["result"],
+    "capabilities": [
+      "getBalance",
+      "getTokenAccounts",
+      "getTransaction",
+      "getParsedTransaction",
+      "getProgramAccounts",
+      "getSignaturesForAddress"
+    ]
+  },
+  "resources": {
+    "rate_limits": {
+      "requests_per_second": 100
+    }
+  },
+  "metadata": {
+    "author": "AgentEX",
+    "description": "Solana blockchain data via Helius API with enhanced RPC methods",
+    "tags": ["blockchain", "solana", "rpc", "crypto"],
+    "icon": "🟣",
+    "color": "#9945FF"
+  },
+  "category": "blockchain",
+  "requiredEnv": [
+    {
+      "key": "HELIUS_API_KEY",
+      "purpose": "Access Solana RPC endpoints via Helius",
+      "getFrom": "https://dev.helius.xyz",
+      "required": true,
+      "example": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+      "description": "Get your free API key from Helius dashboard"
+    }
+  ],
+  "implementation": {
+    "npm": ["@solana/web3.js"],
+    "template": "templates/tools/helius-rpc.ts"
+  },
+  "cost": {
+    "tier": "freemium",
+    "estimate": "Free tier: 100 req/s, paid plans from $99/month",
+    "freeTier": {
+      "limit": "100 requests/second",
+      "description": "Free tier includes 100 req/s and standard RPC methods"
+    },
+    "paidTier": {
+      "startingAt": "$99/month",
+      "description": "Enhanced RPC methods, higher rate limits, priority support"
+    }
+  },
+  "documentation": "https://docs.helius.dev"
+}

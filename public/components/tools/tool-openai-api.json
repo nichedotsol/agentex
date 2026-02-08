@@ -1,0 +1,57 @@
+{
+  "id": "tool-openai-api",
+  "type": "tool",
+  "name": "OpenAI API",
+  "version": "1.0.0",
+  "provider": "openai",
+  "config": {
+    "endpoint": "https://api.openai.com/v1/chat/completions",
+    "auth_type": "bearer",
+    "method": "POST",
+    "parameters": {
+      "required": ["model", "messages"],
+      "optional": ["max_tokens", "temperature", "functions"]
+    }
+  },
+  "interface": {
+    "inputs": ["model", "messages", "max_tokens", "temperature"],
+    "outputs": ["content", "usage"],
+    "capabilities": ["text_generation", "function_calling", "vision"]
+  },
+  "resources": {
+    "rate_limits": {
+      "requests_per_minute": 60
+    }
+  },
+  "metadata": {
+    "author": "AgentEX",
+    "description": "GPT models via OpenAI API",
+    "tags": ["ai", "llm", "gpt", "openai"],
+    "icon": "🤖",
+    "color": "#10A37F"
+  },
+  "category": "ai",
+  "requiredEnv": [
+    {
+      "key": "OPENAI_API_KEY",
+      "purpose": "Authenticate with OpenAI API",
+      "getFrom": "https://platform.openai.com/api-keys",
+      "required": true,
+      "example": "sk-xxxxxxxxxxxxxxxxxxxx",
+      "description": "Get your API key from OpenAI platform"
+    }
+  ],
+  "implementation": {
+    "npm": ["openai"],
+    "template": "templates/tools/openai-api.ts"
+  },
+  "cost": {
+    "tier": "paid",
+    "estimate": "Pay-as-you-go, ~$10-30 per 1M tokens",
+    "paidTier": {
+      "startingAt": "$0.01 per 1K input tokens (GPT-4)",
+      "description": "GPT-4 Turbo pricing"
+    }
+  },
+  "documentation": "https://platform.openai.com/docs"
+}

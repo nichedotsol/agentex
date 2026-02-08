@@ -1,0 +1,67 @@
+{
+  "id": "tool-resend-email",
+  "type": "tool",
+  "name": "Resend Email",
+  "version": "1.0.0",
+  "provider": "resend",
+  "config": {
+    "endpoint": "https://api.resend.com/emails",
+    "auth_type": "bearer",
+    "method": "POST",
+    "parameters": {
+      "required": ["to", "subject", "html"],
+      "optional": ["from", "cc", "bcc", "reply_to", "attachments"]
+    }
+  },
+  "interface": {
+    "inputs": ["to", "subject", "html", "from", "cc", "bcc"],
+    "outputs": ["message_id", "status"],
+    "capabilities": [
+      "sendEmail",
+      "sendBulkEmail",
+      "validateEmail",
+      "getEmailStatus"
+    ]
+  },
+  "resources": {
+    "rate_limits": {
+      "requests_per_minute": 100,
+      "emails_per_day": 3000
+    }
+  },
+  "metadata": {
+    "author": "AgentEX",
+    "description": "Send transactional emails via Resend API",
+    "tags": ["email", "communication", "transactional"],
+    "icon": "📧",
+    "color": "#6366F1"
+  },
+  "category": "communication",
+  "requiredEnv": [
+    {
+      "key": "RESEND_API_KEY",
+      "purpose": "Authenticate with Resend API",
+      "getFrom": "https://resend.com/api-keys",
+      "required": true,
+      "example": "re_xxxxxxxxxxxxxxxxxxxx",
+      "description": "Get your API key from Resend dashboard"
+    }
+  ],
+  "implementation": {
+    "npm": ["resend"],
+    "template": "templates/tools/resend-email.ts"
+  },
+  "cost": {
+    "tier": "freemium",
+    "estimate": "Free tier: 3,000 emails/month, paid from $20/month",
+    "freeTier": {
+      "limit": "3,000 emails per month",
+      "description": "Free tier includes 3,000 emails/month"
+    },
+    "paidTier": {
+      "startingAt": "$20/month",
+      "description": "100,000 emails/month, advanced features"
+    }
+  },
+  "documentation": "https://resend.com/docs"
+}

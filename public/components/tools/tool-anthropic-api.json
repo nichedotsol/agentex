@@ -1,0 +1,57 @@
+{
+  "id": "tool-anthropic-api",
+  "type": "tool",
+  "name": "Anthropic API",
+  "version": "1.0.0",
+  "provider": "anthropic",
+  "config": {
+    "endpoint": "https://api.anthropic.com/v1/messages",
+    "auth_type": "bearer",
+    "method": "POST",
+    "parameters": {
+      "required": ["model", "messages"],
+      "optional": ["max_tokens", "temperature", "system"]
+    }
+  },
+  "interface": {
+    "inputs": ["model", "messages", "max_tokens", "temperature"],
+    "outputs": ["content", "usage"],
+    "capabilities": ["text_generation", "tool_use", "vision"]
+  },
+  "resources": {
+    "rate_limits": {
+      "requests_per_minute": 50
+    }
+  },
+  "metadata": {
+    "author": "AgentEX",
+    "description": "Claude AI models via Anthropic API",
+    "tags": ["ai", "llm", "claude", "anthropic"],
+    "icon": "🤖",
+    "color": "#D4A574"
+  },
+  "category": "ai",
+  "requiredEnv": [
+    {
+      "key": "ANTHROPIC_API_KEY",
+      "purpose": "Authenticate with Anthropic API",
+      "getFrom": "https://console.anthropic.com",
+      "required": true,
+      "example": "sk-ant-xxxxxxxxxxxx",
+      "description": "Get your API key from Anthropic console"
+    }
+  ],
+  "implementation": {
+    "npm": ["@anthropic-ai/sdk"],
+    "template": "templates/tools/anthropic-api.ts"
+  },
+  "cost": {
+    "tier": "paid",
+    "estimate": "Pay-as-you-go, ~$3-15 per 1M tokens",
+    "paidTier": {
+      "startingAt": "$0.003 per 1K input tokens",
+      "description": "Claude 3.5 Sonnet pricing"
+    }
+  },
+  "documentation": "https://docs.anthropic.com"
+}

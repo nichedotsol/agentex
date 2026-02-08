@@ -1,0 +1,53 @@
+{
+  "id": "tool-jupiter-api",
+  "type": "tool",
+  "name": "Jupiter Swap API",
+  "version": "1.0.0",
+  "provider": "jupiter",
+  "config": {
+    "endpoint": "https://quote-api.jup.ag/v6",
+    "auth_type": "none",
+    "method": "GET",
+    "parameters": {
+      "required": ["inputMint", "outputMint", "amount"],
+      "optional": ["slippageBps", "onlyDirectRoutes"]
+    }
+  },
+  "interface": {
+    "inputs": ["inputMint", "outputMint", "amount", "slippageBps"],
+    "outputs": ["quote", "route", "priceImpact"],
+    "capabilities": [
+      "getQuote",
+      "getPrice",
+      "swapTokens",
+      "getRoute"
+    ]
+  },
+  "resources": {
+    "rate_limits": {
+      "requests_per_second": 10
+    }
+  },
+  "metadata": {
+    "author": "AgentEX",
+    "description": "Solana token swaps and price quotes via Jupiter aggregator",
+    "tags": ["blockchain", "solana", "defi", "swap", "trading"],
+    "icon": "🪐",
+    "color": "#00D4FF"
+  },
+  "category": "blockchain",
+  "requiredEnv": [],
+  "implementation": {
+    "npm": ["@solana/web3.js"],
+    "template": "templates/tools/jupiter-api.ts"
+  },
+  "cost": {
+    "tier": "free",
+    "estimate": "Free public API",
+    "freeTier": {
+      "limit": "10 requests/second",
+      "description": "Public API with rate limits"
+    }
+  },
+  "documentation": "https://docs.jup.ag"
+}
