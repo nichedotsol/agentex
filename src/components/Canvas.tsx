@@ -138,15 +138,37 @@ function FloatingWindow({
       position={position}
       handle=".window-handle"
       onStop={handleStop}
+      defaultClassName="dragging"
+      defaultClassNameDragging="dragging-active"
+      grid={[10, 10]}
     >
       <motion.div
-        initial={{ scale: 0.95, opacity: 0 }}
+        initial={{ scale: 0.95, opacity: 0, y: 20 }}
         animate={{ 
           scale: selected ? 1.02 : 1, 
           opacity: 1,
+          y: 0,
+        }}
+        transition={{
+          type: "spring",
+          stiffness: 300,
+          damping: 25
+        }}
+        whileHover={{ 
+          scale: selected ? 1.03 : 1.01,
+          transition: { duration: 0.2 }
+        }}
+        whileDrag={{ 
+          scale: 1.05,
+          rotate: 1,
+          transition: { duration: 0.1 }
         }}
         onClick={onSelect}
-        className={`absolute card cursor-pointer ${selected ? 'ring-2 ring-ax-primary' : ''}`}
+        className={`absolute card cursor-pointer transition-all duration-200 ${
+          selected 
+            ? 'ring-2 ring-ax-primary ring-offset-2 ring-offset-ax-bg shadow-lg shadow-ax-primary/30' 
+            : 'hover:ring-1 hover:ring-ax-border'
+        }`}
         style={{ 
           width: 300,
         }}

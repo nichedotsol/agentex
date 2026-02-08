@@ -76,33 +76,76 @@ export default function NaturalLanguageInput() {
   }
 
   return (
-    <div className="glass-panel rounded-2xl p-6 mb-6">
+    <motion.div 
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="glass-panel rounded-2xl p-6 mb-6"
+    >
       <div className="mb-4">
-        <h3 className="font-sans text-lg font-semibold text-ax-text mb-2">
+        <motion.h3 
+          className="font-sans text-lg font-semibold text-ax-text mb-2"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.1 }}
+        >
           Describe what you want to build
-        </h3>
-        <p className="font-sans text-sm text-ax-text-secondary">
+        </motion.h3>
+        <motion.p 
+          className="font-sans text-sm text-ax-text-secondary"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.2 }}
+        >
           Use natural language to add components. Try: "Add Claude brain with web search"
-        </p>
+        </motion.p>
       </div>
       
       <form onSubmit={handleSubmit} className="flex gap-3">
-        <input
-          type="text"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          placeholder="e.g., 'Add Claude brain with web search and deploy to Vercel'"
-          className="flex-1 px-4 py-3 bg-ax-bg/50 border border-ax-border rounded-xl text-ax-text font-sans text-sm outline-none focus:border-ax-primary focus:ring-2 focus:ring-ax-primary/20 transition-all placeholder:text-ax-text-tertiary"
-          disabled={isProcessing}
-        />
+        <motion.div
+          className="flex-1 relative"
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.3 }}
+        >
+          <input
+            type="text"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder="e.g., 'Add Claude brain with web search and deploy to Vercel'"
+            className="w-full px-4 py-3 bg-ax-bg/50 border border-ax-border rounded-xl text-ax-text font-sans text-sm outline-none focus:border-ax-primary focus:ring-2 focus:ring-ax-primary/20 transition-all duration-200 placeholder:text-ax-text-tertiary hover:border-ax-border-hover"
+            disabled={isProcessing}
+          />
+          {isProcessing && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="absolute right-3 top-1/2 -translate-y-1/2"
+            >
+              <div className="w-5 h-5 border-2 border-ax-primary border-t-transparent rounded-full animate-spin" />
+            </motion.div>
+          )}
+        </motion.div>
         <motion.button
           type="submit"
           disabled={!input.trim() || isProcessing}
-          whileHover={{ scale: 1.02 }}
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.3 }}
+          whileHover={{ 
+            scale: 1.02,
+            boxShadow: "0 10px 30px rgba(99, 102, 241, 0.4)"
+          }}
           whileTap={{ scale: 0.98 }}
-          className="px-6 py-3 bg-ax-primary text-white rounded-xl font-sans text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-lg shadow-ax-primary/20 hover:shadow-ax-primary/30"
+          className="px-6 py-3 bg-ax-primary text-white rounded-xl font-sans text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-lg shadow-ax-primary/20 hover:shadow-ax-primary/30 micro-bounce"
         >
-          {isProcessing ? 'Adding...' : 'Add'}
+          {isProcessing ? (
+            <span className="flex items-center gap-2">
+              <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+              Adding...
+            </span>
+          ) : (
+            'Add'
+          )}
         </motion.button>
       </form>
 

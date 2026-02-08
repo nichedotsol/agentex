@@ -53,8 +53,22 @@ export default function ComponentShowcase() {
 
   if (loading) {
     return (
-      <div className="glass-panel border-r border-ax-border flex items-center justify-center p-8">
-        <div className="font-sans text-sm text-ax-text-secondary">Loading components...</div>
+      <div className="glass-panel border-r border-ax-border flex flex-col items-center justify-center p-8">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="space-y-4 w-full"
+        >
+          <div className="flex items-center justify-center gap-3">
+            <div className="w-6 h-6 border-2 border-ax-primary border-t-transparent rounded-full animate-spin" />
+            <div className="font-sans text-sm text-ax-text-secondary">Loading components...</div>
+          </div>
+          <div className="space-y-2">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="skeleton h-20 rounded-lg" />
+            ))}
+          </div>
+        </motion.div>
       </div>
     )
   }
@@ -233,51 +247,99 @@ function ComponentCard({
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.05 }}
+      initial={{ opacity: 0, y: 20, scale: 0.95 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      transition={{ 
+        delay: index * 0.05,
+        type: "spring",
+        stiffness: 300,
+        damping: 20
+      }}
+      whileHover={{ 
+        scale: 1.02,
+        y: -4,
+        transition: { duration: 0.2 }
+      }}
+      whileTap={{ scale: 0.98 }}
       onClick={onAdd}
-      className="group relative card-hover p-4 cursor-pointer overflow-hidden"
+      className="group relative card-hover p-4 cursor-pointer overflow-hidden micro-lift"
     >
-      {/* Hover glow effect */}
+      {/* Enhanced hover glow effect with gradient */}
       <div 
-        className="absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-100 transition-opacity"
+        className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
         style={{
-          background: `linear-gradient(to bottom right, transparent, ${component.metadata.color || '#00ff9f'}10)`
+          background: `radial-gradient(circle at center, ${component.metadata.color || '#6366f1'}15, transparent 70%)`
+        }}
+      />
+      
+      {/* Animated border on hover */}
+      <div 
+        className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+        style={{
+          border: `1px solid ${component.metadata.color || '#6366f1'}40`,
+          boxShadow: `0 0 20px ${component.metadata.color || '#6366f1'}20`
         }}
       />
       
       {/* Component info */}
       <div className="relative z-10">
-        <div className="font-sans text-xs text-ax-text-tertiary mb-1.5 uppercase tracking-wide">
+        <motion.div 
+          className="font-sans text-xs text-ax-text-tertiary mb-1.5 uppercase tracking-wide"
+          initial={{ opacity: 0.6 }}
+          whileHover={{ opacity: 1 }}
+        >
           {component.type}
-        </div>
-        <div className="font-sans text-sm font-semibold text-ax-text mb-2">
+        </motion.div>
+        <motion.div 
+          className="font-sans text-sm font-semibold text-ax-text mb-2"
+          whileHover={{ x: 2 }}
+          transition={{ type: "spring", stiffness: 400 }}
+        >
           {component.name.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
-        </div>
+        </motion.div>
         <div className="font-sans text-xs text-ax-text-secondary leading-relaxed">
           {meta}
           {ctx && ` · ${ctx}`}
           {rate && ` · ${rate}`}
         </div>
         {component.metadata.tags && component.metadata.tags.length > 0 && (
-          <div className="mt-3 flex flex-wrap gap-1.5">
-            {component.metadata.tags.slice(0, 2).map((tag) => (
-              <span
+          <motion.div 
+            className="mt-3 flex flex-wrap gap-1.5"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.1 }}
+          >
+            {component.metadata.tags.slice(0, 2).map((tag, i) => (
+              <motion.span
                 key={tag}
-                className="font-sans text-[10px] px-2 py-0.5 bg-ax-bg border border-ax-border rounded text-ax-text-secondary"
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ delay: 0.1 + i * 0.05 }}
+                whileHover={{ scale: 1.1 }}
+                className="font-sans text-[10px] px-2 py-0.5 bg-ax-bg border border-ax-border rounded text-ax-text-secondary transition-colors hover:border-ax-primary hover:text-ax-primary"
               >
                 {tag}
-              </span>
+              </motion.span>
             ))}
-          </div>
+          </motion.div>
         )}
       </div>
 
-      {/* Add indicator */}
-      <div className="absolute top-3 right-3 w-6 h-6 bg-ax-primary rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity shadow-lg">
-        <span className="text-white text-xs font-bold">+</span>
-      </div>
+      {/* Enhanced add indicator with animation */}
+      <motion.div 
+        className="absolute top-3 right-3 w-7 h-7 bg-ax-primary rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 shadow-lg"
+        initial={{ scale: 0, rotate: -180 }}
+        whileHover={{ scale: 1.1, rotate: 0 }}
+        transition={{ type: "spring", stiffness: 300 }}
+      >
+        <motion.span 
+          className="text-white text-sm font-bold"
+          whileHover={{ rotate: 90 }}
+          transition={{ duration: 0.2 }}
+        >
+          +
+        </motion.span>
+      </motion.div>
     </motion.div>
   )
 }
