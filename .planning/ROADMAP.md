@@ -410,6 +410,56 @@ Creates a complete export system for deploying agents:
 
 ---
 
+## Current Milestone: v3.0 Component Expansion & Modernization
+
+### Phase 18: Component Expansion
+
+**Goal:** Expand component library with additional brains, tools, runtimes, and introduce memory components
+**Depends on:** Phase 17
+**Status:** Planning
+
+**Plans:**
+- Add 5 new brain components (Gemini, Mistral, GPT-4 Turbo, Claude Haiku, Llama 3.1 8B)
+- Add 10 new tool components (File Ops, Database, Email, Calendar, Slack, Image Gen, PDF, API Client, Vector DB, Audio)
+- Add 5 new runtime components (AWS Lambda, Cloudflare Workers, Railway, Fly.io, Render)
+- Introduce memory component category (4 memory components)
+- Update registry and UI to support memory components
+
+### Phase 19: UI Modernization & Enhanced Interactions
+
+**Goal:** Modernize UI with advanced interactions, better animations, improved glass morphism
+**Depends on:** Phase 18
+**Status:** Planning
+
+**Plans:**
+- Enhance glass morphism with variable blur and gradient overlays
+- Add advanced animations (page transitions, stagger effects, micro-interactions)
+- Improve component cards with better hover states and information display
+- Enhance workspace with smooth dragging, better connections, mini-map
+- Modernize forms with better validation feedback and auto-save
+- Improve natural language input with LLM integration
+- Add gesture support and loading states
+
+### Phase 20: Advanced Features & Functionality
+
+**Goal:** Add advanced features (templates, testing, version control, collaboration, analytics)
+**Depends on:** Phase 19
+**Status:** Planning
+
+**Plans:**
+- Create agent template system
+- Build testing interface with chat
+- Implement version control
+- Add collaboration features
+- Build analytics dashboard
+- Enhance natural language with LLM
+- Create marketplace UI
+- Implement real export integrations (GitHub, Vercel)
+- Build agent chaining system
+- Integrate memory components
+
+---
+
 ## Future Milestones
 
 ---
