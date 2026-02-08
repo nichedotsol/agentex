@@ -420,11 +420,14 @@ export default function AgentChaining({ onClose }: AgentChainingProps) {
                               Add Agent
                             </button>
                             <button
-                              onClick={() => {
+                              type="button"
+                              onClick={(e) => {
+                                e.preventDefault()
+                                e.stopPropagation()
                                 setSelectedChain(null)
                                 loadData()
                               }}
-                              className="px-3 py-1.5 bg-ax-bg border border-ax-border text-ax-text-secondary rounded-lg font-sans text-xs hover:bg-ax-bg-hover transition-all"
+                              className="px-3 py-1.5 bg-ax-bg border border-ax-border text-ax-text-secondary rounded-lg font-sans text-xs hover:bg-ax-bg-hover transition-all cursor-pointer relative z-10 pointer-events-auto"
                             >
                               Back to Chains
                             </button>

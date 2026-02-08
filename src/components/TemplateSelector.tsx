@@ -109,8 +109,13 @@ export default function TemplateSelector({ onClose }: TemplateSelectorProps) {
               </p>
             </div>
             <button
-              onClick={onClose}
-              className="w-8 h-8 rounded-lg border border-ax-border hover:border-ax-error hover:bg-ax-error/20 flex items-center justify-center transition-all micro-bounce"
+              type="button"
+              onClick={(e) => {
+                e.preventDefault()
+                e.stopPropagation()
+                onClose()
+              }}
+              className="w-8 h-8 rounded-lg border border-ax-border hover:border-ax-error hover:bg-ax-error/20 flex items-center justify-center transition-all micro-bounce cursor-pointer relative z-10 pointer-events-auto"
             >
               <span className="text-ax-text">×</span>
             </button>
