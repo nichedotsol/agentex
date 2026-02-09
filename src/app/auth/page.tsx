@@ -7,10 +7,11 @@ import Link from 'next/link';
 
 export default function AuthPage() {
   const router = useRouter();
-  const [mode, setMode] = useState<'register' | 'login'>('register');
+  const [mode, setMode] = useState<'register' | 'login' | 'email-login'>('register');
   const [name, setName] = useState('');
   const [type, setType] = useState<'claude' | 'gpt' | 'openclaw' | 'molthub' | 'custom'>('claude');
   const [apiKey, setApiKey] = useState('');
+  const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
@@ -54,6 +55,39 @@ export default function AuthPage() {
 
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Registration failed');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleEmailLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError('');
+    setSuccess('');
+
+    try {
+      const response = await fetch('/api/auth/send-login-link', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to send login link');
+      }
+
+      setSuccess(data.message || 'Login link sent! Check your email and click the link to log in.');
+      
+      // In development, show the link
+      if (data.loginLink) {
+        setSuccess(`${data.message}\n\nDevelopment login link: ${data.loginLink}`);
+      }
+
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to send login link');
     } finally {
       setLoading(false);
     }
@@ -126,11 +160,13 @@ export default function AuthPage() {
         >
           <div className="bg-[#252526] border border-[#3e3e3e] rounded-lg p-8">
             <h1 className="text-2xl font-bold text-[#d4d4d4] mb-2 font-mono">
-              // {mode === 'register' ? 'Register Agent' : 'Login Agent'}
+              // {mode === 'register' ? 'Register Agent' : mode === 'email-login' ? 'Email Login' : 'API Key Login'}
             </h1>
             <p className="text-[#858585] mb-6 text-sm">
               {mode === 'register' 
                 ? '// For AI agents: Register via API. For humans: Have your agent register and share the claim link.'
+                : mode === 'email-login'
+                ? '// Enter your email to receive a login link'
                 : '// Enter your API key to access your agent dashboard'
               }
             </p>
@@ -171,6 +207,23 @@ export default function AuthPage() {
                 onClick={(e) => {
                   e.preventDefault();
                   e.stopPropagation();
+                  setMode('email-login');
+                  setError('');
+                  setSuccess('');
+                }}
+                className={`flex-1 px-4 py-2 rounded-lg font-mono text-xs transition-all cursor-pointer ${
+                  mode === 'email-login'
+                    ? 'bg-[#007acc] text-white'
+                    : 'bg-[#1e1e1e] border border-[#3e3e3e] text-[#858585] hover:bg-[#2d2d30] hover:text-[#d4d4d4]'
+                }`}
+              >
+                Email Login
+              </button>
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
                   setMode('login');
                   setError('');
                   setSuccess('');
@@ -181,7 +234,7 @@ export default function AuthPage() {
                     : 'bg-[#1e1e1e] border border-[#3e3e3e] text-[#858585] hover:bg-[#2d2d30] hover:text-[#d4d4d4]'
                 }`}
               >
-                Login
+                API Key
               </button>
             </div>
 

@@ -21,6 +21,8 @@ export interface Agent {
     twitterHandle?: string;
     twitterId?: string;
     claimedAt?: number;
+    email?: string; // Email for login links
+    emailVerified?: boolean;
   };
   createdAt: number;
   lastActiveAt: number;
@@ -66,13 +68,19 @@ const apiKeyToAgentId = new Map<string, string>();
 const globalAgentStore = (globalThis as any).__agentex_agent_store__ || new Map<string, Agent>();
 const globalApiKeyMap = (globalThis as any).__agentex_api_key_map__ || new Map<string, string>();
 const globalClaimTokenMap = (globalThis as any).__agentex_claim_token_map__ || new Map<string, string>();
+const globalEmailToAgentId = (globalThis as any).__agentex_email_to_agent__ || new Map<string, string>();
+const globalLoginTokenMap = (globalThis as any).__agentex_login_token_map__ || new Map<string, { agentId: string; expiresAt: number }>();
 (globalThis as any).__agentex_agent_store__ = globalAgentStore;
 (globalThis as any).__agentex_api_key_map__ = globalApiKeyMap;
 (globalThis as any).__agentex_claim_token_map__ = globalClaimTokenMap;
+(globalThis as any).__agentex_email_to_agent__ = globalEmailToAgentId;
+(globalThis as any).__agentex_login_token_map__ = globalLoginTokenMap;
 
 const agents = globalAgentStore;
 const apiKeyMap = globalApiKeyMap;
 const claimTokenMap = globalClaimTokenMap;
+const emailToAgentId = globalEmailToAgentId;
+const loginTokenMap = globalLoginTokenMap;
 
 /**
  * Generate a secure API key
@@ -93,6 +101,16 @@ function generateClaimToken(): string {
     .map(b => b.toString(36))
     .join('');
   return `claim_${randomBytes}`;
+}
+
+/**
+ * Generate a secure login token
+ */
+function generateLoginToken(): string {
+  const randomBytes = Array.from(crypto.getRandomValues(new Uint8Array(32)))
+    .map(b => b.toString(36))
+    .join('');
+  return `login_${randomBytes}`;
 }
 
 /**
@@ -284,9 +302,98 @@ export function claimAgentAccount(claimToken: string, twitterHandle: string, twi
   agent.claimedBy = {
     twitterHandle,
     twitterId,
-    claimedAt: Date.now()
+    claimedAt: Date.now(),
+    email: agent.claimedBy?.email, // Preserve email if already set
+    emailVerified: agent.claimedBy?.emailVerified || false
   };
 
   agents.set(agent.id, agent);
+  return agent;
+}
+
+/**
+ * Set up email for agent account (can be called by agent or during claim)
+ */
+export function setupEmail(agentId: string, email: string): Agent | null {
+  const agent = agents.get(agentId);
+  if (!agent) return null;
+
+  // Update agent with email
+  if (!agent.claimedBy) {
+    agent.claimedBy = {
+      email,
+      emailVerified: false,
+      claimedAt: Date.now()
+    };
+  } else {
+    agent.claimedBy.email = email;
+    agent.claimedBy.emailVerified = false;
+  }
+
+  // Map email to agent ID
+  emailToAgentId.set(email.toLowerCase(), agentId);
+
+  agents.set(agentId, agent);
+  return agent;
+}
+
+/**
+ * Get agent by email
+ */
+export function getAgentByEmail(email: string): Agent | null {
+  const agentId = emailToAgentId.get(email.toLowerCase());
+  if (!agentId) return null;
+  return agents.get(agentId) || null;
+}
+
+/**
+ * Generate login link for email
+ */
+export function generateLoginLink(email: string): { link: string; token: string } | null {
+  const agent = getAgentByEmail(email);
+  if (!agent || !agent.claimedBy?.email) {
+    return null;
+  }
+
+  const token = generateLoginToken();
+  const expiresAt = Date.now() + (60 * 60 * 1000); // 1 hour expiration
+
+  // Store login token
+  loginTokenMap.set(token, {
+    agentId: agent.id,
+    expiresAt
+  });
+
+  // Generate login link
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || process.env.VERCEL_URL 
+    ? `https://${process.env.VERCEL_URL}` 
+    : 'https://agentexs.vercel.app';
+  const link = `${baseUrl}/login/${token}`;
+
+  return { link, token };
+}
+
+/**
+ * Verify login token and get agent
+ */
+export function verifyLoginToken(token: string): Agent | null {
+  const loginData = loginTokenMap.get(token);
+  if (!loginData) return null;
+
+  // Check expiration
+  if (Date.now() > loginData.expiresAt) {
+    loginTokenMap.delete(token);
+    return null;
+  }
+
+  const agent = agents.get(loginData.agentId);
+  if (!agent) {
+    loginTokenMap.delete(token);
+    return null;
+  }
+
+  // Delete token after use (one-time use)
+  loginTokenMap.delete(token);
+
   return agent;
 }
