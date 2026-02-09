@@ -118,7 +118,11 @@ export default function ExportModal({ isOpen, onClose }: ExportModalProps) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          onClick={onClose}
+          onClick={(e) => {
+            if (e.target === e.currentTarget) {
+              onClose();
+            }
+          }}
           className="absolute inset-0 bg-black/80 backdrop-blur-sm"
         />
 
@@ -127,7 +131,8 @@ export default function ExportModal({ isOpen, onClose }: ExportModalProps) {
           initial={{ opacity: 0, scale: 0.9, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.9, y: 20 }}
-          className="relative w-full max-w-4xl max-h-[90vh] bg-ax-bg-elevated border border-ax-border window-shadow overflow-hidden flex flex-col"
+          onClick={(e) => e.stopPropagation()}
+          className="relative w-full max-w-4xl max-h-[90vh] bg-ax-bg-elevated border border-ax-border window-shadow overflow-hidden flex flex-col z-10"
         >
           {/* Header */}
           <div className="p-4 border-b border-ax-border flex items-center justify-between">
