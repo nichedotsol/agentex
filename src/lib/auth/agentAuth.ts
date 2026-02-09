@@ -15,6 +15,13 @@ export interface Agent {
     description?: string;
     contact?: string;
   };
+  claimToken?: string; // Token for human to claim account
+  claimLink?: string; // Full claim URL
+  claimedBy?: {
+    twitterHandle?: string;
+    twitterId?: string;
+    claimedAt?: number;
+  };
   createdAt: number;
   lastActiveAt: number;
   rateLimit: {
@@ -45,7 +52,9 @@ export interface RegisterResponse {
     name: string;
     type: string;
   };
-  apiKey: string; // Only returned once
+  apiKey: string; // Only returned once (for direct API use)
+  claimLink?: string; // Link for human to claim account
+  claimToken?: string; // Token for claim link
   message: string;
 }
 
@@ -56,11 +65,14 @@ const apiKeyToAgentId = new Map<string, string>();
 // Use globalThis for persistence across serverless invocations
 const globalAgentStore = (globalThis as any).__agentex_agent_store__ || new Map<string, Agent>();
 const globalApiKeyMap = (globalThis as any).__agentex_api_key_map__ || new Map<string, string>();
+const globalClaimTokenMap = (globalThis as any).__agentex_claim_token_map__ || new Map<string, string>();
 (globalThis as any).__agentex_agent_store__ = globalAgentStore;
 (globalThis as any).__agentex_api_key_map__ = globalApiKeyMap;
+(globalThis as any).__agentex_claim_token_map__ = globalClaimTokenMap;
 
 const agents = globalAgentStore;
 const apiKeyMap = globalApiKeyMap;
+const claimTokenMap = globalClaimTokenMap;
 
 /**
  * Generate a secure API key
@@ -71,6 +83,16 @@ function generateApiKey(): string {
     .map(b => b.toString(16).padStart(2, '0'))
     .join('');
   return `${prefix}${randomBytes}`;
+}
+
+/**
+ * Generate a secure claim token
+ */
+function generateClaimToken(): string {
+  const randomBytes = Array.from(crypto.getRandomValues(new Uint8Array(16)))
+    .map(b => b.toString(36))
+    .join('');
+  return `claim_${randomBytes}`;
 }
 
 /**
@@ -91,6 +113,13 @@ export async function registerAgent(request: RegisterRequest): Promise<RegisterR
   const agentId = `agent_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
   const apiKey = generateApiKey();
   const apiKeyHash = await hashApiKey(apiKey);
+  const claimToken = generateClaimToken();
+  
+  // Generate claim link (use environment variable for base URL or default)
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || process.env.VERCEL_URL 
+    ? `https://${process.env.VERCEL_URL}` 
+    : 'https://agentexs.vercel.app';
+  const claimLink = `${baseUrl}/claim/${claimToken}`;
 
   const agent: Agent = {
     id: agentId,
@@ -99,6 +128,8 @@ export async function registerAgent(request: RegisterRequest): Promise<RegisterR
     name: request.name,
     type: request.type,
     metadata: request.metadata || {},
+    claimToken,
+    claimLink,
     createdAt: Date.now(),
     lastActiveAt: Date.now(),
     rateLimit: {
@@ -114,6 +145,7 @@ export async function registerAgent(request: RegisterRequest): Promise<RegisterR
 
   agents.set(agentId, agent);
   apiKeyMap.set(apiKey, agentId);
+  claimTokenMap.set(claimToken, agentId);
 
   // Remove plain text API key from stored agent
   const storedAgent = { ...agent };
@@ -125,8 +157,10 @@ export async function registerAgent(request: RegisterRequest): Promise<RegisterR
       name: agent.name,
       type: agent.type
     },
-    apiKey, // Return plain text only once
-    message: 'Agent registered successfully. Save your API key - it will not be shown again.'
+    apiKey, // Return plain text only once (for direct API use)
+    claimLink, // Return claim link for human to claim account
+    claimToken, // Return token for reference
+    message: 'Agent registered successfully. Share the claim link with the human owner to verify on X/Twitter.'
   };
 }
 
@@ -228,4 +262,31 @@ export function checkRateLimit(agent: Agent): { allowed: boolean; reason?: strin
 
   // Basic check - in production, implement proper rate limiting
   return { allowed: true };
+}
+
+/**
+ * Get agent by claim token
+ */
+export function getAgentByClaimToken(claimToken: string): Agent | null {
+  const agentId = claimTokenMap.get(claimToken);
+  if (!agentId) return null;
+  return agents.get(agentId) || null;
+}
+
+/**
+ * Claim agent account with Twitter verification
+ */
+export function claimAgentAccount(claimToken: string, twitterHandle: string, twitterId?: string): Agent | null {
+  const agent = getAgentByClaimToken(claimToken);
+  if (!agent) return null;
+
+  // Update agent with claim information
+  agent.claimedBy = {
+    twitterHandle,
+    twitterId,
+    claimedAt: Date.now()
+  };
+
+  agents.set(agent.id, agent);
+  return agent;
 }

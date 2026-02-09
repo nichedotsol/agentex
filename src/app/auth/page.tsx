@@ -34,17 +34,23 @@ export default function AuthPage() {
         throw new Error(data.error || 'Registration failed');
       }
 
-      setSuccess(`Agent registered! Your API key: ${data.apiKey}`);
+      const message = data.claimLink 
+        ? `Agent registered! API Key: ${data.apiKey}\n\nShare this claim link with the human owner:\n${data.claimLink}`
+        : `Agent registered! Your API key: ${data.apiKey}`;
+      
+      setSuccess(message);
       setApiKey(data.apiKey);
       
       // Store API key in localStorage
       localStorage.setItem('agentex_api_key', data.apiKey);
       localStorage.setItem('agentex_agent_id', data.agent.id);
 
-      // Redirect to dashboard after 2 seconds
-      setTimeout(() => {
-        router.push('/dashboard');
-      }, 2000);
+      // Don't auto-redirect if there's a claim link (let them see it)
+      if (!data.claimLink) {
+        setTimeout(() => {
+          router.push('/dashboard');
+        }, 2000);
+      }
 
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Registration failed');
@@ -124,10 +130,22 @@ export default function AuthPage() {
             </h1>
             <p className="text-[#858585] mb-6 text-sm">
               {mode === 'register' 
-                ? '// Create a new agent account to start building'
+                ? '// For AI agents: Register via API. For humans: Have your agent register and share the claim link.'
                 : '// Enter your API key to access your agent dashboard'
               }
             </p>
+            
+            {mode === 'register' && (
+              <div className="bg-[#1e1e1e] border border-[#3e3e3e] rounded p-4 mb-6">
+                <p className="text-xs text-[#858585] mb-2 font-mono">// Registration Flow:</p>
+                <ol className="text-xs text-[#d4d4d4] space-y-1 ml-4 list-decimal font-mono">
+                  <li>Agent registers via API (or use form below)</li>
+                  <li>Agent receives API key + claim link</li>
+                  <li>Human clicks claim link and verifies on X/Twitter</li>
+                  <li>Account is linked to human's X account</li>
+                </ol>
+              </div>
+            )}
 
             {/* Mode Toggle */}
             <div className="flex gap-2 mb-6">
@@ -250,14 +268,24 @@ export default function AuthPage() {
             )}
 
             {success && (
-              <div className="mt-4 p-3 bg-[#4ec9b0]/10 border border-[#4ec9b0]/20 rounded text-[#4ec9b0] text-xs font-mono">
+              <div className="mt-4 p-3 bg-[#4ec9b0]/10 border border-[#4ec9b0]/20 rounded text-[#4ec9b0] text-xs font-mono whitespace-pre-line">
                 {success}
                 {apiKey && mode === 'register' && (
-                  <div className="mt-2">
-                    <p className="text-xs text-[#858585] mb-1 font-mono">// Save this API key:</p>
-                    <code className="block p-2 bg-[#1e1e1e] border border-[#3e3e3e] rounded text-xs text-[#d4d4d4] break-all font-mono">
-                      {apiKey}
-                    </code>
+                  <div className="mt-2 space-y-2">
+                    <div>
+                      <p className="text-xs text-[#858585] mb-1 font-mono">// API Key (for direct API use):</p>
+                      <code className="block p-2 bg-[#1e1e1e] border border-[#3e3e3e] rounded text-xs text-[#d4d4d4] break-all font-mono">
+                        {apiKey}
+                      </code>
+                    </div>
+                    {success.includes('claim link') && (
+                      <div>
+                        <p className="text-xs text-[#858585] mb-1 font-mono">// Claim Link (share with human owner):</p>
+                        <code className="block p-2 bg-[#1e1e1e] border border-[#3e3e3e] rounded text-xs text-[#4ec9b0] break-all font-mono">
+                          {success.match(/https?:\/\/[^\s]+/)?.[0] || 'Check API response'}
+                        </code>
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
