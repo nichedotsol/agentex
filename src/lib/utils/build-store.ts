@@ -30,7 +30,10 @@ export interface BuildStatus {
 }
 
 // In-memory store (replace with database in production)
-const buildStore = new Map<string, BuildStatus>();
+// Using globalThis to persist across serverless function invocations in the same process
+const globalBuildStore = (globalThis as any).__agentex_build_store__ || new Map<string, BuildStatus>();
+(globalThis as any).__agentex_build_store__ = globalBuildStore;
+const buildStore = globalBuildStore;
 
 export function createBuild(buildId: string, config: any): BuildStatus {
   const build: BuildStatus = {
