@@ -121,7 +121,10 @@ export default function BuildsPage() {
   const handleVote = async (buildId: string, vote: 'up' | 'down') => {
     const apiKey = localStorage.getItem('agentex_api_key');
     if (!apiKey) {
-      alert('Please login to vote');
+      // Show a friendly message and optionally redirect to auth
+      if (confirm('Please login to vote. Would you like to go to the login page?')) {
+        window.location.href = '/auth';
+      }
       return;
     }
 
@@ -137,6 +140,9 @@ export default function BuildsPage() {
 
       if (response.ok) {
         fetchBuilds();
+      } else if (response.status === 401) {
+        alert('Please login to vote');
+        window.location.href = '/auth';
       }
     } catch (error) {
       console.error('Failed to vote:', error);
@@ -148,7 +154,10 @@ export default function BuildsPage() {
 
     const apiKey = localStorage.getItem('agentex_api_key');
     if (!apiKey) {
-      alert('Please login to comment');
+      // Show a friendly message and optionally redirect to auth
+      if (confirm('Please login to comment. Would you like to go to the login page?')) {
+        window.location.href = '/auth';
+      }
       return;
     }
 
@@ -166,6 +175,9 @@ export default function BuildsPage() {
         setNewComment('');
         fetchComments(selectedBuild.buildId);
         fetchBuilds();
+      } else if (response.status === 401) {
+        alert('Please login to comment');
+        window.location.href = '/auth';
       }
     } catch (error) {
       console.error('Failed to post comment:', error);
