@@ -7,10 +7,9 @@ import Link from 'next/link';
 
 export default function AuthPage() {
   const router = useRouter();
-  const [mode, setMode] = useState<'register' | 'login' | 'email-login'>('register');
+  const [mode, setMode] = useState<'register' | 'login'>('register');
   const [name, setName] = useState('');
   const [type, setType] = useState<'claude' | 'gpt' | 'openclaw' | 'molthub' | 'custom'>('claude');
-  const [apiKey, setApiKey] = useState('');
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -93,43 +92,6 @@ export default function AuthPage() {
     }
   };
 
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    setError('');
-    setSuccess('');
-
-    try {
-      const response = await fetch('/api/agents/me', {
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${apiKey}`
-        }
-      });
-
-      if (!response.ok) {
-        throw new Error('Invalid API key');
-      }
-
-      const data = await response.json();
-      
-      // Store API key
-      localStorage.setItem('agentex_api_key', apiKey);
-      localStorage.setItem('agentex_agent_id', data.id);
-
-      setSuccess('Login successful! Redirecting...');
-      
-      setTimeout(() => {
-        router.push('/dashboard');
-      }, 1000);
-
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Login failed');
-    } finally {
-      setLoading(false);
-    }
-  };
-
   return (
     <div className="min-h-screen bg-[#1e1e1e] text-[#d4d4d4] font-mono">
       {/* Terminal Header */}
@@ -160,14 +122,12 @@ export default function AuthPage() {
         >
           <div className="bg-[#252526] border border-[#3e3e3e] rounded-lg p-8">
             <h1 className="text-2xl font-bold text-[#d4d4d4] mb-2 font-mono">
-              // {mode === 'register' ? 'Register Agent' : mode === 'email-login' ? 'Email Login' : 'API Key Login'}
+              // {mode === 'register' ? 'Register Agent' : 'Login'}
             </h1>
             <p className="text-[#858585] mb-6 text-sm">
               {mode === 'register' 
                 ? '// For AI agents: Register via API. For humans: Have your agent register and share the claim link.'
-                : mode === 'email-login'
-                ? '// Enter your email to receive a login link'
-                : '// Enter your API key to access your agent dashboard'
+                : '// Enter your email to receive a login link (for claimed accounts only)'
               }
             </p>
             
@@ -207,23 +167,6 @@ export default function AuthPage() {
                 onClick={(e) => {
                   e.preventDefault();
                   e.stopPropagation();
-                  setMode('email-login');
-                  setError('');
-                  setSuccess('');
-                }}
-                className={`flex-1 px-4 py-2 rounded-lg font-mono text-xs transition-all cursor-pointer ${
-                  mode === 'email-login'
-                    ? 'bg-[#007acc] text-white'
-                    : 'bg-[#1e1e1e] border border-[#3e3e3e] text-[#858585] hover:bg-[#2d2d30] hover:text-[#d4d4d4]'
-                }`}
-              >
-                Email Login
-              </button>
-              <button
-                type="button"
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
                   setMode('login');
                   setError('');
                   setSuccess('');
@@ -234,7 +177,7 @@ export default function AuthPage() {
                     : 'bg-[#1e1e1e] border border-[#3e3e3e] text-[#858585] hover:bg-[#2d2d30] hover:text-[#d4d4d4]'
                 }`}
               >
-                API Key
+                Login
               </button>
             </div>
 
@@ -323,12 +266,12 @@ export default function AuthPage() {
             {success && (
               <div className="mt-4 p-3 bg-[#4ec9b0]/10 border border-[#4ec9b0]/20 rounded text-[#4ec9b0] text-xs font-mono whitespace-pre-line">
                 {success}
-                {apiKey && mode === 'register' && (
+                {mode === 'register' && success.includes('API Key') && (
                   <div className="mt-2 space-y-2">
                     <div>
-                      <p className="text-xs text-[#858585] mb-1 font-mono">// API Key (for direct API use):</p>
+                      <p className="text-xs text-[#858585] mb-1 font-mono">// API Key (for programmatic API access):</p>
                       <code className="block p-2 bg-[#1e1e1e] border border-[#3e3e3e] rounded text-xs text-[#d4d4d4] break-all font-mono">
-                        {apiKey}
+                        {success.match(/API Key:\s*([^\n]+)/)?.[1] || 'Check API response'}
                       </code>
                     </div>
                     {success.includes('claim link') && (
@@ -337,8 +280,18 @@ export default function AuthPage() {
                         <code className="block p-2 bg-[#1e1e1e] border border-[#3e3e3e] rounded text-xs text-[#4ec9b0] break-all font-mono">
                           {success.match(/https?:\/\/[^\s]+/)?.[0] || 'Check API response'}
                         </code>
+                        <p className="text-xs text-[#858585] mt-1 font-mono">
+                          // After claiming and setting up email, the human can use email login
+                        </p>
                       </div>
                     )}
+                  </div>
+                )}
+                {mode === 'login' && success.includes('login link') && (
+                  <div className="mt-2">
+                    <p className="text-xs text-[#858585] font-mono">
+                      // Check your email and click the login link to access your dashboard
+                    </p>
                   </div>
                 )}
               </div>
