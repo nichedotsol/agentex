@@ -8,7 +8,7 @@ import fs from 'fs/promises';
 import path from 'path';
 
 export interface InstallationInstructions {
-  platform: 'claude' | 'gpt' | 'openclaw' | 'python' | 'typescript';
+  platform: 'claude' | 'gpt' | 'openclaw' | 'molthub' | 'python' | 'typescript';
   method: 'npm' | 'manual' | 'sdk';
   steps: string[];
   files?: {
@@ -22,7 +22,7 @@ export interface InstallationInstructions {
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
-  const platform = searchParams.get('platform') as 'claude' | 'gpt' | 'openclaw' | 'python' | 'typescript' | null;
+  const platform = searchParams.get('platform') as 'claude' | 'gpt' | 'openclaw' | 'molthub' | 'python' | 'typescript' | null;
 
   try {
     const instructions: InstallationInstructions[] = [];

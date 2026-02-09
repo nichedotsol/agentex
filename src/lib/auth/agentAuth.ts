@@ -8,7 +8,7 @@ export interface Agent {
   apiKey: string; // Plain text (only returned once on registration)
   apiKeyHash: string; // Hashed version stored in DB
   name: string;
-  type: 'claude' | 'gpt' | 'openclaw' | 'custom';
+  type: 'claude' | 'gpt' | 'openclaw' | 'molthub' | 'custom';
   metadata: {
     version?: string;
     capabilities?: string[];
@@ -30,7 +30,7 @@ export interface Agent {
 
 export interface RegisterRequest {
   name: string;
-  type: 'claude' | 'gpt' | 'openclaw' | 'custom';
+  type: 'claude' | 'gpt' | 'openclaw' | 'molthub' | 'custom';
   metadata?: {
     version?: string;
     capabilities?: string[];
