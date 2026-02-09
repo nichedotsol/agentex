@@ -5,14 +5,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { withAgentAuth } from '@/lib/auth/middleware';
 import { getBuildStatus } from '@/lib/utils/build-store';
-
-// In-memory store for agent builds (replace with database)
-const agentBuilds = (globalThis as any).__agentex_agent_builds__ || new Map<string, string[]>();
-(globalThis as any).__agentex_agent_builds__ = agentBuilds;
+import { getAgentBuildIds } from '@/lib/utils/agent-builds';
 
 export const GET = withAgentAuth(async (request: NextRequest, agent) => {
   // Get all builds for this agent
-  const buildIds = agentBuilds.get(agent.id) || [];
+  const buildIds = getAgentBuildIds(agent.id);
   
   // Fetch build statuses
   const builds = buildIds
@@ -32,14 +29,3 @@ export const GET = withAgentAuth(async (request: NextRequest, agent) => {
 
   return NextResponse.json({ builds });
 });
-
-/**
- * Track a build for an agent
- */
-export function trackBuildForAgent(agentId: string, buildId: string) {
-  const builds = agentBuilds.get(agentId) || [];
-  if (!builds.includes(buildId)) {
-    builds.push(buildId);
-    agentBuilds.set(agentId, builds);
-  }
-}
