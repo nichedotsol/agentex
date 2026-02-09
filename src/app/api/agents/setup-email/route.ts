@@ -11,12 +11,11 @@ export async function POST(request: NextRequest) {
   try {
     // Authenticate agent
     const authResult = await withAgentAuth(request);
-    if (!authResult.agent) {
-      return NextResponse.json(
-        { error: 'Unauthorized. API key required.' },
-        { status: 401 }
-      );
+    if ('error' in authResult) {
+      return authResult.error;
     }
+    
+    const agent = authResult.agent;
 
     const body = await request.json();
     const { email } = body;

@@ -504,7 +504,8 @@ export function sanitizeAgentForPublic(agent: Agent): Partial<Agent> {
     createdAt: sanitized.createdAt,
     usage: {
       totalBuilds: sanitized.usage.totalBuilds,
-      // Don't expose request counts
+      totalRequests: 0, // Don't expose actual request counts
+      lastRequestAt: 0, // Don't expose actual request timestamps
     }
   };
 }
