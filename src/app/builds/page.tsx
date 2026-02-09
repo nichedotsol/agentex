@@ -20,6 +20,17 @@ interface Build {
   commentCount: number;
   collaborators: string[];
   isCollaboration: boolean;
+  githubRepo?: {
+    owner: string;
+    repo: string;
+    url: string;
+  };
+  molthubRepo?: {
+    agentId: string;
+    repoId: string;
+    url: string;
+    name: string;
+  };
 }
 
 interface Comment {
