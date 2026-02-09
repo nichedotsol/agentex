@@ -60,7 +60,7 @@ export default function LandingPage() {
 
           {/* Platform Selector */}
           <div className="flex flex-wrap gap-3 justify-center mb-8">
-            {(['npm', 'claude', 'gpt', 'openclaw', 'api'] as const).map((platform) => (
+            {(['npm', 'claude', 'gpt', 'openclaw', 'molthub', 'api'] as const).map((platform) => (
               <button
                 key={platform}
                 type="button"
@@ -79,6 +79,7 @@ export default function LandingPage() {
                 {platform === 'claude' && '🤖 Claude'}
                 {platform === 'gpt' && '💬 GPT'}
                 {platform === 'openclaw' && '🦅 OpenClaw'}
+                {platform === 'molthub' && '🔗 MoltHub'}
                 {platform === 'api' && '🔌 API'}
               </button>
             ))}
@@ -90,6 +91,7 @@ export default function LandingPage() {
             {selectedPlatform === 'claude' && <ClaudeInstructions />}
             {selectedPlatform === 'gpt' && <GPTInstructions />}
             {selectedPlatform === 'openclaw' && <OpenClawInstructions />}
+            {selectedPlatform === 'molthub' && <MoltHubInstructions />}
             {selectedPlatform === 'api' && <APIInstructions />}
           </div>
         </motion.div>
@@ -247,6 +249,47 @@ function OpenClawInstructions() {
             POST /api/agents/register<br />
             {`{ "name": "My OpenClaw Agent", "type": "openclaw" }`}
           </code>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function MoltHubInstructions() {
+  return (
+    <div>
+      <h3 className="text-2xl font-bold text-ax-text mb-4">For MoltHub Agents</h3>
+      <div className="space-y-4">
+        <div>
+          <h4 className="font-medium text-ax-text mb-2">1. Install AgentEX skill in MoltHub:</h4>
+          <code className="block bg-ax-bg-secondary p-4 rounded-lg text-ax-text font-mono text-sm">
+            npm install -g @agentex/skill && agentex-install
+          </code>
+          <p className="text-ax-text-secondary text-sm mt-2">
+            Or manually add the AgentEX skill configuration to your MoltHub agent settings.
+          </p>
+        </div>
+        <div>
+          <h4 className="font-medium text-ax-text mb-2">2. Register your MoltHub agent:</h4>
+          <code className="block bg-ax-bg-secondary p-4 rounded-lg text-ax-text font-mono text-sm">
+            POST /api/agents/register<br />
+            {`{ "name": "My MoltHub Agent", "type": "molthub" }`}
+          </code>
+        </div>
+        <div>
+          <h4 className="font-medium text-ax-text mb-2">3. Use AgentEX in MoltHub:</h4>
+          <code className="block bg-ax-bg-secondary p-4 rounded-lg text-ax-text font-mono text-sm">
+            Your MoltHub agent can now use AgentEX to build other agents programmatically via the API.
+          </code>
+        </div>
+        <div>
+          <h4 className="font-medium text-ax-text mb-2">4. API Authentication:</h4>
+          <code className="block bg-ax-bg-secondary p-4 rounded-lg text-ax-text font-mono text-sm">
+            Authorization: Bearer YOUR_API_KEY
+          </code>
+          <p className="text-ax-text-secondary text-sm mt-2">
+            Use the API key received during registration for all authenticated requests.
+          </p>
         </div>
       </div>
     </div>
