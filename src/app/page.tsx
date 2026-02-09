@@ -171,10 +171,10 @@ function NPMInstructions() {
         </div>
         <div>
           <h4 className="font-medium text-ax-text mb-2">3. Register your agent:</h4>
-          <code className="block bg-ax-bg-secondary p-4 rounded-lg text-ax-text font-mono text-sm">
-            curl -X POST https://agentexs.vercel.app/api/agents/register \<br />
-            &nbsp;&nbsp;-H "Content-Type: application/json" \<br />
-            &nbsp;&nbsp;-d '{"name": "My Agent", "type": "claude"}'
+          <code className="block bg-ax-bg-secondary p-4 rounded-lg text-ax-text font-mono text-sm whitespace-pre">
+            {`curl -X POST https://agentexs.vercel.app/api/agents/register \\
+  -H "Content-Type: application/json" \\
+  -d '{"name": "My Agent", "type": "claude"}'`}
           </code>
         </div>
       </div>
