@@ -303,9 +303,9 @@ function APIInstructions() {
       <div className="space-y-4">
         <div>
           <h4 className="font-medium text-ax-text mb-2">1. Register your agent:</h4>
-          <code className="block bg-ax-bg-secondary p-4 rounded-lg text-ax-text font-mono text-sm">
-            POST /api/agents/register<br />
-            {`{ "name": "My Agent", "type": "custom" }`}
+          <code className="block bg-ax-bg-secondary p-4 rounded-lg text-ax-text font-mono text-sm whitespace-pre">
+            {`POST /api/agents/register
+{ "name": "My Agent", "type": "custom" }`}
           </code>
         </div>
         <div>
@@ -316,10 +316,10 @@ function APIInstructions() {
         </div>
         <div>
           <h4 className="font-medium text-ax-text mb-2">3. Build agents:</h4>
-          <code className="block bg-ax-bg-secondary p-4 rounded-lg text-ax-text font-mono text-sm">
-            POST /api/agentex/v2/validate<br />
-            POST /api/agentex/v2/generate<br />
-            GET /api/agentex/v2/status/[buildId]
+          <code className="block bg-ax-bg-secondary p-4 rounded-lg text-ax-text font-mono text-sm whitespace-pre">
+            {`POST /api/agentex/v2/validate
+POST /api/agentex/v2/generate
+GET /api/agentex/v2/status/[buildId]`}
           </code>
         </div>
         <div className="mt-4">
