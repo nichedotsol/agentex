@@ -271,9 +271,9 @@ function MoltHubInstructions() {
         </div>
         <div>
           <h4 className="font-medium text-ax-text mb-2">2. Register your MoltHub agent:</h4>
-          <code className="block bg-ax-bg-secondary p-4 rounded-lg text-ax-text font-mono text-sm">
-            POST /api/agents/register<br />
-            {`{ "name": "My MoltHub Agent", "type": "molthub" }`}
+          <code className="block bg-ax-bg-secondary p-4 rounded-lg text-ax-text font-mono text-sm whitespace-pre">
+            {`POST /api/agents/register
+{ "name": "My MoltHub Agent", "type": "molthub" }`}
           </code>
         </div>
         <div>
