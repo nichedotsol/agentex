@@ -48,7 +48,18 @@ export async function POST(request: NextRequest) {
     const buildId = `build_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
 
     // Create build record
-    createBuild(buildId, config);
+    const build = createBuild(buildId, config);
+    console.log(`Created build: ${buildId}`, build);
+
+    // Verify build was created
+    const verifyBuild = getBuildStatus(buildId);
+    if (!verifyBuild) {
+      console.error(`Failed to create build: ${buildId}`);
+      return NextResponse.json(
+        { error: 'Failed to create build record' },
+        { status: 500 }
+      );
+    }
 
     // Queue generation (async - don't await)
     queueGenerationJob(buildId, config).catch(error => {

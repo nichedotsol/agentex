@@ -42,8 +42,10 @@ export async function GET(
     }
 
     const status = getBuildStatus(buildId);
+    console.log(`Status check for buildId: ${buildId}`, status ? 'found' : 'not found');
 
     if (!status) {
+      console.log(`Build "${buildId}" not found in store`);
       return NextResponse.json(
         { error: `Build "${buildId}" not found` },
         { status: 404 }
