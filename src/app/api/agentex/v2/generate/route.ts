@@ -52,8 +52,8 @@ export async function POST(request: NextRequest) {
     // Create build ID
     const buildId = `build_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
 
-    // Create build record
-    const build = createBuild(buildId, config);
+    // Create build record with agentId if authenticated
+    const build = createBuild(buildId, config, agent?.id);
     console.log(`Created build: ${buildId}`, build);
 
     // Verify build was created

@@ -36,13 +36,14 @@ const globalBuildStore = (globalThis as any).__agentex_build_store__ || new Map<
 (globalThis as any).__agentex_build_store__ = globalBuildStore;
 const buildStore = globalBuildStore;
 
-export function createBuild(buildId: string, config: any): BuildStatus {
+export function createBuild(buildId: string, config: any, agentId?: string): BuildStatus {
   const build: BuildStatus = {
     buildId,
     status: 'queued',
     progress: 0,
     createdAt: Date.now(),
     updatedAt: Date.now(),
+    agentId,
     config
   };
   
