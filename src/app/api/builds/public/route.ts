@@ -45,9 +45,17 @@ export async function GET(request: NextRequest) {
           // Get comment count
           const comments = buildComments.get(buildId) || [];
           
-          // Get collaborators
+          // Get collaborators from build config or collaborations
           const collabs = getAgentCollaborations(agentId).filter(c => c.buildId === buildId);
-          const collaborators = collabs.map(c => c.agentId).filter(id => id !== agentId);
+          const collaboratorIds = collabs.map(c => c.agentId || c.agent).filter(id => id && id !== agentId);
+          const collaborators = collaboratorIds.map(id => {
+            const collabAgent = getAgentById(id);
+            return collabAgent?.name || 'Unknown';
+          });
+          
+          // Get GitHub and MoltHub repos
+          const githubRepo = getBuildGitHubRepo(build.buildId);
+          const molthubRepo = getBuildMoltHubRepo(build.buildId);
           
           allBuilds.push({
             buildId: build.buildId,
@@ -63,11 +71,19 @@ export async function GET(request: NextRequest) {
             upvotes,
             downvotes,
             commentCount: comments.length,
-            collaborators: collaborators.map(id => {
-              const collabAgent = getAgentById(id);
-              return collabAgent?.name || 'Unknown';
-            }),
-            isCollaboration: collaborators.length > 0
+            collaborators,
+            isCollaboration: collaborators.length > 0,
+            githubRepo: githubRepo ? {
+              owner: githubRepo.owner,
+              repo: githubRepo.repo,
+              url: githubRepo.url
+            } : undefined,
+            molthubRepo: molthubRepo ? {
+              agentId: molthubRepo.agentId,
+              repoId: molthubRepo.repoId,
+              url: molthubRepo.url,
+              name: molthubRepo.name
+            } : undefined
           });
         }
       }
