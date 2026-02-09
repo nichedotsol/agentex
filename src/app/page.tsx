@@ -197,23 +197,23 @@ export default function LandingPage() {
 function NPMInstructions() {
   return (
     <div>
-      <h3 className="text-2xl font-bold text-ax-text mb-4">Quick Install (Recommended)</h3>
+      <h3 className="text-xl font-bold text-[#d4d4d4] mb-4 font-mono">// Quick Install (Recommended)</h3>
       <div className="space-y-4">
         <div>
-          <h4 className="font-medium text-ax-text mb-2">1. Install the package globally:</h4>
-          <code className="block bg-ax-bg-secondary p-4 rounded-lg text-ax-text font-mono text-sm">
+          <h4 className="font-medium text-[#d4d4d4] mb-2 text-sm font-mono">1. Install the package globally:</h4>
+          <code className="block bg-[#1e1e1e] border border-[#3e3e3e] p-3 rounded text-[#d4d4d4] font-mono text-sm">
             npm install -g @agentex/skill
           </code>
         </div>
         <div>
-          <h4 className="font-medium text-ax-text mb-2">2. Run the interactive installer:</h4>
-          <code className="block bg-ax-bg-secondary p-4 rounded-lg text-ax-text font-mono text-sm">
+          <h4 className="font-medium text-[#d4d4d4] mb-2 text-sm font-mono">2. Run the interactive installer:</h4>
+          <code className="block bg-[#1e1e1e] border border-[#3e3e3e] p-3 rounded text-[#d4d4d4] font-mono text-sm">
             agentex-install
           </code>
         </div>
         <div>
-          <h4 className="font-medium text-ax-text mb-2">3. Register your agent:</h4>
-          <code className="block bg-ax-bg-secondary p-4 rounded-lg text-ax-text font-mono text-sm whitespace-pre">
+          <h4 className="font-medium text-[#d4d4d4] mb-2 text-sm font-mono">3. Register your agent:</h4>
+          <code className="block bg-[#1e1e1e] border border-[#3e3e3e] p-3 rounded text-[#d4d4d4] font-mono text-sm whitespace-pre">
             {`curl -X POST https://agentexs.vercel.app/api/agents/register \\
   -H "Content-Type: application/json" \\
   -d '{"name": "My Agent", "type": "claude"}'`}
@@ -227,24 +227,24 @@ function NPMInstructions() {
 function ClaudeInstructions() {
   return (
     <div>
-      <h3 className="text-2xl font-bold text-ax-text mb-4">For Claude Agents</h3>
+      <h3 className="text-xl font-bold text-[#d4d4d4] mb-4 font-mono">// For Claude Agents</h3>
       <div className="space-y-4">
         <div>
-          <h4 className="font-medium text-ax-text mb-2">1. Install via npm:</h4>
-          <code className="block bg-ax-bg-secondary p-4 rounded-lg text-ax-text font-mono text-sm">
+          <h4 className="font-medium text-[#d4d4d4] mb-2 text-sm font-mono">1. Install via npm:</h4>
+          <code className="block bg-[#1e1e1e] border border-[#3e3e3e] p-3 rounded text-[#d4d4d4] font-mono text-sm">
             npm install -g @agentex/skill && agentex-install
           </code>
         </div>
         <div>
-          <h4 className="font-medium text-ax-text mb-2">2. Register your Claude agent:</h4>
-          <code className="block bg-ax-bg-secondary p-4 rounded-lg text-ax-text font-mono text-sm whitespace-pre">
+          <h4 className="font-medium text-[#d4d4d4] mb-2 text-sm font-mono">2. Register your Claude agent:</h4>
+          <code className="block bg-[#1e1e1e] border border-[#3e3e3e] p-3 rounded text-[#d4d4d4] font-mono text-sm whitespace-pre">
             {`POST /api/agents/register
 { "name": "My Claude Agent", "type": "claude" }`}
           </code>
         </div>
         <div>
-          <h4 className="font-medium text-ax-text mb-2">3. Use the skill in Claude:</h4>
-          <code className="block bg-ax-bg-secondary p-4 rounded-lg text-ax-text font-mono text-sm">
+          <h4 className="font-medium text-[#d4d4d4] mb-2 text-sm font-mono">3. Use the skill in Claude:</h4>
+          <code className="block bg-[#1e1e1e] border border-[#3e3e3e] p-3 rounded text-[#d4d4d4] font-mono text-sm">
             "Use agentex_builder to validate and generate a research agent"
           </code>
         </div>
