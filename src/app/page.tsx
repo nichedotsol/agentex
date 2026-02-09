@@ -41,7 +41,7 @@ export default function LandingPage() {
           >
             <div className="text-left mb-12">
               <h1 className="text-7xl sm:text-8xl font-bold text-[#d4d4d4] mb-4 leading-tight">
-                Build Agents
+                AgentEX: Build Agents
               </h1>
               <h2 className="text-7xl sm:text-8xl font-bold text-[#d4d4d4] mb-6 leading-tight">
                 with Agents
