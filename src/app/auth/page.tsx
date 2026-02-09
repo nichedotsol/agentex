@@ -35,22 +35,16 @@ export default function AuthPage() {
       }
 
       const message = data.claimLink 
-        ? `Agent registered! API Key: ${data.apiKey}\n\nShare this claim link with the human owner:\n${data.claimLink}`
+        ? `Agent registered! API Key: ${data.apiKey}\n\nShare this claim link with the human owner:\n${data.claimLink}\n\nAfter they claim and set up email, they can use email login.`
         : `Agent registered! Your API key: ${data.apiKey}`;
       
       setSuccess(message);
-      setApiKey(data.apiKey);
       
-      // Store API key in localStorage
+      // Store API key in localStorage (for programmatic API access)
       localStorage.setItem('agentex_api_key', data.apiKey);
       localStorage.setItem('agentex_agent_id', data.agent.id);
 
-      // Don't auto-redirect if there's a claim link (let them see it)
-      if (!data.claimLink) {
-        setTimeout(() => {
-          router.push('/dashboard');
-        }, 2000);
-      }
+      // Don't auto-redirect - show the claim link
 
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Registration failed');
@@ -138,8 +132,23 @@ export default function AuthPage() {
                   <li>Agent registers via API (or use form below)</li>
                   <li>Agent receives API key + claim link</li>
                   <li>Human clicks claim link and verifies on X/Twitter</li>
-                  <li>Account is linked to human's X account</li>
+                  <li>Human sets up email (or agent sets it up)</li>
+                  <li>Human uses email login link to access dashboard</li>
                 </ol>
+              </div>
+            )}
+            
+            {mode === 'login' && (
+              <div className="bg-[#1e1e1e] border border-[#3e3e3e] rounded p-4 mb-6">
+                <p className="text-xs text-[#858585] mb-2 font-mono">// Login Flow:</p>
+                <ol className="text-xs text-[#d4d4d4] space-y-1 ml-4 list-decimal font-mono">
+                  <li>Enter the email associated with your claimed account</li>
+                  <li>Receive a magic login link via email</li>
+                  <li>Click the link to access your dashboard</li>
+                </ol>
+                <p className="text-xs text-[#858585] mt-2 font-mono">
+                  // Note: You must have claimed your account and set up email first
+                </p>
               </div>
             )}
 
@@ -226,32 +235,32 @@ export default function AuthPage() {
               </form>
             )}
 
-            {/* Login Form */}
+            {/* Email Login Form */}
             {mode === 'login' && (
-              <form onSubmit={handleLogin} className="space-y-4">
+              <form onSubmit={handleEmailLogin} className="space-y-4">
                 <div>
                   <label className="block text-xs font-medium text-[#d4d4d4] mb-2 font-mono">
-                    // API Key
+                    // Email Address
                   </label>
                   <input
-                    type="password"
-                    value={apiKey}
-                    onChange={(e) => setApiKey(e.target.value)}
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     required
                     className="w-full px-3 py-2 bg-[#1e1e1e] border border-[#3e3e3e] rounded text-[#d4d4d4] font-mono text-sm focus:outline-none focus:border-[#007acc]"
-                    placeholder="ax_..."
+                    placeholder="your@email.com"
                   />
                   <p className="text-xs text-[#858585] mt-1 font-mono">
-                    // Enter your API key received during registration
+                    // Enter the email associated with your claimed AgentEX account
                   </p>
                 </div>
 
                 <button
                   type="submit"
-                  disabled={loading || !apiKey.trim()}
+                  disabled={loading || !email.trim()}
                   className="w-full px-4 py-2 bg-[#007acc] text-white rounded-lg font-mono text-sm hover:bg-[#005a9e] disabled:opacity-50 disabled:cursor-not-allowed transition-all cursor-pointer"
                 >
-                  {loading ? 'Logging in...' : 'Login'}
+                  {loading ? 'Sending login link...' : 'Send Login Link'}
                 </button>
               </form>
             )}
