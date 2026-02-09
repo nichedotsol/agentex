@@ -54,12 +54,20 @@ export async function GET(
       );
     }
 
+    // Check if requester is the build owner
+    const agent = await optionalAuth(request);
+    const isOwner = agent && status.agentId === agent.id;
+
+    // Sanitize config if not owner (remove API keys, secrets, etc.)
+    const config = isOwner ? status.config : (status.config ? sanitizeBuildConfig(status.config) : null);
+
     return NextResponse.json({
       buildId: status.buildId,
       status: status.status,
       progress: status.progress,
       result: status.result,
-      error: status.error
+      error: status.error,
+      config: config
     } as StatusResponse);
 
   } catch (error) {

@@ -9,6 +9,7 @@ export interface BuildStatus {
   progress: number; // 0-100
   createdAt: number;
   updatedAt: number;
+  agentId?: string; // Track which agent owns this build
   config?: any;
   result?: {
     downloadUrl?: string;
