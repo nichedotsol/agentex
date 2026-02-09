@@ -35,6 +35,9 @@ export interface GenerateResponse {
 
 export async function POST(request: NextRequest) {
   try {
+    // Optional authentication - track builds for authenticated agents
+    const agent = await optionalAuth(request);
+    
     const config = await request.json() as GenerateRequest;
     const { name, description, brain, tools, runtime } = config;
 
@@ -61,6 +64,11 @@ export async function POST(request: NextRequest) {
         { error: 'Failed to create build record' },
         { status: 500 }
       );
+    }
+
+    // Track build for authenticated agent
+    if (agent) {
+      trackBuildForAgent(agent.id, buildId);
     }
 
     // Queue generation (async - don't await)
