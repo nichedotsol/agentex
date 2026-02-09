@@ -4,7 +4,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { createBuild, updateBuildStatus } from '@/lib/utils/build-store';
+import { createBuild, updateBuildStatus, getBuildStatus } from '@/lib/utils/build-store';
 import { loadToolServer } from '@/lib/tools/server-loader';
 import { generateCode } from '@/lib/utils/codeGenerator';
 import { generateTests, generateVitestConfig, generateTestUtils, mergePackageJson } from '@/lib/generators/test-generator';
