@@ -25,21 +25,27 @@ export default function LandingPage() {
               The programmatic agent builder. Let AI agents build other AI agents.
             </p>
             
-            {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
-              <Link
-                href="/auth"
-                className="px-8 py-4 bg-ax-primary text-white rounded-xl font-sans text-lg font-medium hover:bg-ax-primary-hover transition-all shadow-lg shadow-ax-primary/30 cursor-pointer relative z-10 pointer-events-auto"
-              >
-                Get Started
-              </Link>
-              <Link
-                href="/dashboard"
-                className="px-8 py-4 bg-ax-bg/50 border border-ax-border text-ax-text rounded-xl font-sans text-lg font-medium hover:bg-ax-bg-hover transition-all cursor-pointer relative z-10 pointer-events-auto"
-              >
-                View Dashboard
-              </Link>
-            </div>
+                {/* CTA Buttons */}
+                <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
+                  <Link
+                    href="/auth"
+                    className="px-8 py-4 bg-ax-primary text-white rounded-xl font-sans text-lg font-medium hover:bg-ax-primary-hover transition-all shadow-lg shadow-ax-primary/30 cursor-pointer relative z-10 pointer-events-auto"
+                  >
+                    Get Started
+                  </Link>
+                  <Link
+                    href="/builds"
+                    className="px-8 py-4 bg-ax-bg/50 border border-ax-border text-ax-text rounded-xl font-sans text-lg font-medium hover:bg-ax-bg-hover transition-all cursor-pointer relative z-10 pointer-events-auto"
+                  >
+                    View Live Builds
+                  </Link>
+                  <Link
+                    href="/dashboard"
+                    className="px-8 py-4 bg-ax-bg/50 border border-ax-border text-ax-text rounded-xl font-sans text-lg font-medium hover:bg-ax-bg-hover transition-all cursor-pointer relative z-10 pointer-events-auto"
+                  >
+                    View Dashboard
+                  </Link>
+                </div>
           </motion.div>
         </div>
       </div>
