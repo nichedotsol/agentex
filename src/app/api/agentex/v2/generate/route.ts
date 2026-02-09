@@ -6,7 +6,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createBuild, updateBuildStatus, getBuildStatus } from '@/lib/utils/build-store';
 import { optionalAuth } from '@/lib/auth/middleware';
-import { trackBuildForAgent } from '@/app/api/agents/builds/route';
+import { trackBuildForAgent } from '@/lib/utils/agent-builds';
 import { loadToolServer } from '@/lib/tools/server-loader';
 import { generateCode } from '@/lib/utils/codeGenerator';
 import { generateTests, generateVitestConfig, generateTestUtils, mergePackageJson } from '@/lib/generators/test-generator';
