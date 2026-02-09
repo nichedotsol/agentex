@@ -21,7 +21,7 @@ const collaborationMessages = (globalThis as any).__agentex_collab_messages__ ||
 export async function GET(request: NextRequest) {
   try {
     // Get all agent IDs from the agent store
-    const allAgentIds = Array.from((globalThis as any).__agentex_agent_store__?.keys() || []);
+    const allAgentIds = Array.from((globalThis as any).__agentex_agent_store__?.keys() || []) as string[];
     
     // Collect all builds from all agents
     const allBuilds: any[] = [];
