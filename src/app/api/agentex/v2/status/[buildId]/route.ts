@@ -5,6 +5,8 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { getBuildStatus } from '@/lib/utils/build-store';
+import { sanitizeBuildConfig } from '@/lib/utils/sanitize';
+import { optionalAuth } from '@/lib/auth/middleware';
 
 export interface StatusResponse {
   buildId: string;

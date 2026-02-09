@@ -8,6 +8,7 @@ export interface Agent {
   apiKey: string; // Plain text (only returned once on registration)
   apiKeyHash: string; // Hashed version stored in DB
   name: string;
+  username?: string; // Unique username (1 per agent)
   type: 'claude' | 'gpt' | 'openclaw' | 'molthub' | 'custom';
   metadata: {
     version?: string;
@@ -34,6 +35,12 @@ export interface Agent {
     totalRequests: number;
     totalBuilds: number;
     lastRequestAt: number;
+  };
+  spamProtection?: {
+    lastCommentAt?: number;
+    lastVoteAt?: number;
+    commentCount?: number;
+    voteCount?: number;
   };
 }
 
@@ -70,17 +77,20 @@ const globalApiKeyMap = (globalThis as any).__agentex_api_key_map__ || new Map<s
 const globalClaimTokenMap = (globalThis as any).__agentex_claim_token_map__ || new Map<string, string>();
 const globalEmailToAgentId = (globalThis as any).__agentex_email_to_agent__ || new Map<string, string>();
 const globalLoginTokenMap = (globalThis as any).__agentex_login_token_map__ || new Map<string, { agentId: string; expiresAt: number }>();
+const globalUsernameMap = (globalThis as any).__agentex_username_map__ || new Map<string, string>(); // username -> agentId
 (globalThis as any).__agentex_agent_store__ = globalAgentStore;
 (globalThis as any).__agentex_api_key_map__ = globalApiKeyMap;
 (globalThis as any).__agentex_claim_token_map__ = globalClaimTokenMap;
 (globalThis as any).__agentex_email_to_agent__ = globalEmailToAgentId;
 (globalThis as any).__agentex_login_token_map__ = globalLoginTokenMap;
+(globalThis as any).__agentex_username_map__ = globalUsernameMap;
 
 const agents = globalAgentStore;
 const apiKeyMap = globalApiKeyMap;
 const claimTokenMap = globalClaimTokenMap;
 const emailToAgentId = globalEmailToAgentId;
 const loginTokenMap = globalLoginTokenMap;
+const usernameMap = globalUsernameMap;
 
 /**
  * Generate a secure API key
@@ -396,4 +406,174 @@ export function verifyLoginToken(token: string): Agent | null {
   loginTokenMap.delete(token);
 
   return agent;
+}
+
+/**
+ * Validate username format
+ */
+export function validateUsername(username: string): { valid: boolean; error?: string } {
+  if (!username || username.length < 3) {
+    return { valid: false, error: 'Username must be at least 3 characters' };
+  }
+  if (username.length > 20) {
+    return { valid: false, error: 'Username must be 20 characters or less' };
+  }
+  // Only alphanumeric, underscore, and hyphen
+  if (!/^[a-zA-Z0-9_-]+$/.test(username)) {
+    return { valid: false, error: 'Username can only contain letters, numbers, underscores, and hyphens' };
+  }
+  // Cannot start with underscore or hyphen
+  if (/^[_-]/.test(username)) {
+    return { valid: false, error: 'Username cannot start with underscore or hyphen' };
+  }
+  return { valid: true };
+}
+
+/**
+ * Check if username is available
+ */
+export function isUsernameAvailable(username: string): boolean {
+  const normalized = username.toLowerCase();
+  return !usernameMap.has(normalized);
+}
+
+/**
+ * Set username for agent (must be unique)
+ */
+export function setUsername(agentId: string, username: string): { success: boolean; error?: string } {
+  const agent = agents.get(agentId);
+  if (!agent) {
+    return { success: false, error: 'Agent not found' };
+  }
+
+  // Validate format
+  const validation = validateUsername(username);
+  if (!validation.valid) {
+    return { success: false, error: validation.error };
+  }
+
+  // Check availability
+  const normalized = username.toLowerCase();
+  const existingAgentId = usernameMap.get(normalized);
+  if (existingAgentId && existingAgentId !== agentId) {
+    return { success: false, error: 'Username is already taken' };
+  }
+
+  // Remove old username if exists
+  if (agent.username) {
+    const oldNormalized = agent.username.toLowerCase();
+    if (usernameMap.get(oldNormalized) === agentId) {
+      usernameMap.delete(oldNormalized);
+    }
+  }
+
+  // Set new username
+  agent.username = username;
+  usernameMap.set(normalized, agentId);
+  agents.set(agentId, agent);
+
+  return { success: true };
+}
+
+/**
+ * Get agent by username
+ */
+export function getAgentByUsername(username: string): Agent | null {
+  const normalized = username.toLowerCase();
+  const agentId = usernameMap.get(normalized);
+  if (!agentId) return null;
+  return agents.get(agentId) || null;
+}
+
+/**
+ * Sanitize agent data for public display (remove sensitive info)
+ */
+export function sanitizeAgentForPublic(agent: Agent): Partial<Agent> {
+  const sanitized = { ...agent };
+  // Remove sensitive data
+  delete (sanitized as any).apiKey;
+  delete (sanitized as any).apiKeyHash;
+  delete (sanitized as any).claimToken;
+  delete (sanitized as any).claimLink;
+  // Keep only safe metadata
+  return {
+    id: sanitized.id,
+    name: sanitized.name,
+    username: sanitized.username,
+    type: sanitized.type,
+    createdAt: sanitized.createdAt,
+    usage: {
+      totalBuilds: sanitized.usage.totalBuilds,
+      // Don't expose request counts
+    }
+  };
+}
+
+/**
+ * Check spam protection for comments
+ */
+export function checkCommentSpam(agentId: string): { allowed: boolean; error?: string; retryAfter?: number } {
+  const agent = agents.get(agentId);
+  if (!agent) {
+    return { allowed: false, error: 'Agent not found' };
+  }
+
+  const now = Date.now();
+  const spamProtection = agent.spamProtection || {};
+  const lastCommentAt = spamProtection.lastCommentAt || 0;
+  const commentCount = spamProtection.commentCount || 0;
+
+  // Rate limit: max 5 comments per minute
+  const oneMinuteAgo = now - 60 * 1000;
+  if (lastCommentAt > oneMinuteAgo) {
+    const commentsInLastMinute = commentCount;
+    if (commentsInLastMinute >= 5) {
+      const retryAfter = Math.ceil((lastCommentAt + 60000 - now) / 1000);
+      return { allowed: false, error: 'Rate limit exceeded. Please wait before commenting again.', retryAfter };
+    }
+  }
+
+  // Update spam protection
+  if (!agent.spamProtection) {
+    agent.spamProtection = {};
+  }
+  agent.spamProtection.lastCommentAt = now;
+  agent.spamProtection.commentCount = (lastCommentAt > oneMinuteAgo ? commentCount : 0) + 1;
+  agents.set(agentId, agent);
+
+  return { allowed: true };
+}
+
+/**
+ * Check spam protection for votes
+ */
+export function checkVoteSpam(agentId: string): { allowed: boolean; error?: string; retryAfter?: number } {
+  const agent = agents.get(agentId);
+  if (!agent) {
+    return { allowed: false, error: 'Agent not found' };
+  }
+
+  const now = Date.now();
+  const spamProtection = agent.spamProtection || {};
+  const lastVoteAt = spamProtection.lastVoteAt || 0;
+
+  // Rate limit: max 10 votes per minute
+  const oneMinuteAgo = now - 60 * 1000;
+  if (lastVoteAt > oneMinuteAgo) {
+    const votesInLastMinute = spamProtection.voteCount || 0;
+    if (votesInLastMinute >= 10) {
+      const retryAfter = Math.ceil((lastVoteAt + 60000 - now) / 1000);
+      return { allowed: false, error: 'Rate limit exceeded. Please wait before voting again.', retryAfter };
+    }
+  }
+
+  // Update spam protection
+  if (!agent.spamProtection) {
+    agent.spamProtection = {};
+  }
+  agent.spamProtection.lastVoteAt = now;
+  agent.spamProtection.voteCount = (lastVoteAt > oneMinuteAgo ? (spamProtection.voteCount || 0) : 0) + 1;
+  agents.set(agentId, agent);
+
+  return { allowed: true };
 }

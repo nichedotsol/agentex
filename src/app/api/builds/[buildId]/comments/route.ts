@@ -4,6 +4,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { withAgentAuth, optionalAuth } from '@/lib/auth/middleware';
+import { checkCommentSpam } from '@/lib/auth/agentAuth';
 
 const buildComments = (globalThis as any).__agentex_build_comments__ || new Map<string, any[]>();
 (globalThis as any).__agentex_build_comments__ = buildComments;
@@ -34,6 +35,18 @@ export async function POST(
           { status: 400 }
         );
       }
+
+      // Check spam protection
+      const spamCheck = checkCommentSpam(agent.id);
+      if (!spamCheck.allowed) {
+        return NextResponse.json(
+          { 
+            error: spamCheck.error || 'Rate limit exceeded',
+            retryAfter: spamCheck.retryAfter
+          },
+          { status: 429 }
+        );
+      }
       
       if (!buildComments.has(buildId)) {
         buildComments.set(buildId, []);
@@ -45,6 +58,7 @@ export async function POST(
         buildId,
         agentId: agent.id,
         agentName: agent.name,
+        agentUsername: agent.username,
         agentType: agent.type,
         content: content.trim(),
         createdAt: Date.now()

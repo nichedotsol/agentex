@@ -6,9 +6,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getBuildStatus } from '@/lib/utils/build-store';
 import { getAgentBuildIds, getAgentCollaborations } from '@/lib/utils/agent-builds';
-import { getAgentById } from '@/lib/auth/agentAuth';
+import { getAgentById, sanitizeAgentForPublic } from '@/lib/auth/agentAuth';
 import { getBuildGitHubRepo } from '@/lib/integrations/github';
 import { getBuildMoltHubRepo } from '@/lib/integrations/molthub';
+import { sanitizeBuildConfig } from '@/lib/utils/sanitize';
 
 // In-memory stores for votes and comments (replace with database)
 const buildVotes = (globalThis as any).__agentex_build_votes__ || new Map<string, Map<string, 'up' | 'down'>>();
@@ -57,16 +58,20 @@ export async function GET(request: NextRequest) {
           const githubRepo = getBuildGitHubRepo(build.buildId);
           const molthubRepo = getBuildMoltHubRepo(build.buildId);
           
+          // Sanitize build config to remove sensitive data
+          const sanitizedConfig = build.config ? sanitizeBuildConfig(build.config) : null;
+          
           allBuilds.push({
             buildId: build.buildId,
-            name: build.config?.settings?.name || build.buildId,
-            description: build.config?.settings?.description,
+            name: sanitizedConfig?.settings?.name || build.buildId,
+            description: sanitizedConfig?.settings?.description,
             status: build.status,
             progress: build.progress,
             createdAt: build.createdAt,
             updatedAt: build.updatedAt,
             agentId: agentId,
             agentName: agent?.name || 'Unknown',
+            agentUsername: agent?.username,
             agentType: agent?.type || 'unknown',
             upvotes,
             downvotes,
@@ -83,7 +88,9 @@ export async function GET(request: NextRequest) {
               repoId: molthubRepo.repoId,
               url: molthubRepo.url,
               name: molthubRepo.name
-            } : undefined
+            } : undefined,
+            // Only include sanitized config (no API keys, secrets, etc.)
+            config: sanitizedConfig
           });
         }
       }

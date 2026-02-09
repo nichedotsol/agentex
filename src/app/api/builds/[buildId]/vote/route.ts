@@ -4,6 +4,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { withAgentAuth } from '@/lib/auth/middleware';
+import { checkVoteSpam } from '@/lib/auth/agentAuth';
 
 const buildVotes = (globalThis as any).__agentex_build_votes__ || new Map<string, Map<string, 'up' | 'down'>>();
 (globalThis as any).__agentex_build_votes__ = buildVotes;
@@ -22,6 +23,18 @@ export async function POST(
         return NextResponse.json(
           { error: 'Invalid vote. Must be "up" or "down"' },
           { status: 400 }
+        );
+      }
+
+      // Check spam protection
+      const spamCheck = checkVoteSpam(agent.id);
+      if (!spamCheck.allowed) {
+        return NextResponse.json(
+          { 
+            error: spamCheck.error || 'Rate limit exceeded',
+            retryAfter: spamCheck.retryAfter
+          },
+          { status: 429 }
         );
       }
       
