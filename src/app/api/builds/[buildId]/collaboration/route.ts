@@ -15,7 +15,7 @@ export async function GET(
   const messages = collaborationMessages.get(buildId) || [];
   
   // Sort by timestamp
-  messages.sort((a, b) => a.timestamp - b.timestamp);
+  messages.sort((a: any, b: any) => a.timestamp - b.timestamp);
   
   return NextResponse.json({ messages });
 }
