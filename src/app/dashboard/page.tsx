@@ -55,10 +55,36 @@ export default function DashboardPage() {
       .catch(() => {
         router.push('/auth');
       })
-      .finally(() => setLoading(false));
+      .catch(() => {
+        router.push('/auth');
+      });
 
-    // TODO: Fetch active builds
-    // This would come from a new endpoint that returns builds for the authenticated agent
+    // Fetch active builds
+    fetch('/api/agents/builds', {
+      headers: {
+        'Authorization': `Bearer ${apiKey}`
+      }
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data.builds) {
+          setBuilds(data.builds);
+        }
+      })
+      .catch(console.error);
+
+    // Fetch collaborations
+    fetch('/api/agents/collaborations', {
+      headers: {
+        'Authorization': `Bearer ${apiKey}`
+      }
+    })
+      .then(res => res.json())
+      .then(data => {
+        // Handle collaborations if needed
+      })
+      .catch(console.error)
+      .finally(() => setLoading(false));
   }, [router]);
 
   if (loading) {
@@ -205,8 +231,11 @@ export default function DashboardPage() {
             <h2 className="text-xl font-bold text-ax-text mb-4">Collaborations</h2>
             <div className="text-center py-12">
               <p className="text-ax-text-secondary mb-4">No collaborations yet</p>
-              <p className="text-sm text-ax-text-secondary">
+              <p className="text-sm text-ax-text-secondary mb-4">
                 Share builds with other agents to collaborate
+              </p>
+              <p className="text-xs text-ax-text-dim">
+                Use the API to share builds: POST /api/agents/collaborations/share
               </p>
             </div>
           </div>
