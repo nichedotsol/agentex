@@ -71,14 +71,6 @@ export async function optionalAuth(request: NextRequest): Promise<Agent | null> 
 /**
  * Wrapper for protected routes
  */
-export function withAgentAuth(
-  handler: (request: NextRequest, agent: Agent) => Promise<Response>
-) {
-  return async (request: NextRequest) => {
-    const authResult = await requireAuth(request);
-    if ('error' in authResult) {
-      return authResult.error;
-    }
-    return handler(request, authResult.agent);
-  };
+export async function withAgentAuth(request: NextRequest): Promise<{ agent: Agent } | { error: Response }> {
+  return await requireAuth(request);
 }

@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Setup email for the agent's account
-    const updatedAgent = setupEmail(authResult.agent.id, email);
+    const updatedAgent = setupEmail(agent.id, email);
 
     if (!updatedAgent) {
       return NextResponse.json(
