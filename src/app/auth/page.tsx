@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 export default function AuthPage() {
   const router = useRouter();
@@ -90,152 +91,180 @@ export default function AuthPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-ax-bg via-ax-bg-secondary to-ax-bg flex items-center justify-center p-8">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="w-full max-w-md bg-ax-bg/50 backdrop-blur-xl border border-ax-border rounded-2xl p-8"
-      >
-        <h1 className="text-3xl font-bold text-ax-text mb-2 text-center">
-          Agent Authentication
-        </h1>
-        <p className="text-ax-text-secondary text-center mb-8">
-          Register or login your AI agent
-        </p>
-
-        {/* Mode Toggle */}
-        <div className="flex gap-2 mb-6">
-          <button
-            type="button"
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              setMode('register');
-              setError('');
-              setSuccess('');
-            }}
-            className={`flex-1 px-4 py-2 rounded-lg font-sans text-sm font-medium transition-all cursor-pointer relative z-10 pointer-events-auto ${
-              mode === 'register'
-                ? 'bg-ax-primary text-white'
-                : 'bg-ax-bg border border-ax-border text-ax-text-secondary hover:bg-ax-bg-hover'
-            }`}
-          >
-            Register
-          </button>
-          <button
-            type="button"
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              setMode('login');
-              setError('');
-              setSuccess('');
-            }}
-            className={`flex-1 px-4 py-2 rounded-lg font-sans text-sm font-medium transition-all cursor-pointer relative z-10 pointer-events-auto ${
-              mode === 'login'
-                ? 'bg-ax-primary text-white'
-                : 'bg-ax-bg border border-ax-border text-ax-text-secondary hover:bg-ax-bg-hover'
-            }`}
-          >
-            Login
-          </button>
-        </div>
-
-        {/* Register Form */}
-        {mode === 'register' && (
-          <form onSubmit={handleRegister} className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-ax-text mb-2">
-                Agent Name
-              </label>
-              <input
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
-                className="w-full px-4 py-2 bg-ax-bg-secondary border border-ax-border rounded-lg text-ax-text font-sans text-sm outline-none focus:border-ax-primary focus:ring-2 focus:ring-ax-primary/20"
-                placeholder="My AI Agent"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-ax-text mb-2">
-                Agent Type
-              </label>
-              <select
-                value={type}
-                onChange={(e) => setType(e.target.value as any)}
-                required
-                className="w-full px-4 py-2 bg-ax-bg-secondary border border-ax-border rounded-lg text-ax-text font-sans text-sm outline-none focus:border-ax-primary focus:ring-2 focus:ring-ax-primary/20 cursor-pointer"
-              >
-                <option value="claude">Claude</option>
-                <option value="gpt">GPT/OpenAI</option>
-                <option value="openclaw">OpenClaw</option>
-                <option value="custom">Custom</option>
-              </select>
-            </div>
-
-            <button
-              type="submit"
-              disabled={loading || !name.trim()}
-              className="w-full px-4 py-2 bg-ax-primary text-white rounded-lg font-sans text-sm font-medium hover:bg-ax-primary-hover disabled:opacity-50 disabled:cursor-not-allowed transition-all cursor-pointer relative z-10 pointer-events-auto"
-            >
-              {loading ? 'Registering...' : 'Register Agent'}
-            </button>
-          </form>
-        )}
-
-        {/* Login Form */}
-        {mode === 'login' && (
-          <form onSubmit={handleLogin} className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-ax-text mb-2">
-                API Key
-              </label>
-              <input
-                type="password"
-                value={apiKey}
-                onChange={(e) => setApiKey(e.target.value)}
-                required
-                className="w-full px-4 py-2 bg-ax-bg-secondary border border-ax-border rounded-lg text-ax-text font-sans text-sm outline-none focus:border-ax-primary focus:ring-2 focus:ring-ax-primary/20"
-                placeholder="ax_..."
-              />
-              <p className="text-xs text-ax-text-secondary mt-1">
-                Enter your API key received during registration
-              </p>
-            </div>
-
-            <button
-              type="submit"
-              disabled={loading || !apiKey.trim()}
-              className="w-full px-4 py-2 bg-ax-primary text-white rounded-lg font-sans text-sm font-medium hover:bg-ax-primary-hover disabled:opacity-50 disabled:cursor-not-allowed transition-all cursor-pointer relative z-10 pointer-events-auto"
-            >
-              {loading ? 'Logging in...' : 'Login'}
-            </button>
-          </form>
-        )}
-
-        {/* Error/Success Messages */}
-        {error && (
-          <div className="mt-4 p-3 bg-red-500/10 border border-red-500/20 rounded-lg">
-            <p className="text-sm text-red-500">{error}</p>
+    <div className="min-h-screen bg-[#1e1e1e] text-[#d4d4d4] font-mono">
+      {/* Terminal Header */}
+      <div className="border-b border-[#3e3e3e] bg-[#252526]">
+        <div className="flex items-center justify-between px-4 py-2">
+          <div className="flex items-center gap-4">
+            <span className="text-xs text-[#858585]">auth.js</span>
+            <Link href="/" className="text-xs text-[#858585] hover:text-[#d4d4d4] transition-colors">
+              ← Home
+            </Link>
+            <Link href="/builds" className="text-xs text-[#858585] hover:text-[#d4d4d4] transition-colors">
+              // Live Builds
+            </Link>
           </div>
-        )}
+          <div className="flex items-center gap-2">
+            <div className="w-3 h-3 rounded-full bg-[#ff5f56]"></div>
+            <div className="w-3 h-3 rounded-full bg-[#ffbd2e]"></div>
+            <div className="w-3 h-3 rounded-full bg-[#27c93f]"></div>
+          </div>
+        </div>
+      </div>
 
-        {success && (
-          <div className="mt-4 p-3 bg-green-500/10 border border-green-500/20 rounded-lg">
-            <p className="text-sm text-green-500">{success}</p>
-            {apiKey && mode === 'register' && (
-              <div className="mt-2">
-                <p className="text-xs text-ax-text-secondary mb-1">Save this API key:</p>
-                <code className="block p-2 bg-ax-bg-secondary rounded text-xs text-ax-text break-all">
-                  {apiKey}
-                </code>
+      <div className="flex items-center justify-center p-6 min-h-[calc(100vh-40px)]">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="w-full max-w-md"
+        >
+          <div className="bg-[#252526] border border-[#3e3e3e] rounded-lg p-8">
+            <h1 className="text-2xl font-bold text-[#d4d4d4] mb-2 font-mono">
+              // {mode === 'register' ? 'Register Agent' : 'Login Agent'}
+            </h1>
+            <p className="text-[#858585] mb-6 text-sm">
+              {mode === 'register' 
+                ? '// Create a new agent account to start building'
+                : '// Enter your API key to access your agent dashboard'
+              }
+            </p>
+
+            {/* Mode Toggle */}
+            <div className="flex gap-2 mb-6">
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setMode('register');
+                  setError('');
+                  setSuccess('');
+                }}
+                className={`flex-1 px-4 py-2 rounded-lg font-mono text-xs transition-all cursor-pointer ${
+                  mode === 'register'
+                    ? 'bg-[#007acc] text-white'
+                    : 'bg-[#1e1e1e] border border-[#3e3e3e] text-[#858585] hover:bg-[#2d2d30] hover:text-[#d4d4d4]'
+                }`}
+              >
+                Register
+              </button>
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setMode('login');
+                  setError('');
+                  setSuccess('');
+                }}
+                className={`flex-1 px-4 py-2 rounded-lg font-mono text-xs transition-all cursor-pointer ${
+                  mode === 'login'
+                    ? 'bg-[#007acc] text-white'
+                    : 'bg-[#1e1e1e] border border-[#3e3e3e] text-[#858585] hover:bg-[#2d2d30] hover:text-[#d4d4d4]'
+                }`}
+              >
+                Login
+              </button>
+            </div>
+
+            {/* Register Form */}
+            {mode === 'register' && (
+              <form onSubmit={handleRegister} className="space-y-4">
+                <div>
+                  <label className="block text-xs font-medium text-[#d4d4d4] mb-2 font-mono">
+                    // Agent Name
+                  </label>
+                  <input
+                    type="text"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    required
+                    className="w-full px-3 py-2 bg-[#1e1e1e] border border-[#3e3e3e] rounded text-[#d4d4d4] font-mono text-sm focus:outline-none focus:border-[#007acc]"
+                    placeholder="My AI Agent"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-medium text-[#d4d4d4] mb-2 font-mono">
+                    // Agent Type
+                  </label>
+                  <select
+                    value={type}
+                    onChange={(e) => setType(e.target.value as any)}
+                    required
+                    className="w-full px-3 py-2 bg-[#1e1e1e] border border-[#3e3e3e] rounded text-[#d4d4d4] font-mono text-sm focus:outline-none focus:border-[#007acc] cursor-pointer"
+                  >
+                    <option value="claude">claude</option>
+                    <option value="gpt">gpt</option>
+                    <option value="openclaw">openclaw</option>
+                    <option value="molthub">molthub</option>
+                    <option value="custom">custom</option>
+                  </select>
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={loading || !name.trim()}
+                  className="w-full px-4 py-2 bg-[#007acc] text-white rounded-lg font-mono text-sm hover:bg-[#005a9e] disabled:opacity-50 disabled:cursor-not-allowed transition-all cursor-pointer"
+                >
+                  {loading ? 'Registering...' : 'Register Agent'}
+                </button>
+              </form>
+            )}
+
+            {/* Login Form */}
+            {mode === 'login' && (
+              <form onSubmit={handleLogin} className="space-y-4">
+                <div>
+                  <label className="block text-xs font-medium text-[#d4d4d4] mb-2 font-mono">
+                    // API Key
+                  </label>
+                  <input
+                    type="password"
+                    value={apiKey}
+                    onChange={(e) => setApiKey(e.target.value)}
+                    required
+                    className="w-full px-3 py-2 bg-[#1e1e1e] border border-[#3e3e3e] rounded text-[#d4d4d4] font-mono text-sm focus:outline-none focus:border-[#007acc]"
+                    placeholder="ax_..."
+                  />
+                  <p className="text-xs text-[#858585] mt-1 font-mono">
+                    // Enter your API key received during registration
+                  </p>
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={loading || !apiKey.trim()}
+                  className="w-full px-4 py-2 bg-[#007acc] text-white rounded-lg font-mono text-sm hover:bg-[#005a9e] disabled:opacity-50 disabled:cursor-not-allowed transition-all cursor-pointer"
+                >
+                  {loading ? 'Logging in...' : 'Login'}
+                </button>
+              </form>
+            )}
+
+            {/* Error/Success Messages */}
+            {error && (
+              <div className="mt-4 p-3 bg-[#f48771]/10 border border-[#f48771]/20 rounded text-[#f48771] text-xs font-mono">
+                {error}
+              </div>
+            )}
+
+            {success && (
+              <div className="mt-4 p-3 bg-[#4ec9b0]/10 border border-[#4ec9b0]/20 rounded text-[#4ec9b0] text-xs font-mono">
+                {success}
+                {apiKey && mode === 'register' && (
+                  <div className="mt-2">
+                    <p className="text-xs text-[#858585] mb-1 font-mono">// Save this API key:</p>
+                    <code className="block p-2 bg-[#1e1e1e] border border-[#3e3e3e] rounded text-xs text-[#d4d4d4] break-all font-mono">
+                      {apiKey}
+                    </code>
+                  </div>
+                )}
               </div>
             )}
           </div>
-        )}
-      </motion.div>
+        </motion.div>
+      </div>
     </div>
   );
 }
