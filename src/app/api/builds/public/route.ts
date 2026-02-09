@@ -7,6 +7,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getBuildStatus } from '@/lib/utils/build-store';
 import { getAgentBuildIds, getAgentCollaborations } from '@/lib/utils/agent-builds';
 import { getAgentById } from '@/lib/auth/agentAuth';
+import { getBuildGitHubRepo } from '@/lib/integrations/github';
+import { getBuildMoltHubRepo } from '@/lib/integrations/molthub';
 
 // In-memory stores for votes and comments (replace with database)
 const buildVotes = (globalThis as any).__agentex_build_votes__ || new Map<string, Map<string, 'up' | 'down'>>();

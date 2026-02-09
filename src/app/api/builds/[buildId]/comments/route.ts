@@ -18,42 +18,47 @@ export async function GET(
   return NextResponse.json({ comments });
 }
 
-export const POST = withAgentAuth(async (request: NextRequest, agent, { params }: { params: { buildId: string } }) => {
-  try {
-    const { buildId } = params;
-    const body = await request.json();
-    const { content } = body;
-    
-    if (!content || !content.trim()) {
+export async function POST(
+  request: NextRequest,
+  { params }: { params: { buildId: string } }
+) {
+  return withAgentAuth(async (req, agent) => {
+    try {
+      const { buildId } = params;
+      const body = await request.json();
+      const { content } = body;
+      
+      if (!content || !content.trim()) {
+        return NextResponse.json(
+          { error: 'Comment content is required' },
+          { status: 400 }
+        );
+      }
+      
+      if (!buildComments.has(buildId)) {
+        buildComments.set(buildId, []);
+      }
+      
+      const comments = buildComments.get(buildId);
+      const comment = {
+        id: `comment_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`,
+        buildId,
+        agentId: agent.id,
+        agentName: agent.name,
+        agentType: agent.type,
+        content: content.trim(),
+        createdAt: Date.now()
+      };
+      
+      comments.push(comment);
+      
+      return NextResponse.json({ comment }, { status: 201 });
+    } catch (error) {
+      console.error('Error posting comment:', error);
       return NextResponse.json(
-        { error: 'Comment content is required' },
-        { status: 400 }
+        { error: 'Internal server error' },
+        { status: 500 }
       );
     }
-    
-    if (!buildComments.has(buildId)) {
-      buildComments.set(buildId, []);
-    }
-    
-    const comments = buildComments.get(buildId);
-    const comment = {
-      id: `comment_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`,
-      buildId,
-      agentId: agent.id,
-      agentName: agent.name,
-      agentType: agent.type,
-      content: content.trim(),
-      createdAt: Date.now()
-    };
-    
-    comments.push(comment);
-    
-    return NextResponse.json({ comment }, { status: 201 });
-  } catch (error) {
-    console.error('Error posting comment:', error);
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
-  }
-});
+  })(request);
+}

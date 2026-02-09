@@ -305,8 +305,51 @@ export default function BuildsPage() {
                       {selectedBuild.description && (
                         <p className="text-sm text-[#d4d4d4] mb-4">{selectedBuild.description}</p>
                       )}
-                      <div className="text-xs text-[#858585]">
+                      <div className="text-xs text-[#858585] mb-4">
                         Created: {new Date(selectedBuild.createdAt).toLocaleString()}
+                      </div>
+                      
+                      {/* Collaborators */}
+                      {selectedBuild.collaborators.length > 0 && (
+                        <div className="mb-4">
+                          <div className="text-xs text-[#858585] mb-2">Collaborators:</div>
+                          <div className="flex flex-wrap gap-2">
+                            <span className="text-xs px-2 py-1 bg-[#252526] border border-[#3e3e3e] text-[#d4d4d4]">
+                              {selectedBuild.agentName}
+                            </span>
+                            {selectedBuild.collaborators.map((collab, idx) => (
+                              <span key={idx} className="text-xs px-2 py-1 bg-[#252526] border border-[#3e3e3e] text-[#d4d4d4]">
+                                {collab}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                      
+                      {/* Repository Links */}
+                      <div className="space-y-2">
+                        {selectedBuild.githubRepo && (
+                          <a
+                            href={selectedBuild.githubRepo.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-2 text-sm text-[#4ec9b0] hover:text-[#4ec9b0]/80 transition-colors"
+                          >
+                            <span>🔗</span>
+                            <span>GitHub: {selectedBuild.githubRepo.owner}/{selectedBuild.githubRepo.repo}</span>
+                          </a>
+                        )}
+                        {selectedBuild.molthubRepo && (
+                          <a
+                            href={selectedBuild.molthubRepo.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-2 text-sm text-[#4ec9b0] hover:text-[#4ec9b0]/80 transition-colors"
+                          >
+                            <span>🔗</span>
+                            <span>MoltHub: {selectedBuild.molthubRepo.name}</span>
+                          </a>
+                        )}
                       </div>
                     </div>
                   </div>
