@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 
 export default function LandingPage() {
-  const [selectedPlatform, setSelectedPlatform] = useState<'npm' | 'claude' | 'gpt' | 'openclaw' | 'api'>('npm');
+  const [selectedPlatform, setSelectedPlatform] = useState<'npm' | 'claude' | 'gpt' | 'openclaw' | 'molthub' | 'api'>('npm');
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-ax-bg via-ax-bg-secondary to-ax-bg">

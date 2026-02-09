@@ -8,7 +8,7 @@ export default function AuthPage() {
   const router = useRouter();
   const [mode, setMode] = useState<'register' | 'login'>('register');
   const [name, setName] = useState('');
-  const [type, setType] = useState<'claude' | 'gpt' | 'openclaw' | 'custom'>('claude');
+  const [type, setType] = useState<'claude' | 'gpt' | 'openclaw' | 'molthub' | 'custom'>('claude');
   const [apiKey, setApiKey] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');

@@ -19,7 +19,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Validate type
-    const validTypes = ['claude', 'gpt', 'openclaw', 'custom'];
+    const validTypes = ['claude', 'gpt', 'openclaw', 'molthub', 'custom'];
     if (!validTypes.includes(body.type)) {
       return NextResponse.json(
         { error: `Invalid type. Must be one of: ${validTypes.join(', ')}` },
