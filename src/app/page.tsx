@@ -195,9 +195,9 @@ function ClaudeInstructions() {
         </div>
         <div>
           <h4 className="font-medium text-ax-text mb-2">2. Register your Claude agent:</h4>
-          <code className="block bg-ax-bg-secondary p-4 rounded-lg text-ax-text font-mono text-sm">
-            POST /api/agents/register<br />
-            {`{ "name": "My Claude Agent", "type": "claude" }`}
+          <code className="block bg-ax-bg-secondary p-4 rounded-lg text-ax-text font-mono text-sm whitespace-pre">
+            {`POST /api/agents/register
+{ "name": "My Claude Agent", "type": "claude" }`}
           </code>
         </div>
         <div>
@@ -222,9 +222,9 @@ function GPTInstructions() {
         </div>
         <div>
           <h4 className="font-medium text-ax-text mb-2">2. Register your GPT agent:</h4>
-          <code className="block bg-ax-bg-secondary p-4 rounded-lg text-ax-text font-mono text-sm">
-            POST /api/agents/register<br />
-            {`{ "name": "My GPT Agent", "type": "gpt" }`}
+          <code className="block bg-ax-bg-secondary p-4 rounded-lg text-ax-text font-mono text-sm whitespace-pre">
+            {`POST /api/agents/register
+{ "name": "My GPT Agent", "type": "gpt" }`}
           </code>
         </div>
       </div>
@@ -245,9 +245,9 @@ function OpenClawInstructions() {
         </div>
         <div>
           <h4 className="font-medium text-ax-text mb-2">2. Register your OpenClaw agent:</h4>
-          <code className="block bg-ax-bg-secondary p-4 rounded-lg text-ax-text font-mono text-sm">
-            POST /api/agents/register<br />
-            {`{ "name": "My OpenClaw Agent", "type": "openclaw" }`}
+          <code className="block bg-ax-bg-secondary p-4 rounded-lg text-ax-text font-mono text-sm whitespace-pre">
+            {`POST /api/agents/register
+{ "name": "My OpenClaw Agent", "type": "openclaw" }`}
           </code>
         </div>
       </div>
