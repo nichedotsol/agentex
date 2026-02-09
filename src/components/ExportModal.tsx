@@ -135,8 +135,13 @@ export default function ExportModal({ isOpen, onClose }: ExportModalProps) {
               Export & Deploy
             </div>
             <button
-              onClick={onClose}
-              className="w-6 h-6 border border-ax-border hover:border-ax-red hover:bg-ax-red/20 flex items-center justify-center transition-all"
+              type="button"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                onClose();
+              }}
+              className="w-6 h-6 border border-ax-border hover:border-ax-red hover:bg-ax-red/20 flex items-center justify-center transition-all cursor-pointer relative z-10 pointer-events-auto"
             >
               <span className="text-[12px] text-ax-text">×</span>
             </button>
@@ -156,8 +161,13 @@ export default function ExportModal({ isOpen, onClose }: ExportModalProps) {
                   </div>
                   <div className="flex gap-2">
                     <button
-                      onClick={() => setSelectedFormat('typescript')}
-                      className={`flex-1 px-3 py-2 font-mono text-[10px] border transition-all ${
+                      type="button"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        setSelectedFormat('typescript');
+                      }}
+                      className={`flex-1 px-3 py-2 font-mono text-[10px] border transition-all cursor-pointer relative z-10 pointer-events-auto ${
                         selectedFormat === 'typescript'
                           ? 'border-ax-cyan text-ax-cyan bg-ax-cyan/10'
                           : 'border-ax-border text-ax-text-dim hover:border-ax-cyan/50'
@@ -166,8 +176,13 @@ export default function ExportModal({ isOpen, onClose }: ExportModalProps) {
                       TypeScript
                     </button>
                     <button
-                      onClick={() => setSelectedFormat('python')}
-                      className={`flex-1 px-3 py-2 font-mono text-[10px] border transition-all ${
+                      type="button"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        setSelectedFormat('python');
+                      }}
+                      className={`flex-1 px-3 py-2 font-mono text-[10px] border transition-all cursor-pointer relative z-10 pointer-events-auto ${
                         selectedFormat === 'python'
                           ? 'border-ax-cyan text-ax-cyan bg-ax-cyan/10'
                           : 'border-ax-border text-ax-text-dim hover:border-ax-cyan/50'
@@ -219,8 +234,13 @@ export default function ExportModal({ isOpen, onClose }: ExportModalProps) {
 
                 {/* Preview Button */}
                 <button
-                  onClick={handlePreview}
-                  className="w-full px-4 py-2 bg-ax-bg/50 border border-ax-border font-mono text-[10px] text-ax-text hover:border-ax-cyan hover:text-ax-cyan transition-all"
+                  type="button"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    handlePreview();
+                  }}
+                  className="w-full px-4 py-2 bg-ax-bg/50 border border-ax-border font-mono text-[10px] text-ax-text hover:border-ax-cyan hover:text-ax-cyan transition-all cursor-pointer relative z-10 pointer-events-auto"
                 >
                   PREVIEW CODE
                 </button>
@@ -287,29 +307,40 @@ export default function ExportModal({ isOpen, onClose }: ExportModalProps) {
                   <input
                     type="text"
                     value={vercelProjectName}
-                    onChange={(e) => setVercelProjectName(e.target.value)}
+                    onChange={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      setVercelProjectName(e.target.value);
+                    }}
+                    onClick={(e) => e.stopPropagation()}
                     placeholder={buildState.settings.name.toLowerCase().replace(/\s+/g, '-')}
-                    className="form-input"
+                    className="form-input cursor-text relative z-10 pointer-events-auto"
                   />
                 </div>
                 <div className="flex gap-3">
                   <button
-                    onClick={() => {
-                      setShowVercelDialog(false)
-                      setVercelToken('')
-                      setVercelProjectName('')
+                    type="button"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      setShowVercelDialog(false);
+                      setVercelToken('');
+                      setVercelProjectName('');
                     }}
-                    className="flex-1 px-4 py-2 bg-ax-bg text-ax-text-secondary rounded-lg font-sans text-sm hover:bg-ax-bg-hover transition-all"
+                    className="flex-1 px-4 py-2 bg-ax-bg text-ax-text-secondary rounded-lg font-sans text-sm hover:bg-ax-bg-hover transition-all cursor-pointer relative z-10 pointer-events-auto"
                   >
                     Cancel
                   </button>
                   <button
-                    onClick={async () => {
-                      setShowVercelDialog(false)
-                      await handleVercelExport()
+                    type="button"
+                    onClick={async (e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      setShowVercelDialog(false);
+                      await handleVercelExport();
                     }}
                     disabled={!vercelToken.trim() || !vercelProjectName.trim()}
-                    className="flex-1 px-4 py-2 bg-ax-primary text-white rounded-lg font-sans text-sm font-medium hover:bg-ax-primary-hover disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                    className="flex-1 px-4 py-2 bg-ax-primary text-white rounded-lg font-sans text-sm font-medium hover:bg-ax-primary-hover disabled:opacity-50 disabled:cursor-not-allowed transition-all cursor-pointer relative z-10 pointer-events-auto"
                   >
                     Deploy
                   </button>
@@ -345,9 +376,14 @@ export default function ExportModal({ isOpen, onClose }: ExportModalProps) {
                   <input
                     type="password"
                     value={githubToken}
-                    onChange={(e) => setGithubToken(e.target.value)}
+                    onChange={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      setGithubToken(e.target.value);
+                    }}
+                    onClick={(e) => e.stopPropagation()}
                     placeholder="ghp_..."
-                    className="form-input"
+                    className="form-input cursor-text relative z-10 pointer-events-auto"
                   />
                   <p className="font-sans text-xs text-ax-text-tertiary mt-1">
                     Create a token with repo permissions at{' '}
@@ -361,29 +397,40 @@ export default function ExportModal({ isOpen, onClose }: ExportModalProps) {
                   <input
                     type="text"
                     value={githubRepoName}
-                    onChange={(e) => setGithubRepoName(e.target.value)}
+                    onChange={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      setGithubRepoName(e.target.value);
+                    }}
+                    onClick={(e) => e.stopPropagation()}
                     placeholder={buildState.settings.name.toLowerCase().replace(/\s+/g, '-')}
-                    className="form-input"
+                    className="form-input cursor-text relative z-10 pointer-events-auto"
                   />
                 </div>
                 <div className="flex gap-3">
                   <button
-                    onClick={() => {
-                      setShowGitHubDialog(false)
-                      setGithubToken('')
-                      setGithubRepoName('')
+                    type="button"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      setShowGitHubDialog(false);
+                      setGithubToken('');
+                      setGithubRepoName('');
                     }}
-                    className="flex-1 px-4 py-2 bg-ax-bg text-ax-text-secondary rounded-lg font-sans text-sm hover:bg-ax-bg-hover transition-all"
+                    className="flex-1 px-4 py-2 bg-ax-bg text-ax-text-secondary rounded-lg font-sans text-sm hover:bg-ax-bg-hover transition-all cursor-pointer relative z-10 pointer-events-auto"
                   >
                     Cancel
                   </button>
                   <button
-                    onClick={async () => {
-                      setShowGitHubDialog(false)
-                      await handleGitHubExport()
+                    type="button"
+                    onClick={async (e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      setShowGitHubDialog(false);
+                      await handleGitHubExport();
                     }}
                     disabled={!githubToken.trim() || !githubRepoName.trim()}
-                    className="flex-1 px-4 py-2 bg-ax-primary text-white rounded-lg font-sans text-sm font-medium hover:bg-ax-primary-hover disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                    className="flex-1 px-4 py-2 bg-ax-primary text-white rounded-lg font-sans text-sm font-medium hover:bg-ax-primary-hover disabled:opacity-50 disabled:cursor-not-allowed transition-all cursor-pointer relative z-10 pointer-events-auto"
                   >
                     Export
                   </button>

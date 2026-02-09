@@ -30,11 +30,16 @@ export default function ExportTarget({
 
   return (
     <motion.button
-      onClick={onClick}
+      type="button"
+      onClick={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        onClick();
+      }}
       disabled={disabled}
       whileHover={{ scale: disabled ? 1 : 1.02 }}
       whileTap={{ scale: disabled ? 1 : 0.98 }}
-      className={`w-full p-4 bg-ax-bg/50 border ${colors[type]} transition-all text-left ${
+      className={`w-full p-4 bg-ax-bg/50 border ${colors[type]} transition-all text-left relative z-10 pointer-events-auto ${
         disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'
       }`}
     >
