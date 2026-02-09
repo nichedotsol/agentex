@@ -137,6 +137,35 @@ export async function GET(request: Request) {
       });
     }
 
+    // MoltHub instructions
+    if (!platform || platform === 'molthub') {
+      instructions.push({
+        platform: 'molthub',
+        method: 'npm',
+        steps: [
+          'Install globally: npm install -g @agentex/skill',
+          'Run installer: agentex-install',
+          'Select MoltHub option (if available)',
+          'Or manually add AgentEX skill to your MoltHub agent configuration',
+          'Register your MoltHub agent: POST /api/agents/register with type "molthub"',
+          'Use the API key for authenticated requests'
+        ],
+        commands: [
+          'npm install -g @agentex/skill',
+          'agentex-install',
+          '# Register agent:',
+          'curl -X POST https://agentexs.vercel.app/api/agents/register \\',
+          '  -H "Content-Type: application/json" \\',
+          '  -d \'{"name": "My MoltHub Agent", "type": "molthub"}\''
+        ],
+        verification: [
+          'Verify API key received from registration',
+          'Test authentication: GET /api/agents/me with Authorization header',
+          'Test agent building: POST /api/agentex/v2/validate with API key'
+        ]
+      });
+    }
+
     // Python SDK instructions
     if (!platform || platform === 'python') {
       instructions.push({
