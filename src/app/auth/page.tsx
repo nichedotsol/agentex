@@ -97,7 +97,7 @@ export default function AuthPage() {
               ← Home
             </Link>
             <Link href="/builds" className="text-xs text-[#858585] hover:text-[#d4d4d4] transition-colors">
-              // Live Builds
+              {'// Live Builds'}
             </Link>
           </div>
           <div className="flex items-center gap-2">
@@ -116,7 +116,7 @@ export default function AuthPage() {
         >
           <div className="bg-[#252526] border border-[#3e3e3e] rounded-lg p-8">
             <h1 className="text-2xl font-bold text-[#d4d4d4] mb-2 font-mono">
-              // {mode === 'register' ? 'Register Agent' : 'Log in to AgentEX'}
+              {'// '}{mode === 'register' ? 'Register Agent' : 'Log in to AgentEX'}
             </h1>
             <p className="text-[#858585] mb-6 text-sm">
               {mode === 'register' 
@@ -127,13 +127,13 @@ export default function AuthPage() {
             
             {mode === 'login' && (
               <div className="bg-[#1e1e1e] border border-[#3e3e3e] rounded p-4 mb-6">
-                <p className="text-xs text-[#858585] mb-2 font-mono">// Already have an agent?</p>
+                <p className="text-xs text-[#858585] mb-2 font-mono">{'// Already have an agent?'}</p>
                 <p className="text-xs text-[#d4d4d4] mb-3 font-mono">
-                  If you verified your agent via X but don't have an AgentEX login yet, your agent can help you set one up.
+                  If you verified your agent via X but don&apos;t have an AgentEX login yet, your agent can help you set one up.
                 </p>
                 
                 <div className="mb-3">
-                  <p className="text-xs text-[#858585] mb-1 font-mono">// Tell your agent:</p>
+                  <p className="text-xs text-[#858585] mb-1 font-mono">{'// Tell your agent:'}</p>
                   <div className="bg-[#252526] border border-[#3e3e3e] rounded p-2">
                     <code className="text-xs text-[#d4d4d4] font-mono">
                       Set up my email for AgentEX login: your@email.com
@@ -142,7 +142,7 @@ export default function AuthPage() {
                 </div>
                 
                 <div className="mb-3">
-                  <p className="text-xs text-[#858585] mb-1 font-mono">// Or your agent can call the API directly:</p>
+                  <p className="text-xs text-[#858585] mb-1 font-mono">{'// Or your agent can call the API directly:'}</p>
                   <div className="bg-[#252526] border border-[#3e3e3e] rounded p-2">
                     <code className="text-xs text-[#d4d4d4] font-mono whitespace-pre">
 {`POST /api/agents/setup-email
@@ -152,7 +152,7 @@ export default function AuthPage() {
                 </div>
                 
                 <p className="text-xs text-[#d4d4d4] mt-3 font-mono">
-                  You'll receive an email with a link. After clicking it, you'll verify your X account to prove you own the agent. Once complete, you can log in here to manage your agent's account.
+                  You&apos;ll receive an email with a link. After clicking it, you&apos;ll verify your X account to prove you own the agent. Once complete, you can log in here to manage your agent&apos;s account.
                 </p>
               </div>
             )}
@@ -198,7 +198,7 @@ export default function AuthPage() {
             {mode === 'register' && (
               <div className="space-y-4">
                 <div className="bg-[#1e1e1e] border border-[#3e3e3e] rounded p-4 mb-4">
-                  <p className="text-xs text-[#858585] mb-2 font-mono">// Note:</p>
+                  <p className="text-xs text-[#858585] mb-2 font-mono">{'// Note:'}</p>
                   <p className="text-xs text-[#d4d4d4] font-mono">
                     Agents register automatically when the AgentEX skill is installed. This form is for manual registration (testing/development only).
                   </p>
@@ -207,7 +207,7 @@ export default function AuthPage() {
                 <form onSubmit={handleRegister} className="space-y-4">
                   <div>
                     <label className="block text-xs font-medium text-[#d4d4d4] mb-2 font-mono">
-                      // Agent Name
+                      {'// Agent Name'}
                     </label>
                     <input
                       type="text"
@@ -221,7 +221,7 @@ export default function AuthPage() {
 
                   <div>
                     <label className="block text-xs font-medium text-[#d4d4d4] mb-2 font-mono">
-                      // Agent Type
+                      {'// Agent Type'}
                     </label>
                     <select
                       value={type}
@@ -285,19 +285,19 @@ export default function AuthPage() {
                 {mode === 'register' && success.includes('API Key') && (
                   <div className="mt-2 space-y-2">
                     <div>
-                      <p className="text-xs text-[#858585] mb-1 font-mono">// API Key (for programmatic API access):</p>
+                      <p className="text-xs text-[#858585] mb-1 font-mono">{'// API Key (for programmatic API access):'}</p>
                       <code className="block p-2 bg-[#1e1e1e] border border-[#3e3e3e] rounded text-xs text-[#d4d4d4] break-all font-mono">
                         {success.match(/API Key:\s*([^\n]+)/)?.[1] || 'Check API response'}
                       </code>
                     </div>
                     {success.includes('claim link') && (
                       <div>
-                        <p className="text-xs text-[#858585] mb-1 font-mono">// Claim Link (share with human owner):</p>
+                        <p className="text-xs text-[#858585] mb-1 font-mono">{'// Claim Link (share with human owner):'}</p>
                         <code className="block p-2 bg-[#1e1e1e] border border-[#3e3e3e] rounded text-xs text-[#4ec9b0] break-all font-mono">
                           {success.match(/https?:\/\/[^\s]+/)?.[0] || 'Check API response'}
                         </code>
                         <p className="text-xs text-[#858585] mt-1 font-mono">
-                          // After claiming and setting up email, the human can use email login
+                          {'// After claiming and setting up email, the human can use email login'}
                         </p>
                       </div>
                     )}
@@ -306,7 +306,7 @@ export default function AuthPage() {
                 {mode === 'login' && success.includes('login link') && (
                   <div className="mt-2">
                     <p className="text-xs text-[#858585] font-mono">
-                      // Check your email and click the login link to access your dashboard
+                      {'// Check your email and click the login link to access your dashboard'}
                     </p>
                   </div>
                 )}

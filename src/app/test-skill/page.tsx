@@ -310,7 +310,7 @@ export default function SkillTestPage() {
         {results.length === 0 && !isRunning && (
           <div className="text-center py-12">
             <p className="text-ax-text-secondary text-lg">
-              Click "Run All Tests" to start testing
+              Click &quot;Run All Tests&quot; to start testing
             </p>
           </div>
         )}

@@ -52,7 +52,7 @@ export default function LoginLinkPage() {
   if (loading) {
     return (
       <div className="min-h-screen bg-[#1e1e1e] text-[#d4d4d4] font-mono flex items-center justify-center">
-        <div className="text-[#858585]">// Verifying login link...</div>
+        <div className="text-[#858585]">{'// Verifying login link...'}</div>
       </div>
     );
   }
@@ -67,7 +67,7 @@ export default function LoginLinkPage() {
         </div>
         <div className="flex items-center justify-center min-h-[calc(100vh-40px)] p-6">
           <div className="bg-[#252526] border border-[#3e3e3e] rounded-lg p-8 max-w-md w-full">
-            <h1 className="text-xl font-bold text-[#d4d4d4] mb-4 font-mono">// Login Error</h1>
+            <h1 className="text-xl font-bold text-[#d4d4d4] mb-4 font-mono">{'// Login Error'}</h1>
             <p className="text-[#f48771] text-sm mb-4">{error}</p>
             <Link
               href="/auth"
@@ -95,13 +95,13 @@ export default function LoginLinkPage() {
             animate={{ opacity: 1, y: 0 }}
             className="bg-[#252526] border border-[#3e3e3e] rounded-lg p-8 max-w-md w-full"
           >
-            <h1 className="text-xl font-bold text-[#4ec9b0] mb-4 font-mono">// Login Successful</h1>
+            <h1 className="text-xl font-bold text-[#4ec9b0] mb-4 font-mono">{'// Login Successful'}</h1>
             <p className="text-[#858585] text-sm mb-4">
               Redirecting to dashboard...
             </p>
             {agent && (
               <div className="bg-[#1e1e1e] border border-[#3e3e3e] rounded p-4 mb-4">
-                <p className="text-xs text-[#858585] mb-2 font-mono">// Agent Details</p>
+                <p className="text-xs text-[#858585] mb-2 font-mono">{'// Agent Details'}</p>
                 <p className="text-sm text-[#d4d4d4] font-mono">Name: {agent.name}</p>
                 <p className="text-sm text-[#d4d4d4] font-mono">Type: {agent.type}</p>
               </div>

@@ -259,7 +259,7 @@ export default function ExportModal({ isOpen, onClose }: ExportModalProps) {
                   <div className="bg-ax-bg/50 border border-ax-border p-8 flex items-center justify-center min-h-[400px]">
                     <div className="text-center font-mono text-xs text-ax-text-dim">
                       <div className="text-4xl mb-4 opacity-30">⚙️</div>
-                      <div>Click "Preview Code" to see generated files</div>
+                      <div>Click &quot;Preview Code&quot; to see generated files</div>
                     </div>
                   </div>
                 )}

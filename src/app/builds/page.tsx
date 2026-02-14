@@ -205,7 +205,7 @@ export default function BuildsPage() {
         <div className="w-1/3 border-r border-[#3e3e3e] overflow-y-auto bg-[#1e1e1e]">
           <div className="p-4">
             <h1 className="text-2xl font-bold mb-4 text-[#d4d4d4]">
-              // Live Builds
+              {'// Live Builds'}
             </h1>
             
             {loading ? (

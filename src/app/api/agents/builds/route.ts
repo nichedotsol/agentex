@@ -7,6 +7,8 @@ import { withAgentAuth } from '@/lib/auth/middleware';
 import { getBuildStatus } from '@/lib/utils/build-store';
 import { getAgentBuildIds } from '@/lib/utils/agent-builds';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(request: NextRequest) {
   try {
     // Authenticate agent

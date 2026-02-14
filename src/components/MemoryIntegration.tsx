@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useBuildStore } from '@/lib/stores/buildStore'
 import { MemoryIntegration as MemoryUtils, type MemoryEntry, type MemorySearchResult, type MemoryStats, type MemoryOptimization } from '@/lib/utils/memoryIntegration'
@@ -29,34 +29,16 @@ export default function MemoryIntegration({ onClose }: MemoryIntegrationProps) {
 
   const buildState = useBuildStore()
 
-  useEffect(() => {
-    loadData()
-  }, [])
-
-  useEffect(() => {
-    if (view === 'search' && searchQuery) {
-      performSearch()
-    } else {
-      setSearchResults([])
-    }
-  }, [searchQuery, view, selectedComponent, filterTags, filterMinImportance])
-
-  useEffect(() => {
-    if (selectedComponent !== 'all') {
-      loadData()
-    }
-  }, [selectedComponent])
-
-  const loadData = () => {
+  const loadData = useCallback(() => {
     setLoading(true)
     const componentId = selectedComponent === 'all' ? undefined : selectedComponent
     setEntries(MemoryUtils.getEntries(componentId))
     setStats(MemoryUtils.getStats(componentId))
     setOptimizations(MemoryUtils.getOptimizations(componentId))
     setLoading(false)
-  }
+  }, [selectedComponent])
 
-  const performSearch = () => {
+  const performSearch = useCallback(() => {
     if (!searchQuery.trim()) {
       setSearchResults([])
       return
@@ -70,7 +52,25 @@ export default function MemoryIntegration({ onClose }: MemoryIntegrationProps) {
     })
     
     setSearchResults(results)
-  }
+  }, [searchQuery, selectedComponent, filterTags, filterMinImportance])
+
+  useEffect(() => {
+    loadData()
+  }, [loadData])
+
+  useEffect(() => {
+    if (view === 'search' && searchQuery) {
+      performSearch()
+    } else {
+      setSearchResults([])
+    }
+  }, [view, searchQuery, performSearch])
+
+  useEffect(() => {
+    if (selectedComponent !== 'all') {
+      loadData()
+    }
+  }, [selectedComponent, loadData])
 
   const handleDeleteEntry = (entryId: string) => {
     if (confirm('Are you sure you want to delete this memory entry?')) {

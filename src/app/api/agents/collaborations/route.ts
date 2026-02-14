@@ -6,6 +6,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { withAgentAuth } from '@/lib/auth/middleware';
 import { getAgentCollaborations } from '@/lib/utils/agent-builds';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(request: NextRequest) {
   try {
     // Authenticate agent

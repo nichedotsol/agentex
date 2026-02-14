@@ -253,7 +253,7 @@ function ClaudeInstructions() {
             <li>Download the skill file: <code className="text-ax-primary">packages/claude-skill.json</code></li>
             <li>Open Claude Desktop or Claude.ai</li>
             <li>Go to Settings → Skills</li>
-            <li>Click "Add Skill" or "Import Skill"</li>
+            <li>Click &quot;Add Skill&quot; or &quot;Import Skill&quot;</li>
             <li>Select the downloaded JSON file</li>
             <li>The skill will be available as <code className="text-ax-primary">agentex_builder</code></li>
           </ol>
@@ -263,7 +263,7 @@ function ClaudeInstructions() {
           <div className="bg-ax-bg-secondary p-4 rounded-lg">
             <p className="text-ax-text-secondary mb-2">In Claude, you can now say:</p>
             <code className="text-ax-text font-mono text-sm block">
-              "I want to build a research agent. Use the agentex_builder skill to validate and generate it with OpenAI API and web search tools."
+              &quot;I want to build a research agent. Use the agentex_builder skill to validate and generate it with OpenAI API and web search tools.&quot;
             </code>
           </div>
         </div>
@@ -300,7 +300,7 @@ function GPTInstructions() {
             <li>Open OpenAI Platform → Assistants</li>
             <li>Create or edit an assistant</li>
             <li>Go to Functions section</li>
-            <li>Click "Add Function"</li>
+            <li>Click &quot;Add Function&quot;</li>
             <li>Paste the contents of <code className="text-ax-primary">gpt-function.json</code></li>
             <li>Save the assistant</li>
           </ol>
@@ -310,7 +310,7 @@ function GPTInstructions() {
           <div className="bg-ax-bg-secondary p-4 rounded-lg">
             <p className="text-ax-text-secondary mb-2">In your GPT assistant, you can now call:</p>
             <code className="text-ax-text font-mono text-sm block">
-              agentex_builder(action="validate", name="Research Assistant", description="Helps with research", brain="gpt-4", tools=["tool-openai-api"])
+              agentex_builder(action=&quot;validate&quot;, name=&quot;Research Assistant&quot;, description=&quot;Helps with research&quot;, brain=&quot;gpt-4&quot;, tools=[&quot;tool-openai-api&quot;])
             </code>
           </div>
         </div>
@@ -340,7 +340,7 @@ function OpenClawInstructions() {
             Select option 3 when prompted to install for OpenClaw. The installer will automatically:
           </p>
           <ul className="list-disc list-inside space-y-1 text-ax-text-secondary mb-4">
-            <li>Create ~/.openclaw/skills directory if it doesn't exist</li>
+            <li>Create ~/.openclaw/skills directory if it doesn&apos;t exist</li>
             <li>Copy the skill file to ~/.openclaw/skills/agentex_builder.json</li>
             <li>Verify the installation</li>
           </ul>
@@ -348,7 +348,7 @@ function OpenClawInstructions() {
         <div>
           <h3 className="text-lg font-semibold text-ax-text mb-2">Method 2: Manual Installation</h3>
           <ol className="list-decimal list-inside space-y-2 text-ax-text-secondary">
-            <li>Create the skills directory (if it doesn't exist):</li>
+            <li>Create the skills directory (if it doesn&apos;t exist):</li>
             <code className="block bg-ax-bg-secondary p-3 rounded-lg text-ax-text font-mono text-sm my-2">
               mkdir -p ~/.openclaw/skills
             </code>
@@ -366,7 +366,7 @@ function OpenClawInstructions() {
           <ol className="list-decimal list-inside space-y-2 text-ax-text-secondary">
             <li>Open OpenClaw</li>
             <li>Go to Settings → Skills</li>
-            <li>Click "Import Skill" or "Add Skill"</li>
+            <li>Click &quot;Import Skill&quot; or &quot;Add Skill&quot;</li>
             <li>Select <code className="text-ax-primary">packages/openclaw-skill.json</code></li>
             <li>Or paste the JSON content directly</li>
             <li>Save and restart OpenClaw</li>

@@ -15,7 +15,7 @@ export default function LandingPage() {
           <div className="flex items-center gap-4">
             <span className="text-xs text-[#858585]">agentex.js</span>
             <Link href="/builds" className="text-xs text-[#858585] hover:text-[#d4d4d4] transition-colors">
-              // Live Builds
+              {'// Live Builds'}
             </Link>
           </div>
           <div className="flex items-center gap-4">
@@ -48,7 +48,7 @@ export default function LandingPage() {
               </h2>
             </div>
             <p className="text-xl text-[#858585] max-w-3xl mx-auto mb-12 text-left">
-              // The programmatic agent builder. Let AI agents build other AI agents.
+              {'// The programmatic agent builder. Let AI agents build other AI agents.'}
             </p>
             
             {/* CTA Buttons */}
@@ -84,10 +84,10 @@ export default function LandingPage() {
           transition={{ duration: 0.6, delay: 0.2 }}
         >
           <h2 className="text-3xl font-bold text-[#d4d4d4] text-left mb-4 font-mono">
-            // Install AgentEX Skill
+            {'// Install AgentEX Skill'}
           </h2>
           <p className="text-lg text-[#858585] text-left mb-8 max-w-2xl">
-            // Add AgentEX to your AI agent or application. Build and deploy agents programmatically.
+            {'// Add AgentEX to your AI agent or application. Build and deploy agents programmatically.'}
           </p>
 
           {/* Platform Selector */}
@@ -137,7 +137,7 @@ export default function LandingPage() {
           transition={{ duration: 0.6, delay: 0.4 }}
         >
           <h2 className="text-3xl font-bold text-[#d4d4d4] text-left mb-8 font-mono">
-            // Built for AI Agents
+            {'// Built for AI Agents'}
           </h2>
           <div className="grid md:grid-cols-3 gap-4">
             <FeatureCard
@@ -175,10 +175,10 @@ export default function LandingPage() {
           transition={{ duration: 0.6, delay: 0.6 }}
         >
           <h2 className="text-3xl font-bold text-[#d4d4d4] mb-4 text-left font-mono">
-            // Ready to Build?
+            {'// Ready to Build?'}
           </h2>
           <p className="text-lg text-[#858585] mb-8 text-left">
-            // Register your agent and start building other agents programmatically.
+            {'// Register your agent and start building other agents programmatically.'}
           </p>
           <div className="text-left">
             <Link
@@ -197,7 +197,7 @@ export default function LandingPage() {
 function NPMInstructions() {
   return (
     <div>
-      <h3 className="text-xl font-bold text-[#d4d4d4] mb-4 font-mono">// Quick Install (Recommended)</h3>
+      <h3 className="text-xl font-bold text-[#d4d4d4] mb-4 font-mono">{'// Quick Install (Recommended)'}</h3>
       <div className="space-y-4">
         <div>
           <h4 className="font-medium text-[#d4d4d4] mb-2 text-sm font-mono">1. Install the package globally:</h4>
@@ -227,7 +227,7 @@ function NPMInstructions() {
 function ClaudeInstructions() {
   return (
     <div>
-      <h3 className="text-xl font-bold text-[#d4d4d4] mb-4 font-mono">// For Claude Agents</h3>
+      <h3 className="text-xl font-bold text-[#d4d4d4] mb-4 font-mono">{'// For Claude Agents'}</h3>
       <div className="space-y-4">
         <div>
           <h4 className="font-medium text-[#d4d4d4] mb-2 text-sm font-mono">1. Install via npm:</h4>
@@ -245,7 +245,7 @@ function ClaudeInstructions() {
         <div>
           <h4 className="font-medium text-[#d4d4d4] mb-2 text-sm font-mono">3. Use the skill in Claude:</h4>
           <code className="block bg-[#1e1e1e] border border-[#3e3e3e] p-3 rounded text-[#d4d4d4] font-mono text-sm">
-            "Use agentex_builder to validate and generate a research agent"
+            &quot;Use agentex_builder to validate and generate a research agent&quot;
           </code>
         </div>
       </div>
@@ -256,7 +256,7 @@ function ClaudeInstructions() {
 function GPTInstructions() {
   return (
     <div>
-      <h3 className="text-xl font-bold text-[#d4d4d4] mb-4 font-mono">// For GPT/OpenAI Agents</h3>
+      <h3 className="text-xl font-bold text-[#d4d4d4] mb-4 font-mono">{'// For GPT/OpenAI Agents'}</h3>
       <div className="space-y-4">
         <div>
           <h4 className="font-medium text-[#d4d4d4] mb-2 text-sm font-mono">1. Add function to your assistant</h4>
@@ -277,7 +277,7 @@ function GPTInstructions() {
 function OpenClawInstructions() {
   return (
     <div>
-      <h3 className="text-xl font-bold text-[#d4d4d4] mb-4 font-mono">// For OpenClaw Agents</h3>
+      <h3 className="text-xl font-bold text-[#d4d4d4] mb-4 font-mono">{'// For OpenClaw Agents'}</h3>
       <div className="space-y-4">
         <div>
           <h4 className="font-medium text-[#d4d4d4] mb-2 text-sm font-mono">1. Install skill:</h4>
@@ -300,7 +300,7 @@ function OpenClawInstructions() {
 function MoltHubInstructions() {
   return (
     <div>
-      <h3 className="text-xl font-bold text-[#d4d4d4] mb-4 font-mono">// For MoltHub Agents</h3>
+      <h3 className="text-xl font-bold text-[#d4d4d4] mb-4 font-mono">{'// For MoltHub Agents'}</h3>
       <div className="space-y-4">
         <div>
           <h4 className="font-medium text-[#d4d4d4] mb-2 text-sm font-mono">1. Install AgentEX skill in MoltHub:</h4>
@@ -341,7 +341,7 @@ function MoltHubInstructions() {
 function APIInstructions() {
   return (
     <div>
-      <h3 className="text-xl font-bold text-[#d4d4d4] mb-4 font-mono">// Direct API Access</h3>
+      <h3 className="text-xl font-bold text-[#d4d4d4] mb-4 font-mono">{'// Direct API Access'}</h3>
       <div className="space-y-4">
         <div>
           <h4 className="font-medium text-[#d4d4d4] mb-2 text-sm font-mono">1. Register your agent:</h4>

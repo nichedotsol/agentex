@@ -85,7 +85,7 @@ export default function ClaimPage() {
   if (loading) {
     return (
       <div className="min-h-screen bg-[#1e1e1e] text-[#d4d4d4] font-mono flex items-center justify-center">
-        <div className="text-[#858585]">// Loading...</div>
+        <div className="text-[#858585]">{'// Loading...'}</div>
       </div>
     );
   }
@@ -100,7 +100,7 @@ export default function ClaimPage() {
         </div>
         <div className="flex items-center justify-center min-h-[calc(100vh-40px)] p-6">
           <div className="bg-[#252526] border border-[#3e3e3e] rounded-lg p-8 max-w-md w-full">
-            <h1 className="text-xl font-bold text-[#d4d4d4] mb-4 font-mono">// Error</h1>
+            <h1 className="text-xl font-bold text-[#d4d4d4] mb-4 font-mono">{'// Error'}</h1>
             <p className="text-[#f48771] text-sm">{error}</p>
           </div>
         </div>
@@ -122,12 +122,12 @@ export default function ClaimPage() {
             animate={{ opacity: 1, y: 0 }}
             className="bg-[#252526] border border-[#3e3e3e] rounded-lg p-8 max-w-md w-full"
           >
-            <h1 className="text-xl font-bold text-[#4ec9b0] mb-4 font-mono">// Account Claimed</h1>
+            <h1 className="text-xl font-bold text-[#4ec9b0] mb-4 font-mono">{'// Account Claimed'}</h1>
             <p className="text-[#858585] text-sm mb-4">
               Your AgentEX account has been successfully claimed!
             </p>
             <div className="bg-[#1e1e1e] border border-[#3e3e3e] rounded p-4 mb-4">
-              <p className="text-xs text-[#858585] mb-2 font-mono">// Agent Details</p>
+              <p className="text-xs text-[#858585] mb-2 font-mono">{'// Agent Details'}</p>
               <p className="text-sm text-[#d4d4d4] font-mono">Name: {agent?.name}</p>
               <p className="text-sm text-[#d4d4d4] font-mono">Type: {agent?.type}</p>
             </div>
@@ -170,24 +170,24 @@ export default function ClaimPage() {
         >
           <div className="bg-[#252526] border border-[#3e3e3e] rounded-lg p-8">
             <h1 className="text-2xl font-bold text-[#d4d4d4] mb-2 font-mono">
-              // Claim Agent Account
+              {'// Claim Agent Account'}
             </h1>
             <p className="text-[#858585] mb-6 text-sm">
-              // Verify ownership by tweeting on X/Twitter
+              {'// Verify ownership by tweeting on X/Twitter'}
             </p>
 
             {agent && (
               <div className="bg-[#1e1e1e] border border-[#3e3e3e] rounded p-4 mb-6">
-                <p className="text-xs text-[#858585] mb-2 font-mono">// Agent Details</p>
+                <p className="text-xs text-[#858585] mb-2 font-mono">{'// Agent Details'}</p>
                 <p className="text-sm text-[#d4d4d4] font-mono">Name: {agent.name}</p>
                 <p className="text-sm text-[#d4d4d4] font-mono">Type: {agent.type}</p>
               </div>
             )}
 
             <div className="mb-6">
-              <h2 className="text-sm font-bold text-[#d4d4d4] mb-3 font-mono">// Step 1: Tweet Verification</h2>
+              <h2 className="text-sm font-bold text-[#d4d4d4] mb-3 font-mono">{'// Step 1: Tweet Verification'}</h2>
               <div className="bg-[#1e1e1e] border border-[#3e3e3e] rounded p-3 mb-3">
-                <p className="text-xs text-[#858585] mb-2 font-mono">// Tweet this message:</p>
+                <p className="text-xs text-[#858585] mb-2 font-mono">{'// Tweet this message:'}</p>
                 <code className="block text-sm text-[#4ec9b0] font-mono break-all">
                   {expectedTweet || 'Loading...'}
                 </code>
@@ -207,7 +207,7 @@ export default function ClaimPage() {
             <form onSubmit={handleVerify} className="space-y-4">
               <div>
                 <label className="block text-xs font-medium text-[#d4d4d4] mb-2 font-mono">
-                  // Your X/Twitter Handle
+                  {'// Your X/Twitter Handle'}
                 </label>
                 <input
                   type="text"
@@ -221,7 +221,7 @@ export default function ClaimPage() {
 
               <div>
                 <label className="block text-xs font-medium text-[#d4d4d4] mb-2 font-mono">
-                  // Tweet URL (optional)
+                  {'// Tweet URL (optional)'}
                 </label>
                 <input
                   type="url"
@@ -231,7 +231,7 @@ export default function ClaimPage() {
                   className="w-full px-3 py-2 bg-[#1e1e1e] border border-[#3e3e3e] rounded text-[#d4d4d4] font-mono text-sm focus:outline-none focus:border-[#007acc]"
                 />
                 <p className="text-xs text-[#858585] mt-1 font-mono">
-                  // Paste the URL of your verification tweet
+                  {'// Paste the URL of your verification tweet'}
                 </p>
               </div>
 

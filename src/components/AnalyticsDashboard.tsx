@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { motion } from 'framer-motion'
 import { Analytics, type AnalyticsStats, type UsageEvent, type CostEntry } from '@/lib/utils/analytics'
 import { SkeletonList } from './SkeletonLoader'
@@ -20,11 +20,7 @@ export default function AnalyticsDashboard({ onClose }: AnalyticsDashboardProps)
   const [recentEvents, setRecentEvents] = useState<UsageEvent[]>([])
   const [recentCosts, setRecentCosts] = useState<CostEntry[]>([])
 
-  useEffect(() => {
-    loadData()
-  }, [timeRange])
-
-  const loadData = () => {
+  const loadData = useCallback(() => {
     setLoading(true)
     
     const days = timeRange === '7d' ? 7 : timeRange === '30d' ? 30 : timeRange === '90d' ? 90 : 365
@@ -40,7 +36,11 @@ export default function AnalyticsDashboard({ onClose }: AnalyticsDashboardProps)
     setRecentCosts(Analytics.getCosts(timeRangeObj).slice(-10).reverse())
     
     setLoading(false)
-  }
+  }, [timeRange])
+
+  useEffect(() => {
+    loadData()
+  }, [loadData])
 
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('en-US', {

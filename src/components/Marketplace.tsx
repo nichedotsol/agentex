@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useBuildStore } from '@/lib/stores/buildStore'
 import { Marketplace as MarketplaceUtils, type MarketplaceAgent, type MarketplaceFilters } from '@/lib/utils/marketplace'
@@ -27,16 +27,7 @@ export default function Marketplace({ onClose, onLoadAgent }: MarketplaceProps) 
 
   const buildState = useBuildStore()
 
-  useEffect(() => {
-    loadAgents()
-    MarketplaceUtils.initializeSamples()
-  }, [])
-
-  useEffect(() => {
-    loadAgents()
-  }, [filters, searchQuery, selectedCategory])
-
-  const loadAgents = () => {
+  const loadAgents = useCallback(() => {
     setLoading(true)
     const filtered = MarketplaceUtils.filterAgents({
       ...filters,
@@ -45,7 +36,16 @@ export default function Marketplace({ onClose, onLoadAgent }: MarketplaceProps) 
     })
     setAgents(filtered)
     setLoading(false)
-  }
+  }, [filters, searchQuery, selectedCategory])
+
+  useEffect(() => {
+    loadAgents()
+    MarketplaceUtils.initializeSamples()
+  }, [loadAgents])
+
+  useEffect(() => {
+    loadAgents()
+  }, [loadAgents])
 
   const handleShare = () => {
     if (!shareName.trim()) return
